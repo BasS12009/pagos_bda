@@ -11,6 +11,5 @@ package com.mycompany.pago_persistencia;
 public class Pago_Persistencia {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
     }
 }
