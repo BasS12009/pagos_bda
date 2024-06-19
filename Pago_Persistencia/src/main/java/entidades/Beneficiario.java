@@ -49,7 +49,32 @@ public class Beneficiario implements Serializable {
     
     @OneToMany(mappedBy = "beneficiario")
     private List<Pago> pagos;
+    
+    
+    /**
+     * Constructor vacío requerido.
+     */
+    public Beneficiario() {
+    }
 
+    /**
+     * Constructor para inicializar un nuevo beneficiario con los datos básicos.
+     * 
+     * @param claveContrato La clave de contrato del beneficiario.
+     * @param saldo El saldo inicial del beneficiario.
+     * @param nombre El nombre completo del beneficiario.
+     * @param usuario El nombre de usuario del beneficiario.
+     * @param contraseña La contraseña del beneficiario.
+     */
+    public Beneficiario(String claveContrato, Double saldo, Nombre nombre, String usuario, String contraseña) {
+        this.claveContrato = claveContrato;
+        this.saldo = saldo;
+        this.nombre = nombre;
+        this.usuario = usuario;
+        this.contraseña = contraseña;
+    }
+    
+    
     /**
      * Calcula el código hash del objeto basado en su identificador.
      * 

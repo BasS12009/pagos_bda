@@ -90,6 +90,19 @@ public class Pago implements Serializable {
     )
     private List<Estatus> estatus;
 
+    // Constructor vacío requerido por JPA
+    public Pago() {
+    }
+
+    // Constructor detallado para inicializar todos los atributos
+    public Pago(Double monto, LocalDateTime fechaHora, String comprobante, Tipos tipo, Beneficiario beneficiario) {
+        this.monto = monto;
+        this.fechaHora = fechaHora;
+        this.comprobante = comprobante;
+        this.tipo = tipo;
+        this.beneficiario = beneficiario;
+    }
+    
     /**
      * Calcula el hash del objeto basado en su identificador.
      *

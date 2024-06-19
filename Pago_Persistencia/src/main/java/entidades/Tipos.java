@@ -55,6 +55,16 @@ public class Tipos implements Serializable{
     @OneToMany(mappedBy = "tipos")
     private List<Pago> pagos;
 
+    // Constructor vacío requerido por JPA
+    public Tipos() {
+    }
+
+    // Constructor detallado para inicializar todos los atributos
+    public Tipos(String nombre, Integer numeroParcialidades) {
+        this.nombre = nombre;
+        this.numeroParcialidades = numeroParcialidades;
+    }
+    
     /**
      * Calcula el hash del objeto basado en su identificador.
      *

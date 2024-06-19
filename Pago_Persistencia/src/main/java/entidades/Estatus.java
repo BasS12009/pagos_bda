@@ -33,6 +33,12 @@ public class Estatus implements Serializable {
 
     @ManyToMany(mappedBy = "estatus")
     private List<Pago> pagos;
+    
+    /**
+     * Constructor vacío requerido por JPA.
+     */
+    public Estatus() {
+    }
 
     /**
      * Calcula el código hash del objeto basado en su identificador.

@@ -44,6 +44,27 @@ public class CuentaBancaria implements Serializable {
 
     @OneToMany(mappedBy = "cuentaBancaria")
     private List<Pago> pagos;
+    
+    /**
+     * Constructor vacío requerido por JPA.
+     */
+    public CuentaBancaria() {
+    }
+
+    /**
+     * Constructor para inicializar una nueva cuenta bancaria con los datos básicos.
+     * 
+     * @param numeroCuenta El número de cuenta bancaria.
+     * @param clave La clave asociada a la cuenta bancaria.
+     * @param banco El nombre del banco de la cuenta bancaria.
+     * @param eliminada Indica si la cuenta bancaria está eliminada o no.
+     */
+    public CuentaBancaria(String numeroCuenta, String clave, String banco, Boolean eliminada) {
+        this.numeroCuenta = numeroCuenta;
+        this.clave = clave;
+        this.banco = banco;
+        this.eliminada = eliminada;
+    }
 
     /**
      * Calcula el código hash del objeto basado en su identificador.

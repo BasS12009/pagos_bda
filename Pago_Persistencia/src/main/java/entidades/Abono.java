@@ -40,6 +40,25 @@ public class Abono implements Serializable {
     private Pago pago;
 
     /**
+     * Constructor vacío requerido por JPA.
+     */
+    public Abono() {
+    }
+
+    /**
+     * Constructor para inicializar un nuevo abono con los datos básicos.
+     * 
+     * @param fechaHora La fecha y hora del abono.
+     * @param monto El monto del abono.
+     * @param pago El pago al que está asociado este abono.
+     */
+    public Abono(LocalDateTime fechaHora, Double monto, Pago pago) {
+        this.fechaHora = fechaHora;
+        this.monto = monto;
+        this.pago = pago;
+    }
+    
+    /**
      * Calcula el código hash del objeto basado en su identificador.
      * 
      * @return Código hash del objeto.

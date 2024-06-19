@@ -27,6 +27,26 @@ public class Nombre implements Serializable {
     private String apellidoMaterno;
 
     /**
+     * Constructor vacío requerido por JPA.
+     */
+    public Nombre() {
+    }
+
+    /**
+     * Constructor que inicializa el nombre completo de una persona.
+     *
+     * @param nombres         Nombres de la persona.
+     * @param apellidoPaterno Apellido paterno de la persona.
+     * @param apellidoMaterno Apellido materno de la persona.
+     */
+    public Nombre(String nombres, String apellidoPaterno, String apellidoMaterno) {
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+    }
+    
+    
+    /**
      * Devuelve los nombres de la persona.
      * 
      * @return Nombres de la persona.
