@@ -51,4 +51,12 @@ public interface ICuentaBancariaDAO {
      */
     List<CuentaBancaria> obtenerTodasLasCuentasBancarias();
     
+    /**
+     * Retorna una lista con todas las cuentas bancarias asociadas a un beneficiario específico.
+     * 
+     * @param claveContrato La clave de contrato del beneficiario.
+     * @return Lista de cuentas bancarias asociadas al beneficiario.
+     */
+    List<CuentaBancaria> obtenerCuentasBancariasPorBeneficiario(String claveContrato);
+    
 }

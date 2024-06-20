@@ -6,9 +6,11 @@ package entidades;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -49,6 +51,9 @@ public class Beneficiario implements Serializable {
     
     @OneToMany(mappedBy = "beneficiario")
     private List<Pago> pagos;
+    
+    @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CuentaBancaria> cuentasBancarias;
     
     
     /**
@@ -241,5 +246,14 @@ public class Beneficiario implements Serializable {
     public void setPagos(List<Pago> pagos) {
         this.pagos = pagos;
     }
+
+    public List<CuentaBancaria> getCuentasBancarias() {
+        return cuentasBancarias;
+    }
+
+    public void setCuentasBancarias(List<CuentaBancaria> cuentasBancarias) {
+        this.cuentasBancarias = cuentasBancarias;
+    }
+    
 }
 

@@ -19,7 +19,7 @@ import entidades.CuentaBancaria;
  * 
  * @author PC
  */
-public class CuentaBancariaDAO {
+public class CuentaBancariaDAO implements ICuentaBancariaDAO{
 
     private EntityManager entityManager;
 
@@ -35,6 +35,7 @@ public class CuentaBancariaDAO {
      * 
      * @param cuenta La cuenta bancaria que se desea guardar.
      */
+    @Override
     public void guardarCuentaBancaria(CuentaBancaria cuenta) {
         try {
             entityManager.getTransaction().begin();
@@ -51,6 +52,7 @@ public class CuentaBancariaDAO {
      * 
      * @param cuenta La cuenta bancaria con los datos actualizados.
      */
+    @Override
     public void actualizarCuentaBancaria(CuentaBancaria cuenta) {
         try {
             entityManager.getTransaction().begin();
@@ -67,6 +69,7 @@ public class CuentaBancariaDAO {
      * 
      * @param cuenta La cuenta bancaria que se desea eliminar.
      */
+    @Override
     public void eliminarCuentaBancaria(CuentaBancaria cuenta) {
         try {
             entityManager.getTransaction().begin();
@@ -84,6 +87,7 @@ public class CuentaBancariaDAO {
      * @param numeroCuenta El número de cuenta de la cuenta bancaria que se desea buscar.
      * @return La cuenta bancaria encontrada, o null si no existe.
      */
+    @Override
     public CuentaBancaria buscarCuentaBancariaPorNumero(String numeroCuenta) {
         TypedQuery<CuentaBancaria> query = entityManager.createQuery("SELECT c FROM CuentaBancaria c WHERE c.numeroCuenta = :numero", CuentaBancaria.class);
         query.setParameter("numero", numeroCuenta);
@@ -95,12 +99,25 @@ public class CuentaBancariaDAO {
      * 
      * @return Lista de objetos CuentaBancaria.
      */
+    @Override
     public List<CuentaBancaria> obtenerTodasLasCuentasBancarias() {
         TypedQuery<CuentaBancaria> query = entityManager.createQuery("SELECT c FROM CuentaBancaria c", CuentaBancaria.class);
         return query.getResultList();
     }
     
-    // Puedes agregar métodos adicionales de consulta aquí según tus necesidades
+    /**
+     * Retorna una lista con todas las cuentas bancarias asociadas a un beneficiario específico.
+     * 
+     * @param claveContrato
+     * @return
+     */
+    @Override
+    public List<CuentaBancaria> obtenerCuentasBancariasPorBeneficiario(String claveContrato) {
+        TypedQuery<CuentaBancaria> query = entityManager.createQuery(
+                "SELECT c FROM CuentaBancaria c WHERE c.beneficiario.claveContrato = :claveContrato", CuentaBancaria.class);
+        query.setParameter("claveContrato", claveContrato);
+        return query.getResultList();
+    }
     
     /**
      * Cierra la conexión del EntityManager y el EntityManagerFactory.

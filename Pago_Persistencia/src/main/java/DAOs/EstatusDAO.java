@@ -19,7 +19,7 @@ import conexion.ConexionBD;
  * 
  * @author PC
  */
-public class EstatusDAO {
+public class EstatusDAO implements IEstatusDAO{
 
     private EntityManager entityManager;
 
@@ -35,6 +35,7 @@ public class EstatusDAO {
      * 
      * @param estatus El objeto Estatus que se desea guardar.
      */
+    @Override
     public void guardarEstatus(Estatus estatus) {
         try {
             entityManager.getTransaction().begin();
@@ -51,6 +52,7 @@ public class EstatusDAO {
      * 
      * @param estatus El objeto Estatus con los datos actualizados.
      */
+    @Override
     public void actualizarEstatus(Estatus estatus) {
         try {
             entityManager.getTransaction().begin();
@@ -67,6 +69,7 @@ public class EstatusDAO {
      * 
      * @param estatus El objeto Estatus que se desea eliminar.
      */
+    @Override
     public void eliminarEstatus(Estatus estatus) {
         try {
             entityManager.getTransaction().begin();
@@ -84,6 +87,7 @@ public class EstatusDAO {
      * @param id El ID del estado que se desea buscar.
      * @return El objeto Estatus encontrado, o null si no existe.
      */
+    @Override
     public Estatus buscarEstatusPorId(Long id) {
         return entityManager.find(Estatus.class, id);
     }
@@ -93,6 +97,7 @@ public class EstatusDAO {
      * 
      * @return Lista de objetos Estatus.
      */
+    @Override
     public List<Estatus> obtenerTodosLosEstatus() {
         TypedQuery<Estatus> query = entityManager.createQuery("SELECT e FROM Estatus e", Estatus.class);
         return query.getResultList();

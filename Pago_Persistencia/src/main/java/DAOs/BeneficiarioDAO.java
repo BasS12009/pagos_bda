@@ -9,6 +9,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import entidades.Beneficiario;
 import conexion.ConexionBD;
+import excepcion.ExcepcionDAO;
+import java.util.ArrayList;
+import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 
 /**
  * Implementación concreta de DAO para la entidad Beneficiario.
@@ -19,7 +24,7 @@ import conexion.ConexionBD;
  * 
  * @author PC
  */
-public class BeneficiarioDAO {
+public class BeneficiarioDAO implements IBeneficiarioDAO{
 
     private EntityManager entityManager;
 
@@ -35,15 +40,34 @@ public class BeneficiarioDAO {
      * 
      * @param beneficiario El objeto Beneficiario que se desea guardar.
      */
+    @Override
     public void guardarBeneficiario(Beneficiario beneficiario) {
-        try {
-            entityManager.getTransaction().begin();
+        EntityManager entityManager = null;
+    EntityTransaction transaction = null;
+
+    try {
+        entityManager = ConexionBD.getEntityManager();
+        transaction = entityManager.getTransaction();
+        transaction.begin();
+        
+        Beneficiario existingBeneficiario = buscarBeneficiarioPorClaveContrato(beneficiario.getClaveContrato());
+        if (existingBeneficiario == null) {
             entityManager.persist(beneficiario);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            e.printStackTrace();
+        } else {
+            System.out.println("Ya existe un beneficiario con la misma clave de contrato: " + beneficiario.getClaveContrato());
         }
+
+        transaction.commit();
+    } catch (Exception e) {
+        if (transaction != null && transaction.isActive()) {
+            transaction.rollback();
+        }
+        e.printStackTrace(); 
+    } finally {
+        if (entityManager != null) {
+            entityManager.close();
+        }
+    }
     }
 
     /**
@@ -51,15 +75,28 @@ public class BeneficiarioDAO {
      * 
      * @param beneficiario El objeto Beneficiario con los datos actualizados.
      */
+    @Override
     public void actualizarBeneficiario(Beneficiario beneficiario) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.merge(beneficiario);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            e.printStackTrace();
+        EntityManager entityManager = null;
+        EntityTransaction transaction = null;
+
+    try {
+        entityManager = ConexionBD.getEntityManager();
+        transaction = entityManager.getTransaction();
+        transaction.begin();
+        entityManager.merge(beneficiario);
+
+        transaction.commit();
+    } catch (Exception e) {
+        if (transaction != null && transaction.isActive()) {
+            transaction.rollback();
         }
+        e.printStackTrace();
+    } finally {
+        if (entityManager != null) {
+            entityManager.close();
+        }
+    }
     }
 
     /**
@@ -67,14 +104,32 @@ public class BeneficiarioDAO {
      * 
      * @param beneficiario El objeto Beneficiario que se desea eliminar.
      */
+    @Override
     public void eliminarBeneficiario(Beneficiario beneficiario) {
+        EntityManager entityManager = null;
+        EntityTransaction transaction = null;
+
         try {
-            entityManager.getTransaction().begin();
-            entityManager.remove(entityManager.contains(beneficiario) ? beneficiario : entityManager.merge(beneficiario));
-            entityManager.getTransaction().commit();
+            entityManager = ConexionBD.getEntityManager();
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            
+            if (!entityManager.contains(beneficiario)) {
+                beneficiario = entityManager.merge(beneficiario);
+            }
+
+            entityManager.remove(beneficiario);
+
+            transaction.commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
             e.printStackTrace();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 
@@ -83,11 +138,29 @@ public class BeneficiarioDAO {
      * 
      * @param claveContrato La clave de contrato del beneficiario que se desea buscar.
      * @return El objeto Beneficiario encontrado, o null si no existe.
+     * @throws excepcion.ExcepcionDAO
      */
-    public Beneficiario buscarBeneficiarioPorClaveContrato(String claveContrato) {
-        TypedQuery<Beneficiario> query = entityManager.createQuery("SELECT b FROM Beneficiario b WHERE b.claveContrato = :clave", Beneficiario.class);
+    @Override
+    public Beneficiario buscarBeneficiarioPorClaveContrato(String claveContrato){
+        Beneficiario beneficiario = null;
+    EntityManager entityManager = null;
+
+    try {
+        entityManager = ConexionBD.getEntityManager();
+        TypedQuery<Beneficiario> query = entityManager.createQuery(
+            "SELECT b FROM Beneficiario b WHERE b.claveContrato = :clave", Beneficiario.class);
         query.setParameter("clave", claveContrato);
-        return query.getSingleResult();
+        beneficiario = query.getSingleResult();
+    } catch (NoResultException e) {
+        System.out.println(e.getMessage());
+    } catch (NonUniqueResultException e) {
+        e.printStackTrace();
+    } finally {
+        if (entityManager != null) {
+            entityManager.close();
+        }
+    }
+    return beneficiario;
     }
 
     /**
@@ -95,12 +168,36 @@ public class BeneficiarioDAO {
      * 
      * @return Lista de objetos Beneficiario.
      */
+    @Override
     public List<Beneficiario> obtenerTodosLosBeneficiarios() {
+        List<Beneficiario> beneficiarios = new ArrayList<>();
+    EntityManager entityManager = null;
+    EntityTransaction transaction = null;
+
+    try {
+        entityManager = ConexionBD.getEntityManager();
+        transaction = entityManager.getTransaction();
+        transaction.begin();
+
         TypedQuery<Beneficiario> query = entityManager.createQuery("SELECT b FROM Beneficiario b", Beneficiario.class);
-        return query.getResultList();
+        beneficiarios = query.getResultList();
+
+        transaction.commit();
+    } catch (Exception e) {
+        if (transaction != null && transaction.isActive()) {
+            transaction.rollback();
+        }
+        e.printStackTrace();
+    } finally {
+        if (entityManager != null) {
+            entityManager.close();
+        }
+    }
+
+    return beneficiarios;
     }
     
-    // Puedes agregar métodos adicionales de consulta aquí según tus necesidades
+    
     
     /**
      * Cierra la conexión del EntityManager y el EntityManagerFactory.

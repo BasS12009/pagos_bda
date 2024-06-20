@@ -102,8 +102,20 @@ public class PagoDAO implements IPagoDAO {
         return query.getResultList();
     }
     
-    // Puedes agregar métodos adicionales de consulta aquí según tus necesidades
-
+    /**
+     * Retorna una lista con todos los pagos asociados a un beneficiario específico.
+     * 
+     * @param claveContrato
+     * @return
+     */
+    @Override
+    public List<Pago> obtenerPagosPorBeneficiario(String claveContrato) {
+        TypedQuery<Pago> query = entityManager.createQuery(
+                "SELECT p FROM Pago p WHERE p.beneficiario.claveContrato = :claveContrato", Pago.class);
+        query.setParameter("claveContrato", claveContrato);
+        return query.getResultList();
+    }
+    
     /**
      * Cierra la conexión del EntityManager y el EntityManagerFactory.
      * Es importante llamar a este método al finalizar las operaciones con la instancia de PagoDAO.

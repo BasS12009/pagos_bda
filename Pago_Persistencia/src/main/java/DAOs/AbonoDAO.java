@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import entidades.Abono;
+import javax.persistence.EntityTransaction;
 
 /**
  * Implementación concreta de DAO para la entidad Abono.
@@ -19,7 +20,7 @@ import entidades.Abono;
  * 
  * @author PC
  */
-public class AbonoDAO {
+public class AbonoDAO implements IAbonoDAO{
 
     private EntityManager entityManager;
 
@@ -35,14 +36,28 @@ public class AbonoDAO {
      * 
      * @param abono El objeto Abono que se desea guardar.
      */
+    @Override
     public void guardarAbono(Abono abono) {
+        EntityManager entityManager = null;
+        EntityTransaction transaction = null;
+
         try {
-            entityManager.getTransaction().begin();
+            entityManager = ConexionBD.getEntityManager();
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+
             entityManager.persist(abono);
-            entityManager.getTransaction().commit();
+
+            transaction.commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
             e.printStackTrace();
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 
@@ -51,14 +66,28 @@ public class AbonoDAO {
      * 
      * @param abono El objeto Abono con los datos actualizados.
      */
+    @Override
     public void actualizarAbono(Abono abono) {
+        EntityManager entityManager = null;
+        EntityTransaction transaction = null;
+
         try {
-            entityManager.getTransaction().begin();
+            entityManager = ConexionBD.getEntityManager();
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+
             entityManager.merge(abono);
-            entityManager.getTransaction().commit();
+
+            transaction.commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            e.printStackTrace();
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace(); // Manejo básico de excepciones, ajusta según tu caso
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 
@@ -67,6 +96,7 @@ public class AbonoDAO {
      * 
      * @param abono El objeto Abono que se desea eliminar.
      */
+    @Override
     public void eliminarAbono(Abono abono) {
         try {
             entityManager.getTransaction().begin();
@@ -84,6 +114,7 @@ public class AbonoDAO {
      * @param id El identificador único del abono que se desea buscar.
      * @return El objeto Abono encontrado, o null si no existe.
      */
+    @Override
     public Abono buscarAbonoPorId(Long id) {
         return entityManager.find(Abono.class, id);
     }
@@ -93,12 +124,25 @@ public class AbonoDAO {
      * 
      * @return Lista de objetos Abono.
      */
+    @Override
     public List<Abono> obtenerTodosLosAbonos() {
         TypedQuery<Abono> query = entityManager.createQuery("SELECT a FROM Abono a", Abono.class);
         return query.getResultList();
     }
     
-    // Puedes agregar métodos adicionales de consulta aquí según tus necesidades
+    /**
+     *  Retorna una lista con todos los abonos asociados a un beneficiario específico.
+     * 
+     * @param claveContrato
+     * @return
+     */
+    @Override
+    public List<Abono> obtenerAbonosPorBeneficiario(String claveContrato) {
+        TypedQuery<Abono> query = entityManager.createQuery(
+                "SELECT a FROM Abono a WHERE a.beneficiario.claveContrato = :claveContrato", Abono.class);
+        query.setParameter("claveContrato", claveContrato);
+        return query.getResultList();
+    }
     
     /**
      * Cierra la conexión del EntityManager y el EntityManagerFactory.

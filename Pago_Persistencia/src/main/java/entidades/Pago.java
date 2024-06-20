@@ -44,7 +44,7 @@ public class Pago implements Serializable {
     /**
      * Monto del pago.
      */
-    @Column(nullable = false)
+    @Column(name="monto", nullable = false)
     private Double monto;
     
     /**
@@ -90,6 +90,12 @@ public class Pago implements Serializable {
     )
     private List<Estatus> estatus;
 
+    
+    @ManyToOne
+    @JoinColumn(name = "cuenta_bancaria_id")
+    private CuentaBancaria cuentaBancaria;
+    
+   
     // Constructor vacío requerido por JPA
     public Pago() {
     }
@@ -287,4 +293,14 @@ public class Pago implements Serializable {
    public void setEstatus(List<Estatus> estatus) {
        this.estatus = estatus;
    }
+
+    public CuentaBancaria getCuentaBancaria() {
+        return cuentaBancaria;
+    }
+
+    public void setCuentaBancaria(CuentaBancaria cuentaBancaria) {
+        this.cuentaBancaria = cuentaBancaria;
+    }
+   
+   
 }
