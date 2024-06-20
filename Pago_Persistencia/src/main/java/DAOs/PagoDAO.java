@@ -109,10 +109,10 @@ public class PagoDAO implements IPagoDAO {
      * @return
      */
     @Override
-    public List<Pago> obtenerPagosPorBeneficiario(String claveContrato) {
+    public List<Pago> obtenerPagosPorBeneficiario(Long idBeneficiario) {
         TypedQuery<Pago> query = entityManager.createQuery(
-                "SELECT p FROM Pago p WHERE p.beneficiario.claveContrato = :claveContrato", Pago.class);
-        query.setParameter("claveContrato", claveContrato);
+                "SELECT p FROM Pago p WHERE p.beneficiario.id = :idBeneficiario", Pago.class);
+        query.setParameter("idBeneficiario", idBeneficiario);
         return query.getResultList();
     }
     
