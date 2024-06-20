@@ -60,12 +60,22 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         btnCrearBeneficiario.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         btnCrearBeneficiario.setForeground(new java.awt.Color(255, 255, 255));
         btnCrearBeneficiario.setText("+Crear Beneficiario");
+        btnCrearBeneficiario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearBeneficiarioActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnCrearBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, -1, -1));
 
         btnModificar.setBackground(new java.awt.Color(116, 114, 178));
         btnModificar.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         btnModificar.setForeground(new java.awt.Color(255, 255, 255));
         btnModificar.setText("+Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 130, -1, -1));
 
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
@@ -213,6 +223,20 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         pagadoRechazar.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPagadoRechazarActionPerformed
+
+    private void btnCrearBeneficiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearBeneficiarioActionPerformed
+        // TODO add your handling code here:
+        CrearBeneficiario crearBeneficiario = new CrearBeneficiario();
+        crearBeneficiario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCrearBeneficiarioActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        ModificarBeneficiario modificarBeneficiario = new ModificarBeneficiario();
+        modificarBeneficiario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     /**
      * @param args the command line arguments
