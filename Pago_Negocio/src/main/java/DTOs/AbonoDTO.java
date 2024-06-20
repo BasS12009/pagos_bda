@@ -4,10 +4,15 @@
  */
 package DTOs;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author diana
  */
-public class CuentaDTO {
-    
+public class AbonoDTO {
+    private Long id;
+    private LocalDateTime fechaHora;
+    private Double monto;
+    private PagoDTO pagoDTO;
 }
