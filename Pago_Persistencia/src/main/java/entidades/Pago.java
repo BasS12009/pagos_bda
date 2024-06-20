@@ -5,8 +5,10 @@
 package entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,13 +41,14 @@ public class Pago implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     
     /**
      * Monto del pago.
      */
-    @Column(name="monto", nullable = false)
-    private Double monto;
+    @Column(name = "monto", nullable = false)
+    private BigDecimal monto;
     
     /**
      * Fecha y hora en que se realizó el pago.
@@ -56,7 +59,7 @@ public class Pago implements Serializable {
     /**
      * Comprobante adjunto al pago.
      */
-    @Column(nullable = true, length = 100)
+    @Column(name="comprobante", nullable = true, length = 100)
     private String comprobante;
     
     /**
@@ -79,29 +82,38 @@ public class Pago implements Serializable {
     @OneToMany(mappedBy = "pago")
     private List<Abono> abonos;
     
-    /**
-     * Estatus asociados a este pago.
-     */
-    @ManyToMany
-    @JoinTable(
-        name = "pago_estatus",
-        joinColumns = @JoinColumn(name = "pago_id"),
-        inverseJoinColumns = @JoinColumn(name = "estatus_id")
-    )
-    private List<Estatus> estatus;
+    @OneToMany(mappedBy = "pago", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PagosEstatus> pagosEstatus;
+    
+    public List<PagosEstatus> getPagosEstatus() {
+        return pagosEstatus;
+    }
 
+    public void setPagosEstatus(List<PagosEstatus> pagosEstatus) {
+        this.pagosEstatus = pagosEstatus;
+    }
     
     @ManyToOne
     @JoinColumn(name = "cuenta_bancaria_id")
     private CuentaBancaria cuentaBancaria;
     
    
-    // Constructor vacío requerido por JPA
+    /**
+     * Constructor vacío requerido por JPA.
+     */
     public Pago() {
     }
 
-    // Constructor detallado para inicializar todos los atributos
-    public Pago(Double monto, LocalDateTime fechaHora, String comprobante, Tipos tipo, Beneficiario beneficiario) {
+    /**
+     * Constructor detallado para inicializar todos los atributos.
+     *
+     * @param monto         Monto del pago.
+     * @param fechaHora     Fecha y hora del pago.
+     * @param comprobante   Comprobante adjunto al pago.
+     * @param tipo          Tipo de pago.
+     * @param beneficiario  Beneficiario del pago.
+     */
+    public Pago(BigDecimal monto, LocalDateTime fechaHora, String comprobante, Tipos tipo, Beneficiario beneficiario) {
         this.monto = monto;
         this.fechaHora = fechaHora;
         this.comprobante = comprobante;
@@ -173,7 +185,7 @@ public class Pago implements Serializable {
     * 
     * @return Monto del pago.
     */
-   public Double getMonto() {
+   public BigDecimal getMonto() {
        return monto;
    }
 
@@ -182,7 +194,7 @@ public class Pago implements Serializable {
     * 
     * @param monto Monto del pago.
     */
-   public void setMonto(Double monto) {
+   public void setMonto(BigDecimal monto) {
        this.monto = monto;
    }
 
@@ -276,23 +288,7 @@ public class Pago implements Serializable {
        this.abonos = abonos;
    }
 
-   /**
-    * Devuelve la lista de estatus asociados al pago.
-    * 
-    * @return Lista de estatus asociados al pago.
-    */
-   public List<Estatus> getEstatus() {
-       return estatus;
-   }
 
-   /**
-    * Establece la lista de estatus asociados al pago.
-    * 
-    * @param estatus Lista de estatus asociados al pago.
-    */
-   public void setEstatus(List<Estatus> estatus) {
-       this.estatus = estatus;
-   }
 
     public CuentaBancaria getCuentaBancaria() {
         return cuentaBancaria;

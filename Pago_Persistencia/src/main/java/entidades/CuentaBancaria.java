@@ -31,18 +31,19 @@ public class CuentaBancaria implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     @Column(name = "numero_cuenta", nullable = false, length = 20)
     private String numeroCuenta;
 
-    @Column(nullable = false, length = 20)
-    private String clave;
+    @Column(name="clabe",nullable = false, length = 20)
+    private String clabe;
 
-    @Column(nullable = false, length = 50)
+    @Column(name="banco",nullable = false, length = 25)
     private String banco;
 
-    @Column(nullable = false)
+    @Column(name="eliminada",nullable = false)
     private Boolean eliminada;
 
     @OneToMany(mappedBy = "cuentaBancaria")
@@ -68,7 +69,7 @@ public class CuentaBancaria implements Serializable {
      */
     public CuentaBancaria(String numeroCuenta, String clave, String banco, Boolean eliminada) {
         this.numeroCuenta = numeroCuenta;
-        this.clave = clave;
+        this.clabe = clave;
         this.banco = banco;
         this.eliminada = eliminada;
     }
@@ -156,16 +157,16 @@ public class CuentaBancaria implements Serializable {
      * @return Clave de acceso de la cuenta bancaria.
      */
     public String getClave() {
-        return clave;
+        return clabe;
     }
 
     /**
      * Establece la clave de acceso de la cuenta bancaria.
      * 
-     * @param clave Clave de acceso de la cuenta bancaria.
+     * @param clabe Clabe de acceso de la cuenta bancaria.
      */
-    public void setClave(String clave) {
-        this.clave = clave;
+    public void setClave(String clabe) {
+        this.clabe = clabe;
     }
 
     /**

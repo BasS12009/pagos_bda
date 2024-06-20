@@ -8,6 +8,8 @@ import entidades.Abono;
 import entidades.CuentaBancaria;
 import entidades.Estatus;
 import entidades.Pago;
+import entidades.PagosEstatus;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
  */
 public class PagoDTO {
     private Long id;
-    private Double monto;
+    private BigDecimal monto;
     private LocalDateTime fechaHora;
     private String comprobante;
     private TiposDTO tipo;
@@ -32,7 +34,7 @@ public class PagoDTO {
     public PagoDTO() {
     }
 
-    public PagoDTO(Long id, Double monto, LocalDateTime fechaHora, String comprobante, TiposDTO tipo, BeneficiarioDTO beneficiario, List<AbonoDTO> abonos, List<EstatusDTO> estatus, List<CuentaBancariaDTO> cuentas) {
+    public PagoDTO(Long id, BigDecimal monto, LocalDateTime fechaHora, String comprobante, TiposDTO tipo, BeneficiarioDTO beneficiario, List<AbonoDTO> abonos, List<EstatusDTO> estatus, List<CuentaBancariaDTO> cuentas) {
         this.id = id;
         this.monto = monto;
         this.fechaHora = fechaHora;
@@ -52,11 +54,11 @@ public class PagoDTO {
         this.id = id;
     }
 
-    public Double getMonto() {
+    public BigDecimal getMonto() {
         return monto;
     }
 
-    public void setMonto(Double monto) {
+    public void setMonto(BigDecimal monto) {
         this.monto = monto;
     }
 
@@ -116,6 +118,12 @@ public class PagoDTO {
         this.cuentas = cuentas;
     }
 
+    /**
+     * Convierte un objeto Pago en un PagoDTO.
+     * 
+     * @param pago El Pago a convertir.
+     * @return El PagoDTO resultante.
+     */
     public static PagoDTO convertir(Pago pago) {
         PagoDTO pagoDTO = new PagoDTO();
         pagoDTO.setId(pago.getId());
@@ -127,7 +135,8 @@ public class PagoDTO {
         pagoDTO.setAbonos(pago.getAbonos().stream()
                 .map(AbonoDTO::convertir)
                 .collect(Collectors.toList()));
-        pagoDTO.setEstatus(pago.getEstatus().stream()
+        pagoDTO.setEstatus(pago.getPagosEstatus().stream()
+                .map(PagosEstatus::getEstatus)
                 .map(EstatusDTO::convertir)
                 .collect(Collectors.toList()));
 
@@ -138,9 +147,15 @@ public class PagoDTO {
             pagoDTO.setCuentas(Arrays.asList(cuentaBancariaDTO));
         }
 
-            return pagoDTO;
-        }
-    
+        return pagoDTO;
+    }
+
+    /**
+     * Convierte un PagoDTO en un objeto Pago.
+     * 
+     * @param pagoDTO El PagoDTO a convertir.
+     * @return El Pago resultante.
+     */
     public static Pago convertir(PagoDTO pagoDTO) {
         Pago pago = new Pago();
         pago.setId(pagoDTO.getId());
@@ -158,10 +173,16 @@ public class PagoDTO {
         }
 
         if (pagoDTO.getEstatus() != null) {
-            List<Estatus> estatus = pagoDTO.getEstatus().stream()
+            List<PagosEstatus> pagosEstatus = pagoDTO.getEstatus().stream()
                     .map(EstatusDTO::convertir)
+                    .map(pe -> {
+                        PagosEstatus pagoEstatus = new PagosEstatus();
+                        pagoEstatus.setEstatus(pe);
+                        pagoEstatus.setPago(pago);
+                        return pagoEstatus;
+                    })
                     .collect(Collectors.toList());
-            pago.setEstatus(estatus);
+            pago.setPagosEstatus(pagosEstatus);
         }
 
         if (pagoDTO.getCuentas() != null && !pagoDTO.getCuentas().isEmpty()) {
@@ -171,6 +192,4 @@ public class PagoDTO {
 
         return pago;
     }
-
-    
 }

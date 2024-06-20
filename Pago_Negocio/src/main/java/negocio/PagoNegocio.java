@@ -15,7 +15,9 @@ import entidades.Abono;
 import entidades.CuentaBancaria;
 import entidades.Estatus;
 import entidades.Pago;
+import entidades.PagosEstatus;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -126,10 +128,9 @@ public class PagoNegocio implements IPagoNegocio {
         }
 
         if (pagoDTO.getEstatus() != null) {
-            List<Estatus> estatus = pagoDTO.getEstatus().stream()
-                                        .map(EstatusDTO::convertir)
-                                        .collect(Collectors.toList());
-            pago.setEstatus(estatus);
+            List<PagosEstatus> estatus = (List<PagosEstatus>) pagoDTO.getEstatus().stream()
+                                        .map(EstatusDTO::convertir);
+            pago.setPagosEstatus(estatus);
         }
 
         pago.setTipo(TiposDTO.convertir(pagoDTO.getTipo()));
@@ -158,34 +159,37 @@ public class PagoNegocio implements IPagoNegocio {
         pagoDTO.setFechaHora(pago.getFechaHora());
         pagoDTO.setComprobante(pago.getComprobante());
 
+        // Convertir abonos si existen
         if (pago.getAbonos() != null) {
-            List<AbonoDTO> abonosDTO = new ArrayList<>();
-            for (Abono abono : pago.getAbonos()) {
-                abonosDTO.add(AbonoDTO.convertir(abono));
-            }
+            List<AbonoDTO> abonosDTO = pago.getAbonos().stream()
+                                        .map(AbonoDTO::convertir)
+                                        .collect(Collectors.toList());
             pagoDTO.setAbonos(abonosDTO);
         }
 
-        if (pago.getEstatus() != null) {
-            List<EstatusDTO> estatusDTO = new ArrayList<>();
-            for (Estatus estatus : pago.getEstatus()) {
-                estatusDTO.add(EstatusDTO.convertir(estatus));
-            }
+        // Convertir estatus si existen
+        if (pago.getPagosEstatus() != null) {
+            List<EstatusDTO> estatusDTO = pago.getPagosEstatus().stream()
+                                             .map(PagosEstatus::getEstatus)
+                                             .map(EstatusDTO::convertir)
+                                             .collect(Collectors.toList());
             pagoDTO.setEstatus(estatusDTO);
         }
 
+        // Convertir tipo
         pagoDTO.setTipo(TiposDTO.convertir(pago.getTipo()));
 
+        // Convertir beneficiario
         pagoDTO.setBeneficiario(BeneficiarioDTO.convertir(pago.getBeneficiario()));
 
+        // Convertir cuentas bancarias si existe una
         if (pago.getCuentaBancaria() != null) {
-            List<CuentaBancariaDTO> cuentasDTO = new ArrayList<>();
-            cuentasDTO.add(CuentaBancariaDTO.convertir(pago.getCuentaBancaria()));
-            pagoDTO.setCuentas(cuentasDTO);
-        }
-
+            CuentaBancariaDTO cuentaDTO = CuentaBancariaDTO.convertir(pago.getCuentaBancaria());
+            pagoDTO.setCuentas(Collections.singletonList(cuentaDTO));   
+    }
         return pagoDTO;
     }
+    
 
     /**
      * Convierte una lista de objetos Pago a una lista de objetos PagoDTO.
