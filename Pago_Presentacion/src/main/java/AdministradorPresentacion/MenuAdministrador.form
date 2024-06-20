@@ -14,6 +14,9 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="btnInicio">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="b2" green="72" red="74" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Inicio"/>
           </Properties>
           <SubComponents>
@@ -55,6 +58,9 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="ReportePago">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="b2" green="72" red="74" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Reporte Pago"/>
           </Properties>
           <SubComponents>
@@ -69,11 +75,17 @@
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Ver Reporte de Pago"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReportePagoActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="AdministracionBeneficiarios">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="b2" green="72" red="74" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Administracion Beneficiarios"/>
           </Properties>
           <SubComponents>
@@ -93,6 +105,9 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="PagadoRechazar">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="b2" green="72" red="74" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Pagado/Rechazar"/>
           </Properties>
           <SubComponents>
@@ -136,7 +151,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="0" pref="960" max="32767" attributes="0"/>
+          <Component id="jPanel1" alignment="0" pref="959" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -156,6 +171,21 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="false"/>
       </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Serif" size="48" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Bienvenid(@) Administrador"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="210" y="110" width="-1" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+      </SubComponents>
     </Container>
   </SubComponents>
 </Form>

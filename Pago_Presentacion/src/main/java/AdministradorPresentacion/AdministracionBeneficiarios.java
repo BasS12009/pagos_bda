@@ -29,11 +29,140 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        Inicio = new javax.swing.JMenu();
+        btnInicio = new javax.swing.JRadioButtonMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        btnAprobacionRechazar = new javax.swing.JRadioButtonMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        btnReportePago = new javax.swing.JRadioButtonMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        btnAdministracionBeneficiarios = new javax.swing.JRadioButtonMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        btnPagadoRechazar = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(175, 176, 212));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Administracion de Beneficiarios");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
+
+        jButton1.setBackground(new java.awt.Color(116, 114, 178));
+        jButton1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("+Crear Beneficiario");
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, -1, -1));
+
+        jButton2.setBackground(new java.awt.Color(116, 114, 178));
+        jButton2.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("+Modificar");
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 130, -1, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Nombre de Beneficiario", "Ver Informacion", "Eliminar"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, -1, 270));
+
+        jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
+        jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
+
+        Inicio.setBackground(new java.awt.Color(116, 114, 178));
+        Inicio.setForeground(new java.awt.Color(116, 114, 178));
+        Inicio.setText("Inicio");
+
+        btnInicio.setForeground(new java.awt.Color(116, 114, 178));
+        btnInicio.setSelected(true);
+        btnInicio.setText("Inicio");
+        btnInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInicioActionPerformed(evt);
+            }
+        });
+        Inicio.add(btnInicio);
+
+        jMenuBar1.add(Inicio);
+
+        jMenu2.setForeground(new java.awt.Color(116, 114, 178));
+        jMenu2.setText("Aprobacion/Rechazar");
+
+        btnAprobacionRechazar.setForeground(new java.awt.Color(116, 114, 178));
+        btnAprobacionRechazar.setSelected(true);
+        btnAprobacionRechazar.setText("Ver Aprobacion/Rechazar");
+        btnAprobacionRechazar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAprobacionRechazarActionPerformed(evt);
+            }
+        });
+        jMenu2.add(btnAprobacionRechazar);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setForeground(new java.awt.Color(116, 114, 178));
+        jMenu3.setText("Reporte Pago");
+
+        btnReportePago.setForeground(new java.awt.Color(116, 114, 178));
+        btnReportePago.setSelected(true);
+        btnReportePago.setText("Ver Reporte de Pago");
+        btnReportePago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportePagoActionPerformed(evt);
+            }
+        });
+        jMenu3.add(btnReportePago);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setForeground(new java.awt.Color(116, 114, 178));
+        jMenu4.setText("Administracion Beneficiarios");
+
+        btnAdministracionBeneficiarios.setForeground(new java.awt.Color(116, 114, 178));
+        btnAdministracionBeneficiarios.setSelected(true);
+        btnAdministracionBeneficiarios.setText("Ver Administracion de Beneficiarios");
+        btnAdministracionBeneficiarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdministracionBeneficiariosActionPerformed(evt);
+            }
+        });
+        jMenu4.add(btnAdministracionBeneficiarios);
+
+        jMenuBar1.add(jMenu4);
+
+        jMenu5.setForeground(new java.awt.Color(116, 114, 178));
+        jMenu5.setText("Pagado/Rechazar");
+
+        btnPagadoRechazar.setForeground(new java.awt.Color(116, 114, 178));
+        btnPagadoRechazar.setSelected(true);
+        btnPagadoRechazar.setText("Ver Pagado/Rechazar");
+        btnPagadoRechazar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPagadoRechazarActionPerformed(evt);
+            }
+        });
+        jMenu5.add(btnPagadoRechazar);
+
+        jMenuBar1.add(jMenu5);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -43,11 +172,46 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
+        // TODO add your handling code here:
+        MenuAdministrador menuAdministrador = new MenuAdministrador();
+        menuAdministrador.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnInicioActionPerformed
+
+    private void btnAprobacionRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobacionRechazarActionPerformed
+        // TODO add your handling code here:
+        AprobacionRechazar aprobacionRechazar = new AprobacionRechazar();
+        aprobacionRechazar.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAprobacionRechazarActionPerformed
+
+    private void btnReportePagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportePagoActionPerformed
+        // TODO add your handling code here:
+         ReportePago reportePago = new ReportePago();
+        reportePago.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnReportePagoActionPerformed
+
+    private void btnAdministracionBeneficiariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministracionBeneficiariosActionPerformed
+        // TODO add your handling code here:
+        AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios();
+        administracionBeneficiarios.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAdministracionBeneficiariosActionPerformed
+
+    private void btnPagadoRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagadoRechazarActionPerformed
+        // TODO add your handling code here:
+         PagadoRechazar pagadoRechazar = new PagadoRechazar();
+        pagadoRechazar.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnPagadoRechazarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -85,6 +249,22 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Inicio;
+    private javax.swing.JRadioButtonMenuItem btnAdministracionBeneficiarios;
+    private javax.swing.JRadioButtonMenuItem btnAprobacionRechazar;
+    private javax.swing.JRadioButtonMenuItem btnInicio;
+    private javax.swing.JRadioButtonMenuItem btnPagadoRechazar;
+    private javax.swing.JRadioButtonMenuItem btnReportePago;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

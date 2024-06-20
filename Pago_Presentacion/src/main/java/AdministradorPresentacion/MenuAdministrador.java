@@ -29,6 +29,7 @@ public class MenuAdministrador extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnInicio = new javax.swing.JMenu();
         btnVerInicio = new javax.swing.JRadioButtonMenuItem();
@@ -46,9 +47,14 @@ public class MenuAdministrador extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(175, 176, 212));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Serif", 0, 48)); // NOI18N
+        jLabel1.setText("Bienvenid(@) Administrador");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, -1, -1));
+
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
 
+        btnInicio.setForeground(new java.awt.Color(116, 114, 178));
         btnInicio.setText("Inicio");
 
         btnVerInicio.setForeground(new java.awt.Color(116, 114, 178));
@@ -78,16 +84,23 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        ReportePago.setForeground(new java.awt.Color(116, 114, 178));
         ReportePago.setText("Reporte Pago");
 
         btnReportePago.setBackground(new java.awt.Color(116, 114, 178));
         btnReportePago.setForeground(new java.awt.Color(116, 114, 178));
         btnReportePago.setSelected(true);
         btnReportePago.setText("Ver Reporte de Pago");
+        btnReportePago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportePagoActionPerformed(evt);
+            }
+        });
         ReportePago.add(btnReportePago);
 
         jMenuBar1.add(ReportePago);
 
+        AdministracionBeneficiarios.setForeground(new java.awt.Color(116, 114, 178));
         AdministracionBeneficiarios.setText("Administracion Beneficiarios");
 
         btnAdministracionBeneficiarios.setForeground(new java.awt.Color(116, 114, 178));
@@ -102,6 +115,7 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
         jMenuBar1.add(AdministracionBeneficiarios);
 
+        PagadoRechazar.setForeground(new java.awt.Color(116, 114, 178));
         PagadoRechazar.setText("Pagado/Rechazar");
 
         btnPagadoRechazar.setForeground(new java.awt.Color(116, 114, 178));
@@ -122,7 +136,7 @@ public class MenuAdministrador extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 959, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +169,17 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
     private void btnPagadoRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagadoRechazarActionPerformed
         // TODO add your handling code here:
+        PagadoRechazar pagadoRechazar = new PagadoRechazar();
+        pagadoRechazar.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnPagadoRechazarActionPerformed
+
+    private void btnReportePagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportePagoActionPerformed
+        // TODO add your handling code here:
+        ReportePago reportePago = new ReportePago();
+        reportePago.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnReportePagoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -202,6 +226,7 @@ public class MenuAdministrador extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem btnPagadoRechazar;
     private javax.swing.JRadioButtonMenuItem btnReportePago;
     private javax.swing.JRadioButtonMenuItem btnVerInicio;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
