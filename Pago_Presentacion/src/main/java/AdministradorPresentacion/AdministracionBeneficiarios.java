@@ -30,8 +30,8 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCrearBeneficiario = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -56,32 +56,33 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         jLabel1.setText("Administracion de Beneficiarios");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(116, 114, 178));
-        jButton1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("+Crear Beneficiario");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, -1, -1));
+        btnCrearBeneficiario.setBackground(new java.awt.Color(116, 114, 178));
+        btnCrearBeneficiario.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnCrearBeneficiario.setForeground(new java.awt.Color(255, 255, 255));
+        btnCrearBeneficiario.setText("+Crear Beneficiario");
+        jPanel1.add(btnCrearBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, -1, -1));
 
-        jButton2.setBackground(new java.awt.Color(116, 114, 178));
-        jButton2.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("+Modificar");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 130, -1, -1));
+        btnModificar.setBackground(new java.awt.Color(116, 114, 178));
+        btnModificar.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnModificar.setForeground(new java.awt.Color(255, 255, 255));
+        btnModificar.setText("+Modificar");
+        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 130, -1, -1));
 
+        jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nombre de Beneficiario", "Ver Informacion", "Eliminar"
+                "Folio", "Nombre Beneficiario", "Fecha", "Hora", "Estatus", "Monto", "Eliminar"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, -1, 270));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 870, 270));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -252,11 +253,11 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
     private javax.swing.JMenu Inicio;
     private javax.swing.JRadioButtonMenuItem btnAdministracionBeneficiarios;
     private javax.swing.JRadioButtonMenuItem btnAprobacionRechazar;
+    private javax.swing.JButton btnCrearBeneficiario;
     private javax.swing.JRadioButtonMenuItem btnInicio;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JRadioButtonMenuItem btnPagadoRechazar;
     private javax.swing.JRadioButtonMenuItem btnReportePago;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

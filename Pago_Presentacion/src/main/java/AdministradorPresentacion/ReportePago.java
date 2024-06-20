@@ -15,6 +15,8 @@ public class ReportePago extends javax.swing.JFrame {
      */
     public ReportePago() {
         initComponents();
+        this.setLocationRelativeTo(this);
+        this.setSize(960,610);
     }
 
     /**
@@ -28,6 +30,23 @@ public class ReportePago extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel3 = new javax.swing.JLabel();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jLabel4 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBox3 = new javax.swing.JCheckBox();
+        jCheckBox4 = new javax.swing.JCheckBox();
+        jCheckBox5 = new javax.swing.JCheckBox();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblReportePagos = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         Inicio = new javax.swing.JMenu();
         btnInicio = new javax.swing.JRadioButtonMenuItem();
@@ -49,6 +68,89 @@ public class ReportePago extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Reporte de Pagos");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, -1, -1));
+
+        jPanel2.setBackground(new java.awt.Color(228, 222, 235));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(116, 114, 178));
+        jLabel2.setText("Rango de fechas:");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, -1, -1));
+        jPanel2.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 110, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(116, 114, 178));
+        jLabel3.setText("a");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, -1, -1));
+        jPanel2.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 40, 120, -1));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(116, 114, 178));
+        jLabel4.setText("Estatus:");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, -1, -1));
+
+        jCheckBox1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        jCheckBox1.setForeground(new java.awt.Color(116, 114, 178));
+        jCheckBox1.setText("Autorizado");
+        jPanel2.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, -1, -1));
+
+        jCheckBox2.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        jCheckBox2.setForeground(new java.awt.Color(116, 114, 178));
+        jCheckBox2.setText("Creado");
+        jPanel2.add(jCheckBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, -1, -1));
+
+        jCheckBox3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jCheckBox3.setForeground(new java.awt.Color(116, 114, 178));
+        jCheckBox3.setText("Modificado");
+        jPanel2.add(jCheckBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 70, -1, -1));
+
+        jCheckBox4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jCheckBox4.setForeground(new java.awt.Color(116, 114, 178));
+        jCheckBox4.setText("Rechazado");
+        jPanel2.add(jCheckBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, -1, -1));
+
+        jCheckBox5.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        jCheckBox5.setForeground(new java.awt.Color(116, 114, 178));
+        jCheckBox5.setText("Pagado");
+        jPanel2.add(jCheckBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 50, -1, -1));
+
+        jComboBox1.setBackground(new java.awt.Color(116, 114, 178));
+        jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Reembolso", " " }));
+        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 30, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(116, 114, 178));
+        jLabel5.setText("Tipo:");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 10, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(116, 114, 178));
+        jLabel6.setText("Abonos Terminados:");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 10, -1, -1));
+
+        jComboBox2.setBackground(new java.awt.Color(116, 114, 178));
+        jComboBox2.setForeground(new java.awt.Color(255, 255, 255));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ambos", "Si", "No", " " }));
+        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 30, 120, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 900, 120));
+
+        tblReportePagos.setBackground(new java.awt.Color(228, 222, 235));
+        tblReportePagos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Tipo", "Monto", "Beneficiario", "Abonos terminados", "Cuenta deposito", "Estatus"
+            }
+        ));
+        jScrollPane1.setViewportView(tblReportePagos);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, 710, 220));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -222,12 +324,29 @@ public class ReportePago extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem btnInicio;
     private javax.swing.JRadioButtonMenuItem btnPagadoRechazar;
     private javax.swing.JRadioButtonMenuItem btnReportePago;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox jCheckBox5;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblReportePagos;
     // End of variables declaration//GEN-END:variables
 }
