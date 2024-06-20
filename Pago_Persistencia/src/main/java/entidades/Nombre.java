@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Nombre implements Serializable {
 
-        @Column(nullable = false, length = 50)
+    @Column(name="nombres", nullable = false, length = 50)
     private String nombres;
 
     @Column(name = "apellido_paterno", nullable = false, length = 50)

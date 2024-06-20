@@ -38,16 +38,17 @@ public class Beneficiario implements Serializable {
     @Column(name = "clave_contrato", nullable = false, length=10)
     private String claveContrato;
     
-    @Column(nullable = false)
+    @Column(name="saldo",nullable = false)
     private Double saldo;
     
     @Embedded
+    @Column(name="nombre")
     private Nombre nombre;
     
-    @Column(nullable = false, length=10)
+    @Column(name="usuario",nullable = false, length=10)
     private String usuario;
     
-    @Column(nullable = false, length=12)
+    @Column(name="contraseña",nullable = false, length=12)
     private String contraseña;
     
     @OneToMany(mappedBy = "beneficiario")

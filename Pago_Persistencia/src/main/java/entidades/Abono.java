@@ -33,7 +33,7 @@ public class Abono implements Serializable {
     @Column(name = "fecha_hora", nullable = false)
     private LocalDateTime fechaHora;
 
-    @Column(nullable = false)
+    @Column(name="monto",nullable = false)
     private Double monto;
 
     @ManyToOne
