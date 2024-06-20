@@ -4,7 +4,11 @@
  */
 package DTOs;
 
+import entidades.Pago;
+import entidades.Tipos;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -58,5 +62,37 @@ public class TiposDTO {
         this.pagos = pagos;
     }
     
+    public static TiposDTO convertir(Tipos tipos) {
+        TiposDTO tiposDTO = new TiposDTO();
+        tiposDTO.setId(tipos.getId());
+        tiposDTO.setNombre(tipos.getNombre());
+        tiposDTO.setNumeroParcialidades(tipos.getNumeroParcialidades());
+
+        List<PagoDTO> pagosDTO = tipos.getPagos().stream()
+                .map(PagoDTO::convertir) 
+                .collect(Collectors.toList());
+        tiposDTO.setPagos(pagosDTO);
+
+        return tiposDTO;
+    }
     
+    public static Tipos convertir(TiposDTO tiposDTO) {
+        if (tiposDTO == null) {
+            return null;
+        }
+
+        Tipos tipos = new Tipos();
+        tipos.setId(tiposDTO.getId());
+        tipos.setNombre(tiposDTO.getNombre());
+        tipos.setNumeroParcialidades(tiposDTO.getNumeroParcialidades());
+
+        // Convertir la lista de PagoDTO a lista de Pago
+        List<Pago> pagos = new ArrayList<>();
+        for (PagoDTO pagoDTO : tiposDTO.getPagos()) {
+            pagos.add(PagoDTO.convertir(pagoDTO));
+        }
+        tipos.setPagos(pagos);
+
+        return tipos;
+    }
 }

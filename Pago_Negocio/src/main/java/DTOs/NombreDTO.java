@@ -4,6 +4,8 @@
  */
 package DTOs;
 
+import entidades.Nombre;
+
 /**
  *
  * @author diana
@@ -46,5 +48,24 @@ public class NombreDTO {
         this.apellidoMaterno = apellidoMaterno;
     }
     
-    
+     public static NombreDTO convertir(Nombre nombre) {
+        if (nombre == null) {
+            return null;
+        }
+        
+        return new NombreDTO(nombre.getNombres(), nombre.getApellidoPaterno(), nombre.getApellidoMaterno());
+    }
+     
+     public static Nombre convertir(NombreDTO nombreDTO) {
+        if (nombreDTO == null) {
+            return null;
+        }
+
+        Nombre nombre = new Nombre();
+        nombre.setNombres(nombreDTO.getNombres());
+        nombre.setApellidoPaterno(nombreDTO.getApellidoPaterno());
+        nombre.setApellidoMaterno(nombreDTO.getApellidoMaterno());
+
+        return nombre;
+    }
 }
