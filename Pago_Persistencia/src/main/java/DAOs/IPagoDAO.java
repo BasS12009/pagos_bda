@@ -58,5 +58,13 @@ public interface IPagoDAO {
      * @return Lista de pagos asociados al beneficiario.
      */
     public List<Pago> obtenerPagosPorBeneficiario(Long idBeneficiario);
+    
+    /**
+    * Retorna una lista con todos los pagos asociados a una clave de contrato específica.
+    *
+    * @param claveContrato La clave de contrato cuyos pagos se desean obtener.
+    * @return Lista de objetos Pago asociados a la clave de contrato.
+    */
+    public List<Pago> obtenerPagosPorClaveContrato(String claveContrato);
 }
 

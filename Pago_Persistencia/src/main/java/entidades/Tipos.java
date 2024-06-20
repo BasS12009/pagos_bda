@@ -36,12 +36,13 @@ public class Tipos implements Serializable{
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
     
     /**
      * Nombre del tipo de pago.
      */
-    @Column(nullable = false, length = 50)
+    @Column(name="nombre", nullable = false, length = 25)
     private String nombre;
     
     /**

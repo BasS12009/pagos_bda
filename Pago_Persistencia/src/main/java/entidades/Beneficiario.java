@@ -32,9 +32,10 @@ public class Beneficiario implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
     
-    @Column(name = "clave_contrato", nullable = false)
+    @Column(name = "clave_contrato", nullable = false, length=10)
     private String claveContrato;
     
     @Column(nullable = false)
@@ -43,10 +44,10 @@ public class Beneficiario implements Serializable {
     @Embedded
     private Nombre nombre;
     
-    @Column(nullable = false)
+    @Column(nullable = false, length=10)
     private String usuario;
     
-    @Column(nullable = false)
+    @Column(nullable = false, length=12)
     private String contraseña;
     
     @OneToMany(mappedBy = "beneficiario")

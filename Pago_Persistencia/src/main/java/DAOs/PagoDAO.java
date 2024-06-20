@@ -117,6 +117,20 @@ public class PagoDAO implements IPagoDAO {
     }
     
     /**
+    * Retorna una lista con todos los pagos asociados a una clave de contrato específica.
+    *
+    * @param claveContrato La clave de contrato cuyos pagos se desean obtener.
+    * @return Lista de objetos Pago asociados a la clave de contrato.
+    */
+   @Override
+   public List<Pago> obtenerPagosPorClaveContrato(String claveContrato) {
+       TypedQuery<Pago> query = entityManager.createQuery(
+               "SELECT p FROM Pago p WHERE p.beneficiario.claveContrato = :claveContrato", Pago.class);
+       query.setParameter("claveContrato", claveContrato);
+       return query.getResultList();
+   }
+    
+    /**
      * Cierra la conexión del EntityManager y el EntityManagerFactory.
      * Es importante llamar a este método al finalizar las operaciones con la instancia de PagoDAO.
      */

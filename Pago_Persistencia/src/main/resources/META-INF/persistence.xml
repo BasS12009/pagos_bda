@@ -9,6 +9,7 @@
     <class>entidades.CuentaBancaria</class>
     <class>entidades.Abono</class>
     <class>entidades.Estatus</class>
+    <class>entidades.pagos_estatus</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://SG-Cinepolis-equipo-1-8696-mysql-master.servers.mongodirector.com:3306/proyecto2?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="sgroot"/>

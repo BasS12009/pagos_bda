@@ -6,6 +6,7 @@ package DTOs;
 
 import entidades.Estatus;
 import entidades.Pago;
+import entidades.PagosEstatus;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,14 +52,28 @@ public class EstatusDTO {
         this.pagos = pagos;
     }
     
+    /**
+     * Convierte un objeto Estatus en un EstatusDTO.
+     * 
+     * @param estatus El Estatus a convertir.
+     * @return El EstatusDTO resultante.
+     */
     public static EstatusDTO convertir(Estatus estatus) {
         List<PagoDTO> pagosDTO = new ArrayList<>();
-        for (Pago pago : estatus.getPagos()) {
-            pagosDTO.add(PagoDTO.convertir(pago));
+        if (estatus.getPagosEstatus() != null) {
+            for (PagosEstatus pagoEstatus : estatus.getPagosEstatus()) {
+                pagosDTO.add(PagoDTO.convertir(pagoEstatus.getPago()));
+            }
         }
         return new EstatusDTO(estatus.getId(), estatus.getNombre(), pagosDTO);
     }
     
+    /**
+     * Convierte un EstatusDTO en un objeto Estatus.
+     * 
+     * @param estatusDTO El EstatusDTO a convertir.
+     * @return El Estatus resultante.
+     */
     public static Estatus convertir(EstatusDTO estatusDTO) {
         if (estatusDTO == null) {
             return null;
@@ -68,14 +83,17 @@ public class EstatusDTO {
         estatus.setId(estatusDTO.getId());
         estatus.setNombre(estatusDTO.getNombre());
 
-        // Convertir la lista de PagoDTO a lista de Pago
-        List<Pago> pagos = new ArrayList<>();
-        for (PagoDTO pagoDTO : estatusDTO.getPagos()) {
-            pagos.add(PagoDTO.convertir(pagoDTO));
+        List<PagosEstatus> pagosEstatus = new ArrayList<>();
+        if (estatusDTO.getPagos() != null) {
+            for (PagoDTO pagoDTO : estatusDTO.getPagos()) {
+                PagosEstatus pagoEstatus = new PagosEstatus();
+                pagoEstatus.setPago(PagoDTO.convertir(pagoDTO));
+                pagoEstatus.setEstatus(estatus);
+                pagosEstatus.add(pagoEstatus);
+            }
         }
-        estatus.setPagos(pagos);
+        estatus.setPagosEstatus(pagosEstatus);
 
         return estatus;
     }
-    
 }

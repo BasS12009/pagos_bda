@@ -6,12 +6,14 @@ package entidades;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -24,15 +26,20 @@ import javax.persistence.Table;
 @Table(name = "estatus")
 public class Estatus implements Serializable {
 
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
-    @Column(nullable = false, length = 50)
+    
+    @Column(name="nombre",nullable = false, length = 50)
     private String nombre;
 
-    @ManyToMany(mappedBy = "estatus")
-    private List<Pago> pagos;
+    @OneToMany(mappedBy = "estatus", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PagosEstatus> pagosEstatus;
+    
+    
     
     /**
      * Constructor vacío requerido por JPA.
@@ -117,21 +124,24 @@ public class Estatus implements Serializable {
         this.nombre = nombre;
     }
 
+    
     /**
      * Obtiene la lista de pagos asociados a este estatus.
      * 
-     * @return Lista de pagos asociados.
+     * @return Lista de pagos asociados a este estatus.
      */
-    public List<Pago> getPagos() {
-        return pagos;
+    public List<PagosEstatus> getPagosEstatus() {
+        return pagosEstatus;
     }
 
     /**
      * Establece la lista de pagos asociados a este estatus.
      * 
-     * @param pagos Lista de pagos asociados.
+     * @param pagosEstatus Lista de pagos asociados a este estatus.
      */
-    public void setPagos(List<Pago> pagos) {
-        this.pagos = pagos;
+    public void setPagosEstatus(List<PagosEstatus> pagosEstatus) {
+        this.pagosEstatus = pagosEstatus;
     }
+
+
 }
