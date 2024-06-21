@@ -32,8 +32,8 @@ public class logIn extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         contraseña = new javax.swing.JTextField();
-        btnBeneficiario = new javax.swing.JButton();
-        btnAdministrador = new javax.swing.JButton();
+        iniciarSesionBeneficiario = new javax.swing.JButton();
+        iniciarSesionAdmin = new javax.swing.JButton();
         clave1 = new javax.swing.JTextField();
         clave2 = new javax.swing.JTextField();
         clave3 = new javax.swing.JTextField();
@@ -69,27 +69,27 @@ public class logIn extends javax.swing.JFrame {
         contraseña.setBackground(new java.awt.Color(228, 222, 235));
         jPanel1.add(contraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 260, 30));
 
-        btnBeneficiario.setBackground(new java.awt.Color(116, 114, 178));
-        btnBeneficiario.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
-        btnBeneficiario.setForeground(new java.awt.Color(255, 255, 255));
-        btnBeneficiario.setText("Iniciar Sesion Beneficiario");
-        btnBeneficiario.addActionListener(new java.awt.event.ActionListener() {
+        iniciarSesionBeneficiario.setBackground(new java.awt.Color(116, 114, 178));
+        iniciarSesionBeneficiario.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        iniciarSesionBeneficiario.setForeground(new java.awt.Color(255, 255, 255));
+        iniciarSesionBeneficiario.setText("Iniciar Sesion Beneficiario");
+        iniciarSesionBeneficiario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBeneficiarioActionPerformed(evt);
+                iniciarSesionBeneficiarioActionPerformed(evt);
             }
         });
-        jPanel1.add(btnBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 470, 210, 40));
+        jPanel1.add(iniciarSesionBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 470, 210, 40));
 
-        btnAdministrador.setBackground(new java.awt.Color(116, 114, 178));
-        btnAdministrador.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
-        btnAdministrador.setForeground(new java.awt.Color(255, 255, 255));
-        btnAdministrador.setText("Iniciar Sesion Administrador");
-        btnAdministrador.addActionListener(new java.awt.event.ActionListener() {
+        iniciarSesionAdmin.setBackground(new java.awt.Color(116, 114, 178));
+        iniciarSesionAdmin.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        iniciarSesionAdmin.setForeground(new java.awt.Color(255, 255, 255));
+        iniciarSesionAdmin.setText("Iniciar Sesion Administrador");
+        iniciarSesionAdmin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdministradorActionPerformed(evt);
+                iniciarSesionAdminActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAdministrador, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 470, 210, 40));
+        jPanel1.add(iniciarSesionAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 470, 210, 40));
 
         clave1.setBackground(new java.awt.Color(228, 222, 235));
         clave1.addActionListener(new java.awt.event.ActionListener() {
@@ -133,13 +133,13 @@ public class logIn extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_claveActionPerformed
 
-    private void btnBeneficiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBeneficiarioActionPerformed
+    private void iniciarSesionBeneficiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionBeneficiarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnBeneficiarioActionPerformed
+    }//GEN-LAST:event_iniciarSesionBeneficiarioActionPerformed
 
-    private void btnAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministradorActionPerformed
+    private void iniciarSesionAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionAdminActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAdministradorActionPerformed
+    }//GEN-LAST:event_iniciarSesionAdminActionPerformed
 
     private void clave1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clave1ActionPerformed
         // TODO add your handling code here:
@@ -189,13 +189,13 @@ public class logIn extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdministrador;
-    private javax.swing.JButton btnBeneficiario;
     private javax.swing.JTextField clave;
     private javax.swing.JTextField clave1;
     private javax.swing.JTextField clave2;
     private javax.swing.JTextField clave3;
     private javax.swing.JTextField contraseña;
+    private javax.swing.JButton iniciarSesionAdmin;
+    private javax.swing.JButton iniciarSesionBeneficiario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
