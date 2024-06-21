@@ -94,7 +94,7 @@ public class PagadoRechazar extends javax.swing.JFrame {
         tblPagadoRechazado.setBackground(new java.awt.Color(228, 222, 235));
         tblPagadoRechazado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
+                {"Abono", "$2,500", "Romina", "", null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null}

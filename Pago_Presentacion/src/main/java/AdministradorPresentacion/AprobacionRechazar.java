@@ -27,20 +27,9 @@ public class AprobacionRechazar extends javax.swing.JFrame {
     }
     
     private void cargarConfiguracionInicialTabla() { 
-        
-        ActionListener onDetallesClickListener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-               
-                
-            }               
-        };
-            
+           
         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
-        modeloColumnas.getColumn(1).setCellRenderer(new JButtonRenderer("Detalles"));
-        modeloColumnas.getColumn(1).setCellEditor(new JButtonCellEditor("Detalles",onDetallesClickListener));
+
         
         ActionListener onAprobarClickListener = new ActionListener() {
 
@@ -52,8 +41,8 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             }               
         };
 
-        modeloColumnas.getColumn(2).setCellRenderer(new JButtonRenderer("Aprobar"));
-        modeloColumnas.getColumn(2).setCellEditor(new JButtonCellEditor("Aprobar",onAprobarClickListener));       
+        modeloColumnas.getColumn(3).setCellRenderer(new JButtonRenderer("Aprobar"));
+        modeloColumnas.getColumn(3).setCellEditor(new JButtonCellEditor("Aprobar",onAprobarClickListener));       
         
         ActionListener onRechazarClickListener = new ActionListener() {
 
@@ -65,8 +54,8 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             }               
         };
 
-        modeloColumnas.getColumn(3).setCellRenderer(new JButtonRenderer("Rechazar"));
-        modeloColumnas.getColumn(3).setCellEditor(new JButtonCellEditor("Rechazar",onRechazarClickListener));            
+        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Rechazar"));
+        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Rechazar",onRechazarClickListener));            
     }       
 
     /**
@@ -107,13 +96,13 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {"1", "$2.500", "Enviado", null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Info Pago", "Detalles", "Aprobar", "Rechazar"
+                "Cuenta", "Monto", "Estado", "Aprobar", "Rechazar"
             }
         ));
         jScrollPane1.setViewportView(jTable1);

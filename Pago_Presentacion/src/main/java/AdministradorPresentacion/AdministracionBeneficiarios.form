@@ -229,12 +229,42 @@
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="8" rowCount="4">
-                    <Column editable="true" title="Folio" type="java.lang.Object"/>
-                    <Column editable="true" title="Nombre Beneficiario" type="java.lang.Object"/>
-                    <Column editable="true" title="Fecha" type="java.lang.Object"/>
-                    <Column editable="true" title="Hora" type="java.lang.Object"/>
-                    <Column editable="true" title="Estatus" type="java.lang.Object"/>
-                    <Column editable="true" title="Monto" type="java.lang.Object"/>
+                    <Column editable="true" title="Folio" type="java.lang.Object">
+                      <Data value="1"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="true" title="Nombre Beneficiario" type="java.lang.Object">
+                      <Data value="Romina"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="true" title="Fecha" type="java.lang.Object">
+                      <Data value="2024-06-21"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="true" title="Hora" type="java.lang.Object">
+                      <Data value="14:00"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="true" title="Estatus" type="java.lang.Object">
+                      <Data value="Esperando"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="true" title="Monto" type="java.lang.Object">
+                      <Data value="$5,000"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
                     <Column editable="true" title="Modificar" type="java.lang.Object"/>
                     <Column editable="true" title="Eliminar" type="java.lang.Object"/>
                   </Table>
