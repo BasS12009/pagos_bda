@@ -5,6 +5,11 @@
 package GUI;
 
 import AdministradorPresentacion.MenuAdministrador;
+import BeneficiarioPresentacion.MenuBeneficiario;
+import DTOs.BeneficiarioDTO;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import negocio.PagoNegocio;
 
 /**
  *
@@ -12,11 +17,15 @@ import AdministradorPresentacion.MenuAdministrador;
  */
 public class logIn extends javax.swing.JFrame {
 
+    PagoNegocio negocio;
+    
     /**
      * Creates new form logIn
      */
     public logIn() {
         initComponents();
+        
+        this.negocio = negocio;
     }
 
     /**
@@ -33,7 +42,7 @@ public class logIn extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        contraseña = new javax.swing.JTextField();
+        contrasena = new javax.swing.JTextField();
         iniciarSesionBeneficiario = new javax.swing.JButton();
         iniciarSesionAdmin = new javax.swing.JButton();
         clave1 = new javax.swing.JTextField();
@@ -68,8 +77,8 @@ public class logIn extends javax.swing.JFrame {
         jLabel3.setText("Contraseña:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 350, -1, -1));
 
-        contraseña.setBackground(new java.awt.Color(228, 222, 235));
-        jPanel1.add(contraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 260, 30));
+        contrasena.setBackground(new java.awt.Color(228, 222, 235));
+        jPanel1.add(contrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 260, 30));
 
         iniciarSesionBeneficiario.setBackground(new java.awt.Color(116, 114, 178));
         iniciarSesionBeneficiario.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
@@ -137,6 +146,25 @@ public class logIn extends javax.swing.JFrame {
 
     private void iniciarSesionBeneficiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionBeneficiarioActionPerformed
         // TODO add your handling code here:
+        
+        //Se setea la clave de contrato y la contraseña que se recive en el text area 
+        
+        BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
+        beneficiarioDTO.setClaveContrato(clave.getText());
+        beneficiarioDTO.setContraseña(contrasena.getText());
+        BeneficiarioDTO beneficiarioAutenticado = negocio.login(beneficiarioDTO);
+        //se valida que si es diferente de null se muestre el menu del beneficiario 
+        if (beneficiarioAutenticado != null) {
+            negocio.setId(beneficiarioAutenticado.getId());
+            MenuBeneficiario m=new MenuBeneficiario();
+            m.setVisible(true);
+            this.disable();
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+        }
+
+        
     }//GEN-LAST:event_iniciarSesionBeneficiarioActionPerformed
 
     private void iniciarSesionAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionAdminActionPerformed
@@ -198,7 +226,7 @@ public class logIn extends javax.swing.JFrame {
     private javax.swing.JTextField clave1;
     private javax.swing.JTextField clave2;
     private javax.swing.JTextField clave3;
-    private javax.swing.JTextField contraseña;
+    private javax.swing.JTextField contrasena;
     private javax.swing.JButton iniciarSesionAdmin;
     private javax.swing.JButton iniciarSesionBeneficiario;
     private javax.swing.JLabel jLabel1;
