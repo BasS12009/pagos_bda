@@ -58,12 +58,22 @@ public class MisPagos extends javax.swing.JFrame {
         btnCrearPago.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         btnCrearPago.setForeground(new java.awt.Color(255, 255, 255));
         btnCrearPago.setText("+Crear Pago");
+        btnCrearPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearPagoActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnCrearPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, -1, 30));
 
         btnModificarPago.setBackground(new java.awt.Color(116, 114, 178));
         btnModificarPago.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         btnModificarPago.setForeground(new java.awt.Color(255, 255, 255));
         btnModificarPago.setText("+Modificar Pago");
+        btnModificarPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarPagoActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnModificarPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 130, -1, 30));
 
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
@@ -188,6 +198,20 @@ public class MisPagos extends javax.swing.JFrame {
         misCuentasBancarias.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCuentasBancariasActionPerformed
+
+    private void btnCrearPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPagoActionPerformed
+        // TODO add your handling code here:
+        CrearPago crearPago = new CrearPago();
+        crearPago.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCrearPagoActionPerformed
+
+    private void btnModificarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarPagoActionPerformed
+        // TODO add your handling code here:
+        ModificarPago modificarPago = new ModificarPago();
+        modificarPago.setVisible(true);
+        this.dispose();        
+    }//GEN-LAST:event_btnModificarPagoActionPerformed
 
     /**
      * @param args the command line arguments

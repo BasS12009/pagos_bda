@@ -202,7 +202,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
 
     private void btnNuevaCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaCuentaActionPerformed
         // TODO add your handling code here:
-        NuevaCuenta nuevaCuenta = new NuevaCuenta();
+        AgregarCuenta nuevaCuenta = new AgregarCuenta();
         nuevaCuenta.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnNuevaCuentaActionPerformed
@@ -211,7 +211,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         // TODO add your handling code here:
         ModificarCuenta modificarCuenta = new ModificarCuenta();
         modificarCuenta.setVisible(true);
-        this.dispose();
+        this.dispose(); 
     }//GEN-LAST:event_btnModificarCuentaActionPerformed
 
     /**

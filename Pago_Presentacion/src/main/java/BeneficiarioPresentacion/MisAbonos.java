@@ -52,6 +52,11 @@ public class MisAbonos extends javax.swing.JFrame {
         btnAgregarAbono.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         btnAgregarAbono.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregarAbono.setText("+Agregar Abono");
+        btnAgregarAbono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarAbonoActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAgregarAbono, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 160, 30));
 
         jLabel1.setFont(new java.awt.Font("Serif", 0, 36)); // NOI18N
@@ -182,6 +187,13 @@ public class MisAbonos extends javax.swing.JFrame {
         misCuentasBancarias.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCuentasBancariasActionPerformed
+
+    private void btnAgregarAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAbonoActionPerformed
+        // TODO add your handling code here:
+        AgregarAbono agregarAbono = new AgregarAbono();
+        agregarAbono.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAgregarAbonoActionPerformed
 
     /**
      * @param args the command line arguments
