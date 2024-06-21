@@ -15,6 +15,8 @@ public class MisAbonos extends javax.swing.JFrame {
      */
     public MisAbonos() {
         initComponents();
+        this.setLocationRelativeTo(this);
+        this.setSize(965, 610);
     }
 
     /**
@@ -26,21 +28,160 @@ public class MisAbonos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        btnAgregarAbono = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        btnInicio = new javax.swing.JRadioButtonMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        btnPagos = new javax.swing.JRadioButtonMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        btnAbonos = new javax.swing.JRadioButtonMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        btnCuentasBancarias = new javax.swing.JRadioButtonMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(175, 176, 212));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnAgregarAbono.setBackground(new java.awt.Color(116, 114, 178));
+        btnAgregarAbono.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnAgregarAbono.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregarAbono.setText("+Agregar Abono");
+        jPanel1.add(btnAgregarAbono, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 160, 30));
+
+        jLabel1.setFont(new java.awt.Font("Serif", 0, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Mis Abonos");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, -1, -1));
+
+        jScrollPane1.setBackground(new java.awt.Color(116, 114, 178));
+
+        jTable1.setBackground(new java.awt.Color(228, 222, 235));
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Cuenta", "Monto", "Estatus", "Comentarios", "Eliminar Abono"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 540, 230));
+
+        jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
+        jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
+
+        jMenu1.setForeground(new java.awt.Color(116, 114, 178));
+        jMenu1.setText("Inicio");
+
+        btnInicio.setForeground(new java.awt.Color(116, 114, 178));
+        btnInicio.setSelected(true);
+        btnInicio.setText("Inicio");
+        btnInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInicioActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnInicio);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Mis pagos");
+
+        btnPagos.setForeground(new java.awt.Color(116, 114, 178));
+        btnPagos.setSelected(true);
+        btnPagos.setText("Ver mis pagos");
+        btnPagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPagosActionPerformed(evt);
+            }
+        });
+        jMenu2.add(btnPagos);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setForeground(new java.awt.Color(116, 114, 178));
+        jMenu3.setText("Mis abonos");
+
+        btnAbonos.setForeground(new java.awt.Color(116, 114, 178));
+        btnAbonos.setSelected(true);
+        btnAbonos.setText("Ver mis abonos");
+        btnAbonos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbonosActionPerformed(evt);
+            }
+        });
+        jMenu3.add(btnAbonos);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setForeground(new java.awt.Color(116, 114, 178));
+        jMenu4.setText("Mis cuentas bancarias");
+
+        btnCuentasBancarias.setForeground(new java.awt.Color(116, 114, 178));
+        btnCuentasBancarias.setSelected(true);
+        btnCuentasBancarias.setText("Ver mis cuentas bancarias");
+        btnCuentasBancarias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCuentasBancariasActionPerformed(evt);
+            }
+        });
+        jMenu4.add(btnCuentasBancarias);
+
+        jMenuBar1.add(jMenu4);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
+        // TODO add your handling code here:
+         MenuBeneficiario menuBeneficiario = new MenuBeneficiario();
+        menuBeneficiario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnInicioActionPerformed
+
+    private void btnPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagosActionPerformed
+        // TODO add your handling code here:
+        MisPagos misPagos = new MisPagos();
+        misPagos.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnPagosActionPerformed
+
+    private void btnAbonosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonosActionPerformed
+        // TODO add your handling code here:
+        MisAbonos misAbonos = new MisAbonos();
+        misAbonos.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAbonosActionPerformed
+
+    private void btnCuentasBancariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuentasBancariasActionPerformed
+        // TODO add your handling code here:
+        MisCuentasBancarias misCuentasBancarias = new MisCuentasBancarias();
+        misCuentasBancarias.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCuentasBancariasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +219,19 @@ public class MisAbonos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButtonMenuItem btnAbonos;
+    private javax.swing.JButton btnAgregarAbono;
+    private javax.swing.JRadioButtonMenuItem btnCuentasBancarias;
+    private javax.swing.JRadioButtonMenuItem btnInicio;
+    private javax.swing.JRadioButtonMenuItem btnPagos;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
