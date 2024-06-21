@@ -4,6 +4,8 @@
  */
 package GUI;
 
+import AdministradorPresentacion.MenuAdministrador;
+
 /**
  *
  * @author diana
@@ -139,6 +141,9 @@ public class logIn extends javax.swing.JFrame {
 
     private void iniciarSesionAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionAdminActionPerformed
         // TODO add your handling code here:
+        MenuAdministrador menu = new MenuAdministrador();
+        menu.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_iniciarSesionAdminActionPerformed
 
     private void clave1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clave1ActionPerformed
