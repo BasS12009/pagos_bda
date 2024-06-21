@@ -24,7 +24,8 @@ public class logIn extends javax.swing.JFrame {
      */
     public logIn() {
         initComponents();
-        
+        this.setLocationRelativeTo(this);
+        this.setSize(700, 560);
         this.negocio = negocio;
     }
 
