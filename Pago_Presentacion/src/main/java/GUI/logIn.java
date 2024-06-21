@@ -27,26 +27,29 @@ public class logIn extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        clave = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        contraseña = new javax.swing.JTextField();
         btnBeneficiario = new javax.swing.JButton();
         btnAdministrador = new javax.swing.JButton();
+        clave1 = new javax.swing.JTextField();
+        clave2 = new javax.swing.JTextField();
+        clave3 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(175, 176, 212));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField1.setBackground(new java.awt.Color(228, 222, 235));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        clave.setBackground(new java.awt.Color(228, 222, 235));
+        clave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                claveActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 310, 260, 30));
+        jPanel1.add(clave, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 310, 260, 30));
 
         jLabel1.setFont(new java.awt.Font("Serif", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -63,8 +66,8 @@ public class logIn extends javax.swing.JFrame {
         jLabel3.setText("Contraseña:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 350, -1, -1));
 
-        jTextField2.setBackground(new java.awt.Color(228, 222, 235));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 260, 30));
+        contraseña.setBackground(new java.awt.Color(228, 222, 235));
+        jPanel1.add(contraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 260, 30));
 
         btnBeneficiario.setBackground(new java.awt.Color(116, 114, 178));
         btnBeneficiario.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
@@ -81,7 +84,36 @@ public class logIn extends javax.swing.JFrame {
         btnAdministrador.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         btnAdministrador.setForeground(new java.awt.Color(255, 255, 255));
         btnAdministrador.setText("Iniciar Sesion Administrador");
+        btnAdministrador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdministradorActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAdministrador, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 470, 210, 40));
+
+        clave1.setBackground(new java.awt.Color(228, 222, 235));
+        clave1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clave1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(clave1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 310, 260, 30));
+
+        clave2.setBackground(new java.awt.Color(228, 222, 235));
+        clave2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clave2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(clave2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 310, 260, 30));
+
+        clave3.setBackground(new java.awt.Color(228, 222, 235));
+        clave3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clave3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(clave3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 310, 260, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -97,13 +129,29 @@ public class logIn extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void claveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claveActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_claveActionPerformed
 
     private void btnBeneficiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBeneficiarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBeneficiarioActionPerformed
+
+    private void btnAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministradorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAdministradorActionPerformed
+
+    private void clave1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clave1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clave1ActionPerformed
+
+    private void clave2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clave2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clave2ActionPerformed
+
+    private void clave3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clave3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clave3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -143,11 +191,14 @@ public class logIn extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdministrador;
     private javax.swing.JButton btnBeneficiario;
+    private javax.swing.JTextField clave;
+    private javax.swing.JTextField clave1;
+    private javax.swing.JTextField clave2;
+    private javax.swing.JTextField clave3;
+    private javax.swing.JTextField contraseña;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
