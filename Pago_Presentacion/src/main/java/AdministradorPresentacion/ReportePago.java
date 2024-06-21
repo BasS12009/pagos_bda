@@ -139,7 +139,7 @@ public class ReportePago extends javax.swing.JFrame {
         tblReportePagos.setBackground(new java.awt.Color(228, 222, 235));
         tblReportePagos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
+                {"Abono", "$2,500", "Romina", "1", "12345", "Enviado"},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null}
