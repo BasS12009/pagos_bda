@@ -4,6 +4,12 @@
  */
 package BeneficiarioPresentacion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.table.TableColumnModel;
+import utilerias.JButtonCellEditor;
+import utilerias.JButtonRenderer;
+
 /**
  *
  * @author diana
@@ -17,7 +23,48 @@ public class MisPagos extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
+        cargarConfiguracionInicialTabla();
     }
+    
+    public void modificarPago(){
+    
+        ModificarPago modificarPago = new ModificarPago();
+        modificarPago.setVisible(true);
+        this.dispose();      
+        
+    }
+    
+    private void cargarConfiguracionInicialTabla() { 
+        
+        ActionListener onEliminarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               
+                
+            }               
+        };
+            
+        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
+        modeloColumnas.getColumn(5).setCellRenderer(new JButtonRenderer("Eliminar"));
+        modeloColumnas.getColumn(5).setCellEditor(new JButtonCellEditor("Eliminar",onEliminarClickListener));
+          
+        ActionListener onModificarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               modificarPago();
+                
+            }               
+        };
+            
+        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Modificar"));
+        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Modificar",onModificarClickListener));
+                 
+    }       
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,7 +78,6 @@ public class MisPagos extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnCrearPago = new javax.swing.JButton();
-        btnModificarPago = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -63,29 +109,18 @@ public class MisPagos extends javax.swing.JFrame {
                 btnCrearPagoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCrearPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, -1, 30));
-
-        btnModificarPago.setBackground(new java.awt.Color(116, 114, 178));
-        btnModificarPago.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
-        btnModificarPago.setForeground(new java.awt.Color(255, 255, 255));
-        btnModificarPago.setText("+Modificar Pago");
-        btnModificarPago.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarPagoActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnModificarPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 130, -1, 30));
+        jPanel1.add(btnCrearPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 150, -1, 30));
 
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Cuenta", "Monto", "Estatus", "Comentarios", "Eliminar"
+                "Cuenta", "Monto", "Estatus", "Comentarios", "Modificar", "Eliminar"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -206,13 +241,6 @@ public class MisPagos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCrearPagoActionPerformed
 
-    private void btnModificarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarPagoActionPerformed
-        // TODO add your handling code here:
-        ModificarPago modificarPago = new ModificarPago();
-        modificarPago.setVisible(true);
-        this.dispose();        
-    }//GEN-LAST:event_btnModificarPagoActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -254,7 +282,6 @@ public class MisPagos extends javax.swing.JFrame {
     private javax.swing.JButton btnCrearPago;
     private javax.swing.JRadioButtonMenuItem btnCuentasBancarias;
     private javax.swing.JRadioButtonMenuItem btnInicio;
-    private javax.swing.JButton btnModificarPago;
     private javax.swing.JRadioButtonMenuItem btnPagos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;

@@ -4,6 +4,12 @@
  */
 package BeneficiarioPresentacion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.table.TableColumnModel;
+import utilerias.JButtonCellEditor;
+import utilerias.JButtonRenderer;
+
 /**
  *
  * @author diana
@@ -17,8 +23,27 @@ public class MisAbonos extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
+        cargarConfiguracionInicialTabla();
     }
 
+    private void cargarConfiguracionInicialTabla() { 
+        
+        ActionListener onEliminarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               
+                
+            }               
+        };
+            
+        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
+        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Eliminar"));
+        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Eliminar",onEliminarClickListener));
+              
+    }       
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,7 +105,7 @@ public class MisAbonos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 540, 230));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 540, 230));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));

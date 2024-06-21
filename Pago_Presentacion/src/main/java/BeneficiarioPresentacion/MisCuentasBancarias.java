@@ -4,6 +4,12 @@
  */
 package BeneficiarioPresentacion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.table.TableColumnModel;
+import utilerias.JButtonCellEditor;
+import utilerias.JButtonRenderer;
+
 /**
  *
  * @author diana
@@ -17,8 +23,47 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
+        cargarConfiguracionInicialTabla();
     }
 
+    private void modificarCuenta() {
+    
+        ModificarCuenta modificarCuenta = new ModificarCuenta();
+        modificarCuenta.setVisible(true);
+        this.setVisible(false);
+        
+    }
+    
+    private void cargarConfiguracionInicialTabla() { 
+        
+        ActionListener onModificarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                modificarCuenta();
+                
+            }               
+        };
+            
+        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
+        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Modificar"));
+        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Modificar",onModificarClickListener));
+        
+        ActionListener onEliminarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               
+                
+            }               
+        };
+
+        modeloColumnas.getColumn(5).setCellRenderer(new JButtonRenderer("Eliminar"));
+        modeloColumnas.getColumn(5).setCellEditor(new JButtonCellEditor("Eliminar",onEliminarClickListener));        
+    }       
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,7 +75,6 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         btnNuevaCuenta = new javax.swing.JButton();
-        btnModificarCuenta = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -58,18 +102,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
                 btnNuevaCuentaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnNuevaCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 150, -1, -1));
-
-        btnModificarCuenta.setBackground(new java.awt.Color(116, 114, 178));
-        btnModificarCuenta.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
-        btnModificarCuenta.setForeground(new java.awt.Color(255, 255, 255));
-        btnModificarCuenta.setText("+Modificar Cuenta");
-        btnModificarCuenta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarCuentaActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnModificarCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 150, -1, -1));
+        jPanel1.add(btnNuevaCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 160, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Serif", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -79,13 +112,13 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "No. Cuenta", "Clabe", "Banco", "Estatus", "Eliminar"
+                "No. Cuenta", "Clabe", "Banco", "Estatus", "Modificar", "Eliminar"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -207,13 +240,6 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnNuevaCuentaActionPerformed
 
-    private void btnModificarCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarCuentaActionPerformed
-        // TODO add your handling code here:
-        ModificarCuenta modificarCuenta = new ModificarCuenta();
-        modificarCuenta.setVisible(true);
-        this.dispose(); 
-    }//GEN-LAST:event_btnModificarCuentaActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -253,7 +279,6 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem btnAbonos;
     private javax.swing.JRadioButtonMenuItem btnCuentasBancarias;
     private javax.swing.JRadioButtonMenuItem btnInicio;
-    private javax.swing.JButton btnModificarCuenta;
     private javax.swing.JButton btnNuevaCuenta;
     private javax.swing.JRadioButtonMenuItem btnPagos;
     private javax.swing.JLabel jLabel1;

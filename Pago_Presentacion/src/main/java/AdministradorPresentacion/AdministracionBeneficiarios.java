@@ -4,6 +4,12 @@
  */
 package AdministradorPresentacion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.table.TableColumnModel;
+import utilerias.JButtonCellEditor;
+import utilerias.JButtonRenderer;
+
 /**
  *
  * @author diana
@@ -17,8 +23,47 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
+        cargarConfiguracionInicialTabla();
     }
 
+    private void modificar(){
+    
+        ModificarBeneficiario modificarBeneficiario = new ModificarBeneficiario();
+        modificarBeneficiario.setVisible(true);
+        this.dispose();        
+        
+    }
+    
+    private void cargarConfiguracionInicialTabla() { 
+        
+        ActionListener onModificarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               modificar();
+                
+            }               
+        };
+            
+        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
+        modeloColumnas.getColumn(6).setCellRenderer(new JButtonRenderer("Modificar"));
+        modeloColumnas.getColumn(6).setCellEditor(new JButtonCellEditor("Modificar",onModificarClickListener));
+        
+        ActionListener onEliminarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               
+                
+            }               
+        };
+
+        modeloColumnas.getColumn(7).setCellRenderer(new JButtonRenderer("Eliminar"));
+        modeloColumnas.getColumn(7).setCellEditor(new JButtonCellEditor("Eliminar",onEliminarClickListener));        
+    }        
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,7 +76,6 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnCrearBeneficiario = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -65,29 +109,18 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
                 btnCrearBeneficiarioActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCrearBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, -1, -1));
-
-        btnModificar.setBackground(new java.awt.Color(116, 114, 178));
-        btnModificar.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
-        btnModificar.setForeground(new java.awt.Color(255, 255, 255));
-        btnModificar.setText("+Modificar");
-        btnModificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 130, -1, -1));
+        jPanel1.add(btnCrearBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 130, -1, -1));
 
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Folio", "Nombre Beneficiario", "Fecha", "Hora", "Estatus", "Monto", "Eliminar"
+                "Folio", "Nombre Beneficiario", "Fecha", "Hora", "Estatus", "Monto", "Modificar", "Eliminar"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -231,13 +264,6 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCrearBeneficiarioActionPerformed
 
-    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
-        ModificarBeneficiario modificarBeneficiario = new ModificarBeneficiario();
-        modificarBeneficiario.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnModificarActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -279,7 +305,6 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem btnAprobacionRechazar;
     private javax.swing.JButton btnCrearBeneficiario;
     private javax.swing.JRadioButtonMenuItem btnInicio;
-    private javax.swing.JButton btnModificar;
     private javax.swing.JRadioButtonMenuItem btnPagadoRechazar;
     private javax.swing.JRadioButtonMenuItem btnReportePago;
     private javax.swing.JLabel jLabel1;

@@ -4,6 +4,12 @@
  */
 package AdministradorPresentacion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.table.TableColumnModel;
+import utilerias.JButtonCellEditor;
+import utilerias.JButtonRenderer;
+
 /**
  *
  * @author diana
@@ -17,8 +23,39 @@ public class PagadoRechazar extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
+        cargarConfiguracionInicialTabla();
     }
 
+    private void cargarConfiguracionInicialTabla() { 
+        
+        ActionListener onPagadoClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               
+                
+            }               
+        };
+            
+        TableColumnModel modeloColumnas = this.tblPagadoRechazado.getColumnModel();
+        modeloColumnas.getColumn(3).setCellRenderer(new JButtonRenderer("Pagado"));
+        modeloColumnas.getColumn(3).setCellEditor(new JButtonCellEditor("Pagado",onPagadoClickListener));
+        
+        ActionListener onRechazadoClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               
+                
+            }               
+        };
+
+        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Rechazado"));
+        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Rechazado",onRechazadoClickListener));        
+    }       
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

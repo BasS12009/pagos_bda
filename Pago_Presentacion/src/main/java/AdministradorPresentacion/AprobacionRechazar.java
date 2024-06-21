@@ -4,6 +4,12 @@
  */
 package AdministradorPresentacion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.table.TableColumnModel;
+import utilerias.JButtonCellEditor;
+import utilerias.JButtonRenderer;
+
 /**
  *
  * @author diana
@@ -17,7 +23,51 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(960,610);
+        cargarConfiguracionInicialTabla();
     }
+    
+    private void cargarConfiguracionInicialTabla() { 
+        
+        ActionListener onDetallesClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               
+                
+            }               
+        };
+            
+        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
+        modeloColumnas.getColumn(1).setCellRenderer(new JButtonRenderer("Detalles"));
+        modeloColumnas.getColumn(1).setCellEditor(new JButtonCellEditor("Detalles",onDetallesClickListener));
+        
+        ActionListener onAprobarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               
+                
+            }               
+        };
+
+        modeloColumnas.getColumn(2).setCellRenderer(new JButtonRenderer("Aprobar"));
+        modeloColumnas.getColumn(2).setCellEditor(new JButtonCellEditor("Aprobar",onAprobarClickListener));       
+        
+        ActionListener onRechazarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               
+                
+            }               
+        };
+
+        modeloColumnas.getColumn(3).setCellRenderer(new JButtonRenderer("Rechazar"));
+        modeloColumnas.getColumn(3).setCellEditor(new JButtonCellEditor("Rechazar",onRechazarClickListener));            
+    }       
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,7 +113,7 @@ public class AprobacionRechazar extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Aprobar", "Rechazar"
+                "Info Pago", "Detalles", "Aprobar", "Rechazar"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
