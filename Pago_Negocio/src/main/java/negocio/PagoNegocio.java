@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 public class PagoNegocio implements IPagoNegocio {
 
     private IPagoDAO pagoDAO;
+    long id;
 
     /**
      * Constructor de la clase PagoNegocio.
@@ -37,6 +38,15 @@ public class PagoNegocio implements IPagoNegocio {
     public PagoNegocio(IPagoDAO pagoDAO) {
         this.pagoDAO = pagoDAO;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    
 
     /**
      * Guarda un pago en la base de datos.
