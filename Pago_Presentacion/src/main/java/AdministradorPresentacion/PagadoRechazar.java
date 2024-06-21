@@ -31,7 +31,7 @@ public class PagadoRechazar extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblPagadoRechazado = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnInicio = new javax.swing.JRadioButtonMenuItem();
@@ -54,8 +54,8 @@ public class PagadoRechazar extends javax.swing.JFrame {
         jLabel1.setText("Pagado/Rechazado");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 40, -1, -1));
 
-        jTable1.setBackground(new java.awt.Color(228, 222, 235));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblPagadoRechazado.setBackground(new java.awt.Color(228, 222, 235));
+        tblPagadoRechazado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -66,7 +66,7 @@ public class PagadoRechazar extends javax.swing.JFrame {
                 "Tipo", "Monto", "Beneficiario", "Pagado", "Rechazar"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblPagadoRechazado);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 120, -1, 280));
 
@@ -249,6 +249,6 @@ public class PagadoRechazar extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblPagadoRechazado;
     // End of variables declaration//GEN-END:variables
 }
