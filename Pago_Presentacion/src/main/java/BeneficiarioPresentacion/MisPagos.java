@@ -4,6 +4,7 @@
  */
 package BeneficiarioPresentacion;
 
+import GUI.logIn;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.TableColumnModel;
@@ -89,6 +90,8 @@ public class MisPagos extends javax.swing.JFrame {
         btnAbonos = new javax.swing.JRadioButtonMenuItem();
         jMenu4 = new javax.swing.JMenu();
         btnCuentasBancarias = new javax.swing.JRadioButtonMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        btnCerrarSesion = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,7 +112,7 @@ public class MisPagos extends javax.swing.JFrame {
                 btnCrearPagoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCrearPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 150, -1, 30));
+        jPanel1.add(btnCrearPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, 30));
 
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -125,7 +128,7 @@ public class MisPagos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, -1, 210));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 890, 210));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -190,6 +193,21 @@ public class MisPagos extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu4);
 
+        jMenu1.setForeground(new java.awt.Color(116, 114, 178));
+        jMenu1.setText("Cerrar Sesion");
+
+        btnCerrarSesion.setForeground(new java.awt.Color(116, 114, 178));
+        btnCerrarSesion.setSelected(true);
+        btnCerrarSesion.setText("Cerrar Sesion");
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnCerrarSesion);
+
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -241,6 +259,13 @@ public class MisPagos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCrearPagoActionPerformed
 
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        // TODO add your handling code here:
+        logIn lIn = new logIn();
+        lIn.setVisible(true);
+        this.dispose(); 
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -279,11 +304,13 @@ public class MisPagos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Inicio;
     private javax.swing.JRadioButtonMenuItem btnAbonos;
+    private javax.swing.JRadioButtonMenuItem btnCerrarSesion;
     private javax.swing.JButton btnCrearPago;
     private javax.swing.JRadioButtonMenuItem btnCuentasBancarias;
     private javax.swing.JRadioButtonMenuItem btnInicio;
     private javax.swing.JRadioButtonMenuItem btnPagos;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;

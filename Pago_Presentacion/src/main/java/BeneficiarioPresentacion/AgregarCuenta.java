@@ -80,8 +80,11 @@ public class AgregarCuenta extends javax.swing.JFrame {
         jLabel6.setText("Banco");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 280, -1, -1));
 
+        btnAbono1.setBackground(new java.awt.Color(116, 114, 178));
+        btnAbono1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnAbono1.setForeground(new java.awt.Color(255, 255, 255));
         btnAbono1.setText("Agregar Cuenta");
-        jPanel1.add(btnAbono1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 400, -1, -1));
+        jPanel1.add(btnAbono1, new org.netbeans.lib.awtextra.AbsoluteConstraints(399, 460, 140, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

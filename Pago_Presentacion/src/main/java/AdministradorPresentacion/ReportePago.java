@@ -4,6 +4,8 @@
  */
 package AdministradorPresentacion;
 
+import GUI.logIn;
+
 /**
  *
  * @author diana
@@ -58,6 +60,8 @@ public class ReportePago extends javax.swing.JFrame {
         btnAdministracionBeneficiarios = new javax.swing.JRadioButtonMenuItem();
         jMenu5 = new javax.swing.JMenu();
         btnPagadoRechazar = new javax.swing.JRadioButtonMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        btnCerrarSesion = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -150,7 +154,7 @@ public class ReportePago extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblReportePagos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, 710, 220));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 840, 220));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -230,6 +234,21 @@ public class ReportePago extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu5);
 
+        jMenu1.setForeground(new java.awt.Color(116, 114, 178));
+        jMenu1.setText("Cerrar Sesion");
+
+        btnCerrarSesion.setForeground(new java.awt.Color(116, 114, 178));
+        btnCerrarSesion.setSelected(true);
+        btnCerrarSesion.setText("Cerrar Sesion");
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnCerrarSesion);
+
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -282,6 +301,13 @@ public class ReportePago extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnPagadoRechazarActionPerformed
 
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        // TODO add your handling code here:
+           logIn lIn = new logIn();
+        lIn.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -321,6 +347,7 @@ public class ReportePago extends javax.swing.JFrame {
     private javax.swing.JMenu Inicio;
     private javax.swing.JRadioButtonMenuItem btnAdministracionBeneficiarios;
     private javax.swing.JRadioButtonMenuItem btnAprobacionRechazar;
+    private javax.swing.JRadioButtonMenuItem btnCerrarSesion;
     private javax.swing.JRadioButtonMenuItem btnInicio;
     private javax.swing.JRadioButtonMenuItem btnPagadoRechazar;
     private javax.swing.JRadioButtonMenuItem btnReportePago;
@@ -339,6 +366,7 @@ public class ReportePago extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;

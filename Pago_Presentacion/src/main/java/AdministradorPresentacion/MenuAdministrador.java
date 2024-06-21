@@ -32,7 +32,6 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        btnCerrarSesion = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnInicio = new javax.swing.JMenu();
         btnVerInicio = new javax.swing.JRadioButtonMenuItem();
@@ -44,6 +43,8 @@ public class MenuAdministrador extends javax.swing.JFrame {
         btnAdministracionBeneficiarios = new javax.swing.JRadioButtonMenuItem();
         PagadoRechazar = new javax.swing.JMenu();
         btnPagadoRechazar = new javax.swing.JRadioButtonMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        btnCerrarSesion = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,14 +56,6 @@ public class MenuAdministrador extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Bienvenido Administrador");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 960, -1));
-
-        btnCerrarSesion.setText("Cerrar sesión");
-        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCerrarSesionActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 210, -1, -1));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -142,6 +135,21 @@ public class MenuAdministrador extends javax.swing.JFrame {
         PagadoRechazar.add(btnPagadoRechazar);
 
         jMenuBar1.add(PagadoRechazar);
+
+        jMenu1.setForeground(new java.awt.Color(116, 114, 178));
+        jMenu1.setText("Cerrar Sesion");
+
+        btnCerrarSesion.setForeground(new java.awt.Color(116, 114, 178));
+        btnCerrarSesion.setSelected(true);
+        btnCerrarSesion.setText("Cerrar Sesion");
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnCerrarSesion);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -242,12 +250,13 @@ public class MenuAdministrador extends javax.swing.JFrame {
     private javax.swing.JMenu ReportePago;
     private javax.swing.JRadioButtonMenuItem btnAdministracionBeneficiarios;
     private javax.swing.JRadioButtonMenuItem btnAprobacionRechazar;
-    private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JRadioButtonMenuItem btnCerrarSesion;
     private javax.swing.JMenu btnInicio;
     private javax.swing.JRadioButtonMenuItem btnPagadoRechazar;
     private javax.swing.JRadioButtonMenuItem btnReportePago;
     private javax.swing.JRadioButtonMenuItem btnVerInicio;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;

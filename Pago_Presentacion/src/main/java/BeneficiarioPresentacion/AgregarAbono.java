@@ -82,8 +82,11 @@ public class AgregarAbono extends javax.swing.JFrame {
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, 270, 30));
 
+        btnAbono.setBackground(new java.awt.Color(116, 114, 178));
+        btnAbono.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnAbono.setForeground(new java.awt.Color(255, 255, 255));
         btnAbono.setText("Agregar Abono");
-        jPanel1.add(btnAbono, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 380, -1, -1));
+        jPanel1.add(btnAbono, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 490, 170, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,7 +96,7 @@ public class AgregarAbono extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
         );
 
         pack();

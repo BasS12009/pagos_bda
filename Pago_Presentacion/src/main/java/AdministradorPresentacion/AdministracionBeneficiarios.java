@@ -109,7 +109,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
                 btnCrearBeneficiarioActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCrearBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 130, -1, -1));
+        jPanel1.add(btnCrearBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
 
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(

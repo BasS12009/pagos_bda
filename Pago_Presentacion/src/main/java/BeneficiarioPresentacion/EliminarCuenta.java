@@ -84,13 +84,16 @@ public class EliminarCuenta extends javax.swing.JFrame {
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 120, -1, -1));
         jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 250, 270, 30));
 
+        btnAbono1.setBackground(new java.awt.Color(116, 114, 178));
+        btnAbono1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnAbono1.setForeground(new java.awt.Color(255, 255, 255));
         btnAbono1.setText("Eliminar Cuenta");
         btnAbono1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAbono1ActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAbono1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 420, -1, -1));
+        jPanel1.add(btnAbono1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 420, -1, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,7 +105,7 @@ public class EliminarCuenta extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
         );
 
         pack();

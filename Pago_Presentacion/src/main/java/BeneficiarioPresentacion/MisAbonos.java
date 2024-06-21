@@ -4,6 +4,7 @@
  */
 package BeneficiarioPresentacion;
 
+import GUI.logIn;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.TableColumnModel;
@@ -67,6 +68,8 @@ public class MisAbonos extends javax.swing.JFrame {
         btnAbonos = new javax.swing.JRadioButtonMenuItem();
         jMenu4 = new javax.swing.JMenu();
         btnCuentasBancarias = new javax.swing.JRadioButtonMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        btnCerrarSesion = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,7 +85,7 @@ public class MisAbonos extends javax.swing.JFrame {
                 btnAgregarAbonoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAgregarAbono, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 160, 30));
+        jPanel1.add(btnAgregarAbono, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 160, 30));
 
         jLabel1.setFont(new java.awt.Font("Serif", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -105,7 +108,7 @@ public class MisAbonos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 540, 230));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 900, 230));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -125,6 +128,7 @@ public class MisAbonos extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setForeground(new java.awt.Color(116, 114, 178));
         jMenu2.setText("Mis pagos");
 
         btnPagos.setForeground(new java.awt.Color(116, 114, 178));
@@ -168,6 +172,21 @@ public class MisAbonos extends javax.swing.JFrame {
         jMenu4.add(btnCuentasBancarias);
 
         jMenuBar1.add(jMenu4);
+
+        jMenu5.setForeground(new java.awt.Color(116, 114, 178));
+        jMenu5.setText("Cerrar Sesion");
+
+        btnCerrarSesion.setForeground(new java.awt.Color(116, 114, 178));
+        btnCerrarSesion.setSelected(true);
+        btnCerrarSesion.setText("Cerrar Sesion");
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
+        jMenu5.add(btnCerrarSesion);
+
+        jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
 
@@ -220,6 +239,13 @@ public class MisAbonos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnAgregarAbonoActionPerformed
 
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        // TODO add your handling code here:
+        logIn lIn = new logIn();
+        lIn.setVisible(true);
+        this.dispose(); 
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -258,6 +284,7 @@ public class MisAbonos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButtonMenuItem btnAbonos;
     private javax.swing.JButton btnAgregarAbono;
+    private javax.swing.JRadioButtonMenuItem btnCerrarSesion;
     private javax.swing.JRadioButtonMenuItem btnCuentasBancarias;
     private javax.swing.JRadioButtonMenuItem btnInicio;
     private javax.swing.JRadioButtonMenuItem btnPagos;
@@ -266,6 +293,7 @@ public class MisAbonos extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
