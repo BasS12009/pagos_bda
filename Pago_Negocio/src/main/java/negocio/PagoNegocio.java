@@ -4,6 +4,7 @@
  */
 package negocio;
 
+import DAOs.BeneficiarioDAO;
 import DAOs.IPagoDAO;
 import DTOs.AbonoDTO;
 import DTOs.BeneficiarioDTO;
@@ -12,13 +13,18 @@ import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
 import DTOs.TiposDTO;
 import entidades.Abono;
+import entidades.Beneficiario;
 import entidades.CuentaBancaria;
 import entidades.Estatus;
 import entidades.Pago;
 import entidades.PagosEstatus;
+import excepcionBO.ExcepcionBO;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -48,6 +54,24 @@ public class PagoNegocio implements IPagoNegocio {
     }
     
 
+    public BeneficiarioDTO login(BeneficiarioDTO beneficiario) {
+
+//        Beneficiario beneficiarioAuxiliar = null;
+//        try {
+//            beneficiarioAuxiliar = convertirAEntidadSinId(beneficiario);
+//
+//            return convertirAEntidad(BeneficiarioDAO.login(beneficiarioAuxiliar));
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (ExcepcionBO ex) {
+//            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+        return null;
+
+    }
+    
     /**
      * Guarda un pago en la base de datos.
      * @param pagoDTO Objeto PagoDTO que representa el pago a guardar.

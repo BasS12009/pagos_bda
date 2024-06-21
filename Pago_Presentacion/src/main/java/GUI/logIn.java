@@ -152,17 +152,17 @@ public class logIn extends javax.swing.JFrame {
         BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
         beneficiarioDTO.setClaveContrato(clave.getText());
         beneficiarioDTO.setContraseña(contrasena.getText());
-        BeneficiarioDTO beneficiarioAutenticado = negocio.login(beneficiarioDTO);
+        //BeneficiarioDTO beneficiarioAutenticado = negocio.login(beneficiarioDTO);
         //se valida que si es diferente de null se muestre el menu del beneficiario 
-        if (beneficiarioAutenticado != null) {
-            negocio.setId(beneficiarioAutenticado.getId());
+        //if (beneficiarioAutenticado != null) {
+         //   negocio.setId(beneficiarioAutenticado.getId());
             MenuBeneficiario m=new MenuBeneficiario();
             m.setVisible(true);
             this.disable();
             this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
-        }
+        //} else {
+//            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+//        }
 
         
     }//GEN-LAST:event_iniciarSesionBeneficiarioActionPerformed
