@@ -117,6 +117,11 @@ public class ReportePago extends javax.swing.JFrame {
         jComboBox1.setBackground(new java.awt.Color(116, 114, 178));
         jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Reembolso", " " }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 30, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -139,7 +144,7 @@ public class ReportePago extends javax.swing.JFrame {
         tblReportePagos.setBackground(new java.awt.Color(228, 222, 235));
         tblReportePagos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
+                {"Reembolso", "$4,000", "Romina", "2", "", null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null}
@@ -281,6 +286,10 @@ public class ReportePago extends javax.swing.JFrame {
         pagadoRechazar.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPagadoRechazarActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments

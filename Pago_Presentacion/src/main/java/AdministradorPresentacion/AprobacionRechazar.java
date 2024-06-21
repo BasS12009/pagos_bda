@@ -57,13 +57,17 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {"Reembolso", "$4.000", "2024-06-21", null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
+<<<<<<< Updated upstream
                 "Title 1", "Title 2", "Aprobar", "Rechazar"
+=======
+                "Tipo", "Monto", "Fecha", "Aprobar", "Rechazar"
+>>>>>>> Stashed changes
             }
         ));
         jScrollPane1.setViewportView(jTable1);

@@ -19,6 +19,47 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         this.setSize(965, 610);
     }
 
+<<<<<<< Updated upstream
+=======
+    private void modificarCuenta() {
+    
+        ModificarCuenta modificarCuenta = new ModificarCuenta();
+        modificarCuenta.setVisible(true);
+        this.setVisible(false);
+        
+    }
+    
+    private void cargarConfiguracionInicialTabla() { 
+        
+        ActionListener onModificarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                modificarCuenta();
+                
+            }               
+        };
+            
+        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
+        modeloColumnas.getColumn(3).setCellRenderer(new JButtonRenderer("Modificar"));
+        modeloColumnas.getColumn(3).setCellEditor(new JButtonCellEditor("Modificar",onModificarClickListener));
+        
+        ActionListener onEliminarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               
+                
+            }               
+        };
+
+        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Eliminar"));
+        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Eliminar",onEliminarClickListener));        
+    }       
+    
+>>>>>>> Stashed changes
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -79,13 +120,21 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+<<<<<<< Updated upstream
                 {null, null, null, null, null},
                 {null, null, null, null, null},
+=======
+                {"2", "12345", "Banorte", null, null},
+>>>>>>> Stashed changes
                 {null, null, null, null, null},
                 {null, null, null, null, null}
             },
             new String [] {
+<<<<<<< Updated upstream
                 "No. Cuenta", "Clabe", "Banco", "Estatus", "Eliminar"
+=======
+                "No. Cuenta", "Clabe", "Banco", "Modificar", "Eliminar"
+>>>>>>> Stashed changes
             }
         ));
         jScrollPane1.setViewportView(jTable1);

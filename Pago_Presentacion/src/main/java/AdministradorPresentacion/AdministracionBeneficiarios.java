@@ -4,6 +4,17 @@
  */
 package AdministradorPresentacion;
 
+<<<<<<< Updated upstream
+=======
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import utilerias.JButtonCellEditor;
+import utilerias.JButtonRenderer;
+
+>>>>>>> Stashed changes
 /**
  *
  * @author diana
@@ -19,6 +30,48 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         this.setSize(965, 610);
     }
 
+<<<<<<< Updated upstream
+=======
+    private void modificar(){
+    
+        ModificarBeneficiario modificarBeneficiario = new ModificarBeneficiario();
+        modificarBeneficiario.setVisible(true);
+        this.dispose();        
+        
+    }
+    
+    private void cargarConfiguracionInicialTabla() { 
+        
+        ActionListener onModificarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               modificar();
+                
+            }               
+        };
+            
+        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
+        modeloColumnas.getColumn(6).setCellRenderer(new JButtonRenderer("Modificar"));
+        modeloColumnas.getColumn(6).setCellEditor(new JButtonCellEditor("Modificar",onModificarClickListener));
+        
+        ActionListener onEliminarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+               
+                
+            }               
+        };
+
+        modeloColumnas.getColumn(7).setCellRenderer(new JButtonRenderer("Eliminar"));
+        modeloColumnas.getColumn(7).setCellEditor(new JButtonCellEditor("Eliminar",onEliminarClickListener));        
+    }
+    
+
+>>>>>>> Stashed changes
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,10 +134,17 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+<<<<<<< Updated upstream
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null}
+=======
+                {"1", "Romina", "2024-06-21", "14:00", "Aprobado", "$4,500", null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+>>>>>>> Stashed changes
             },
             new String [] {
                 "Folio", "Nombre Beneficiario", "Fecha", "Hora", "Estatus", "Monto", "Eliminar"

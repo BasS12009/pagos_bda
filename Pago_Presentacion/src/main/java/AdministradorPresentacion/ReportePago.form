@@ -358,6 +358,9 @@
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox1ActionPerformed"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
@@ -446,11 +449,36 @@
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="4">
-                    <Column editable="true" title="Tipo" type="java.lang.Object"/>
-                    <Column editable="true" title="Monto" type="java.lang.Object"/>
-                    <Column editable="true" title="Beneficiario" type="java.lang.Object"/>
-                    <Column editable="true" title="Abonos terminados" type="java.lang.Object"/>
-                    <Column editable="true" title="Cuenta deposito" type="java.lang.Object"/>
+                    <Column editable="true" title="Tipo" type="java.lang.Object">
+                      <Data value="Reembolso"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="true" title="Monto" type="java.lang.Object">
+                      <Data value="$4,000"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="true" title="Beneficiario" type="java.lang.Object">
+                      <Data value="Romina"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="true" title="Abonos terminados" type="java.lang.Object">
+                      <Data value="2"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="true" title="Cuenta deposito" type="java.lang.Object">
+                      <Data value=""/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
                     <Column editable="true" title="Estatus" type="java.lang.Object"/>
                   </Table>
                 </Property>

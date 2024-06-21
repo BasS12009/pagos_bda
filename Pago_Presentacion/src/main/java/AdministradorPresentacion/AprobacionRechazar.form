@@ -206,9 +206,31 @@
                   <Color blue="eb" green="de" red="e4" type="rgb"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+<<<<<<< Updated upstream
                   <Table columnCount="4" rowCount="4">
                     <Column editable="true" title="Title 1" type="java.lang.Object"/>
                     <Column editable="true" title="Title 2" type="java.lang.Object"/>
+=======
+                  <Table columnCount="5" rowCount="4">
+                    <Column editable="true" title="Tipo" type="java.lang.Object">
+                      <Data value="Reembolso"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="true" title="Monto" type="java.lang.Object">
+                      <Data value="$4.000"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="true" title="Fecha" type="java.lang.Object">
+                      <Data value="2024-06-21"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+>>>>>>> Stashed changes
                     <Column editable="true" title="Aprobar" type="java.lang.Object"/>
                     <Column editable="true" title="Rechazar" type="java.lang.Object"/>
                   </Table>
