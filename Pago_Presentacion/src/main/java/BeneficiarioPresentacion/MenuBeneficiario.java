@@ -5,13 +5,15 @@
 package BeneficiarioPresentacion;
 
 import GUI.logIn;
+import negocio.PagoBO;
 
 /**
  *
  * @author diana
  */
 public class MenuBeneficiario extends javax.swing.JFrame {
-
+    PagoBO pagoBO;
+    
     /**
      * Creates new form MenuBeneficiario
      */
@@ -171,7 +173,7 @@ public class MenuBeneficiario extends javax.swing.JFrame {
 
     private void btnCuentasBancariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuentasBancariasActionPerformed
         // TODO add your handling code here:
-        MisCuentasBancarias misCuentasBancarias = new MisCuentasBancarias();
+        MisCuentasBancarias misCuentasBancarias = new MisCuentasBancarias(pagoBO);
         misCuentasBancarias.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCuentasBancariasActionPerformed

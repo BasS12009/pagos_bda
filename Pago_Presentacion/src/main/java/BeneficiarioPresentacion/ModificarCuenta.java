@@ -4,12 +4,14 @@
  */
 package BeneficiarioPresentacion;
 
+import negocio.PagoBO;
+
 /**
  *
  * @author diana
  */
 public class ModificarCuenta extends javax.swing.JFrame {
-
+    PagoBO pagoBO;
     /**
      * Creates new form ModificarCuenta
      */
@@ -105,7 +107,7 @@ public class ModificarCuenta extends javax.swing.JFrame {
 
     private void btnRegresar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresar3ActionPerformed
         // TODO add your handling code here:
-        MisCuentasBancarias misCuentasBancarias = new MisCuentasBancarias();
+        MisCuentasBancarias misCuentasBancarias = new MisCuentasBancarias(pagoBO);
         misCuentasBancarias.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresar3ActionPerformed

@@ -17,7 +17,18 @@ import java.util.List;
  * @author PC Gamer
  */
 public interface IPagoBO {
-
+    
+    /**
+     *
+     * @param beneficiario
+     * @return
+     */
+    public BeneficiarioDTO login(BeneficiarioDTO beneficiario);
+    
+    public long getId();
+    
+    public void setId(long id);
+    
     /**
      *
      * @param pagoDTO

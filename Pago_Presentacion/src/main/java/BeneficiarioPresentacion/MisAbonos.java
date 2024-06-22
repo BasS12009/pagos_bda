@@ -5,18 +5,21 @@
 package BeneficiarioPresentacion;
 
 import GUI.logIn;
+import Utilerias.JButtonCellEditor;
+import Utilerias.JButtonRenderer;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.TableColumnModel;
-import utilerias.JButtonCellEditor;
-import utilerias.JButtonRenderer;
+import negocio.PagoBO;
 
 /**
  *
  * @author diana
  */
 public class MisAbonos extends javax.swing.JFrame {
-
+    PagoBO pagoBO;
+    
     /**
      * Creates new form MisAbonos
      */
@@ -40,8 +43,10 @@ public class MisAbonos extends javax.swing.JFrame {
         };
             
         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
-        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Eliminar"));
-        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Eliminar",onEliminarClickListener));
+        int indiceColumnaEliminar = 5;
+        Color color = new Color(255, 105, 97);
+        modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar",color));
+        modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
               
     }       
     
@@ -227,7 +232,7 @@ public class MisAbonos extends javax.swing.JFrame {
 
     private void btnCuentasBancariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuentasBancariasActionPerformed
         // TODO add your handling code here:
-        MisCuentasBancarias misCuentasBancarias = new MisCuentasBancarias();
+        MisCuentasBancarias misCuentasBancarias = new MisCuentasBancarias(pagoBO);
         misCuentasBancarias.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCuentasBancariasActionPerformed

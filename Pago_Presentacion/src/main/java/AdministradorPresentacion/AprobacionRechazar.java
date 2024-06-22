@@ -5,11 +5,12 @@
 package AdministradorPresentacion;
 
 import GUI.logIn;
+import Utilerias.JButtonCellEditor;
+import Utilerias.JButtonRenderer;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.TableColumnModel;
-import utilerias.JButtonCellEditor;
-import utilerias.JButtonRenderer;
 
 /**
  *
@@ -41,10 +42,10 @@ public class AprobacionRechazar extends javax.swing.JFrame {
                 
             }               
         };
-
-        modeloColumnas.getColumn(3).setCellRenderer(new JButtonRenderer("Aprobar"));
-        modeloColumnas.getColumn(3).setCellEditor(new JButtonCellEditor("Aprobar",onAprobarClickListener));       
-        
+        int indiceColumnaEditar = 3;
+        Color color = new Color(178, 218, 250);
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Aprobar",color));
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Aprobar", onAprobarClickListener));
         ActionListener onRechazarClickListener = new ActionListener() {
 
             @Override
@@ -55,8 +56,9 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             }               
         };
 
-        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Rechazar"));
-        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Rechazar",onRechazarClickListener));            
+        color = new Color(255, 105, 97);
+        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Rechazar",color));
+        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Rechazar", onRechazarClickListener));            
     }       
 
     /**

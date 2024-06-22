@@ -21,11 +21,23 @@ import java.util.List;
 public interface IPagoNegocio {
     
     /**
+     *
+     * @param beneficiario
+     * @return
+     */
+    public BeneficiarioDTO login(BeneficiarioDTO beneficiario);
+    
+    public long getId();
+    
+    public void setId(long id);
+    
+    /**
      * Guarda un nuevo pago en la base de datos.
      * 
      * @param pagoDTO El objeto Pago que se desea guardar.
+     * @throws excepcionBO.ExcepcionBO
      */
-    void guardarPago(PagoDTO pagoDTO) throws ExcepcionBO;
+    public void guardarPago(PagoDTO pagoDTO) throws ExcepcionBO;
     
     /**
      * Actualiza la información de un pago existente en la base de datos.

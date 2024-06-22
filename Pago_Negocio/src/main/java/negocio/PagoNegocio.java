@@ -1,11 +1,9 @@
 package negocio;
 
-import DAOs.BeneficiarioDAO;
 import DAOs.IBeneficiarioDAO;
 import DAOs.ICuentaBancariaDAO;
 import DAOs.IPagoDAO;
 import DTOs.AbonoDTO;
-import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
 import DTOs.EstatusDTO;
 import DTOs.NombreDTO;
@@ -14,16 +12,12 @@ import DTOs.TiposDTO;
 import entidades.Abono;
 import entidades.Beneficiario;
 import entidades.CuentaBancaria;
-import entidades.Estatus;
 import entidades.Pago;
 import entidades.PagosEstatus;
 import excepcionBO.ExcepcionBO;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import DTOs.BeneficiarioDTO;
@@ -56,10 +50,20 @@ public class PagoNegocio implements IPagoNegocio {
         this.beneficiarioDAO = beneficiarioDAO;
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
+    @Override
     public void setId(long id) {
         this.id = id;
     }

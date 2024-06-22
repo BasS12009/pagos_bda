@@ -5,11 +5,12 @@
 package AdministradorPresentacion;
 
 import GUI.logIn;
+import Utilerias.JButtonCellEditor;
+import Utilerias.JButtonRenderer;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.TableColumnModel;
-import utilerias.JButtonCellEditor;
-import utilerias.JButtonRenderer;
 
 /**
  *
@@ -39,9 +40,11 @@ public class PagadoRechazar extends javax.swing.JFrame {
             }               
         };
             
+        int indiceColumnaEditar = 3;
         TableColumnModel modeloColumnas = this.tblPagadoRechazado.getColumnModel();
-        modeloColumnas.getColumn(3).setCellRenderer(new JButtonRenderer("Pagado"));
-        modeloColumnas.getColumn(3).setCellEditor(new JButtonCellEditor("Pagado",onPagadoClickListener));
+        Color color = new Color(178, 218, 250);
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Pagado",color));
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Pagado", onPagadoClickListener));
         
         ActionListener onRechazadoClickListener = new ActionListener() {
 
@@ -53,8 +56,9 @@ public class PagadoRechazar extends javax.swing.JFrame {
             }               
         };
 
-        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Rechazado"));
-        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Rechazado",onRechazadoClickListener));        
+        color = new Color(255, 105, 97);
+        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Rechazado",color));
+        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Rechazado", onRechazadoClickListener));
     }       
     
     /**

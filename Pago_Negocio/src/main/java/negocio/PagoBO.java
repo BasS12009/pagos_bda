@@ -193,4 +193,19 @@ public class PagoBO implements IPagoBO{
     public List<BeneficiarioDTO> obtenerTodosLosBeneficiarios() throws ExcepcionBO {
         return pagoNegocio.obtenerTodosLosBeneficiarios();
     }
+    
+    @Override
+    public BeneficiarioDTO login(BeneficiarioDTO beneficiario){
+        return pagoNegocio.login(beneficiario);
+    }
+    
+    @Override
+    public long getId(){
+        return pagoNegocio.getId();
+    }
+    
+    @Override
+    public void setId(long id){
+        pagoNegocio.setId(id);
+    }
 }

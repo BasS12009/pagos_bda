@@ -5,18 +5,20 @@
 package BeneficiarioPresentacion;
 
 import GUI.logIn;
+import Utilerias.JButtonCellEditor;
+import Utilerias.JButtonRenderer;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.TableColumnModel;
-import utilerias.JButtonCellEditor;
-import utilerias.JButtonRenderer;
+import negocio.PagoBO;
 
 /**
  *
  * @author diana
  */
 public class MisPagos extends javax.swing.JFrame {
-
+    PagoBO pagoBO;
     /**
      * Creates new form MisPagos
      */
@@ -46,10 +48,10 @@ public class MisPagos extends javax.swing.JFrame {
                 
             }               
         };
-            
-        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
-        modeloColumnas.getColumn(5).setCellRenderer(new JButtonRenderer("Eliminar"));
-        modeloColumnas.getColumn(5).setCellEditor(new JButtonCellEditor("Eliminar",onEliminarClickListener));
+         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();    
+        Color color = new Color(255, 105, 97);
+        modeloColumnas.getColumn(5).setCellRenderer(new JButtonRenderer("Eliminar",color));
+        modeloColumnas.getColumn(5).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
           
         ActionListener onModificarClickListener = new ActionListener() {
 
@@ -61,8 +63,10 @@ public class MisPagos extends javax.swing.JFrame {
             }               
         };
             
-        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Modificar"));
-        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Modificar",onModificarClickListener));
+        int indiceColumnaEditar = 4;
+        color = new Color(253, 253, 150);
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Modificar",color));
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Modificar", onModificarClickListener));
                  
     }       
         
@@ -247,7 +251,7 @@ public class MisPagos extends javax.swing.JFrame {
 
     private void btnCuentasBancariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuentasBancariasActionPerformed
         // TODO add your handling code here:
-        MisCuentasBancarias misCuentasBancarias = new MisCuentasBancarias();
+        MisCuentasBancarias misCuentasBancarias = new MisCuentasBancarias(pagoBO);
         misCuentasBancarias.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCuentasBancariasActionPerformed

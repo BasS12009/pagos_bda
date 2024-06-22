@@ -4,12 +4,12 @@
  */
 package AdministradorPresentacion;
 
+import Utilerias.JButtonCellEditor;
+import Utilerias.JButtonRenderer;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.TableColumnModel;
-import utilerias.JButtonCellEditor;
-import utilerias.JButtonRenderer;
-
 /**
  *
  * @author diana
@@ -47,8 +47,10 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         };
             
         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
-        modeloColumnas.getColumn(6).setCellRenderer(new JButtonRenderer("Modificar"));
-        modeloColumnas.getColumn(6).setCellEditor(new JButtonCellEditor("Modificar",onModificarClickListener));
+        int indiceColumnaEditar = 6;
+        Color color = new Color(178, 218, 250);
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Modificar",color));
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Modificar", onModificarClickListener));
         
         ActionListener onEliminarClickListener = new ActionListener() {
 
@@ -60,8 +62,9 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
             }               
         };
 
-        modeloColumnas.getColumn(7).setCellRenderer(new JButtonRenderer("Eliminar"));
-        modeloColumnas.getColumn(7).setCellEditor(new JButtonCellEditor("Eliminar",onEliminarClickListener));        
+        color = new Color(255, 105, 97);
+        modeloColumnas.getColumn(7).setCellRenderer(new JButtonRenderer("Eliminar",color));
+        modeloColumnas.getColumn(7).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));     
     }        
     
     /**
