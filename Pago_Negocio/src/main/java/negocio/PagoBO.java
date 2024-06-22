@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * 
  * @author PC Gamer
  */
-public class PagoNegocio implements IPagoNegocio {
+public class PagoBO implements IPagoBO {
 
     private IPagoDAO pagoDAO;
     long id;
@@ -41,7 +41,7 @@ public class PagoNegocio implements IPagoNegocio {
      * Constructor de la clase PagoNegocio.
      * @param pagoDAO Objeto IPagoDAO que se utilizará para acceder a la capa de datos.
      */
-    public PagoNegocio(IPagoDAO pagoDAO) {
+    public PagoBO(IPagoDAO pagoDAO) {
         this.pagoDAO = pagoDAO;
     }
 

@@ -8,7 +8,7 @@ import DTOs.PagoDTO;
 import entidades.Pago;
 import java.util.List;
 
-public interface IPagoNegocio {
+public interface IPagoBO{
     
     /**
      * Guarda un nuevo pago en la base de datos.

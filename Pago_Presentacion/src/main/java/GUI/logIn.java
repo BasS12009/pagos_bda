@@ -9,7 +9,7 @@ import BeneficiarioPresentacion.MenuBeneficiario;
 import DTOs.BeneficiarioDTO;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import negocio.PagoNegocio;
+import negocio.PagoBO;
 
 /**
  *
@@ -17,7 +17,7 @@ import negocio.PagoNegocio;
  */
 public class logIn extends javax.swing.JFrame {
 
-    PagoNegocio negocio;
+    PagoBO negocio;
     
     /**
      * Creates new form logIn
