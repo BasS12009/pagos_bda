@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import entidades.CuentaBancaria; 
+import excepcion.ExcepcionDAO;
 
 /**
  * Implementación concreta de DAO para la entidad CuentaBancaria.
@@ -34,16 +35,17 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO{
      * Guarda una nueva cuenta bancaria en la base de datos.
      * 
      * @param cuenta La cuenta bancaria que se desea guardar.
+     * @throws ExcepcionDAO Si ocurre un error durante la operación de persistencia.
      */
     @Override
-    public void guardarCuentaBancaria(CuentaBancaria cuenta) {
+    public void guardarCuentaBancaria(CuentaBancaria cuenta) throws ExcepcionDAO {
         try {
             entityManager.getTransaction().begin();
             entityManager.persist(cuenta);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             entityManager.getTransaction().rollback();
-            e.printStackTrace();
+            throw new ExcepcionDAO("Error al guardar la cuenta bancaria", e);
         }
     }
 
@@ -51,16 +53,17 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO{
      * Actualiza la información de una cuenta bancaria existente en la base de datos.
      * 
      * @param cuenta La cuenta bancaria con los datos actualizados.
+     * @throws ExcepcionDAO Si ocurre un error durante la operación de merge.
      */
     @Override
-    public void actualizarCuentaBancaria(CuentaBancaria cuenta) {
+    public void actualizarCuentaBancaria(CuentaBancaria cuenta) throws ExcepcionDAO {
         try {
             entityManager.getTransaction().begin();
             entityManager.merge(cuenta);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             entityManager.getTransaction().rollback();
-            e.printStackTrace();
+            throw new ExcepcionDAO("Error al actualizar la cuenta bancaria", e);
         }
     }
 
@@ -68,16 +71,17 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO{
      * Elimina una cuenta bancaria de la base de datos.
      * 
      * @param cuenta La cuenta bancaria que se desea eliminar.
+     * @throws ExcepcionDAO Si ocurre un error durante la operación de eliminación.
      */
     @Override
-    public void eliminarCuentaBancaria(CuentaBancaria cuenta) {
+    public void eliminarCuentaBancaria(CuentaBancaria cuenta) throws ExcepcionDAO {
         try {
             entityManager.getTransaction().begin();
             entityManager.remove(entityManager.contains(cuenta) ? cuenta : entityManager.merge(cuenta));
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             entityManager.getTransaction().rollback();
-            e.printStackTrace();
+            throw new ExcepcionDAO("Error al eliminar la cuenta bancaria", e);
         }
     }
 
@@ -86,37 +90,68 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO{
      * 
      * @param numeroCuenta El número de cuenta de la cuenta bancaria que se desea buscar.
      * @return La cuenta bancaria encontrada, o null si no existe.
+     * @throws ExcepcionDAO Si ocurre un error durante la consulta.
      */
     @Override
-    public CuentaBancaria buscarCuentaBancariaPorNumero(String numeroCuenta) {
-        TypedQuery<CuentaBancaria> query = entityManager.createQuery("SELECT c FROM CuentaBancaria c WHERE c.numeroCuenta = :numero", CuentaBancaria.class);
-        query.setParameter("numero", numeroCuenta);
-        return query.getSingleResult();
+    public CuentaBancaria buscarCuentaBancariaPorNumero(String numeroCuenta) throws ExcepcionDAO {
+        try {
+            TypedQuery<CuentaBancaria> query = entityManager.createQuery("SELECT c FROM CuentaBancaria c WHERE c.numeroCuenta = :numero", CuentaBancaria.class);
+            query.setParameter("numero", numeroCuenta);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new ExcepcionDAO("Error al buscar la cuenta bancaria por número de cuenta", e);
+        }
     }
 
     /**
      * Retorna una lista con todas las cuentas bancarias almacenadas en la base de datos.
      * 
      * @return Lista de objetos CuentaBancaria.
+     * @throws ExcepcionDAO Si ocurre un error durante la consulta.
      */
     @Override
-    public List<CuentaBancaria> obtenerTodasLasCuentasBancarias() {
-        TypedQuery<CuentaBancaria> query = entityManager.createQuery("SELECT c FROM CuentaBancaria c", CuentaBancaria.class);
-        return query.getResultList();
+    public List<CuentaBancaria> obtenerTodasLasCuentasBancarias() throws ExcepcionDAO {
+        try {
+            TypedQuery<CuentaBancaria> query = entityManager.createQuery("SELECT c FROM CuentaBancaria c", CuentaBancaria.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new ExcepcionDAO("Error al obtener todas las cuentas bancarias", e);
+        }
     }
     
     /**
      * Retorna una lista con todas las cuentas bancarias asociadas a un beneficiario específico.
      * 
-     * @param claveContrato
-     * @return
+     * @param claveContrato Clave de contrato del beneficiario.
+     * @return Lista de cuentas bancarias asociadas al beneficiario.
+     * @throws ExcepcionDAO Si ocurre un error durante la consulta.
      */
     @Override
-    public List<CuentaBancaria> obtenerCuentasBancariasPorBeneficiario(String claveContrato) {
-        TypedQuery<CuentaBancaria> query = entityManager.createQuery(
-                "SELECT c FROM CuentaBancaria c WHERE c.beneficiario.claveContrato = :claveContrato", CuentaBancaria.class);
-        query.setParameter("claveContrato", claveContrato);
-        return query.getResultList();
+    public List<CuentaBancaria> obtenerCuentasBancariasPorBeneficiario(String claveContrato) throws ExcepcionDAO {
+        try {
+            TypedQuery<CuentaBancaria> query = entityManager.createQuery(
+                    "SELECT c FROM CuentaBancaria c WHERE c.beneficiario.claveContrato = :claveContrato", CuentaBancaria.class);
+            query.setParameter("claveContrato", claveContrato);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new ExcepcionDAO("Error al obtener las cuentas bancarias por beneficiario", e);
+        }
+    }
+    
+    /**
+     * Busca y retorna una cuenta bancaria por su ID.
+     * 
+     * @param id El ID de la cuenta bancaria que se desea buscar.
+     * @return La cuenta bancaria encontrada, o null si no existe.
+     * @throws ExcepcionDAO Si ocurre un error durante la consulta.
+     */
+    @Override
+    public CuentaBancaria buscarCuentaBancariaPorId(Long id) throws ExcepcionDAO {
+        try {
+            return entityManager.find(CuentaBancaria.class, id);
+        } catch (Exception e) {
+            throw new ExcepcionDAO("Error al buscar la cuenta bancaria por ID", e);
+        }
     }
     
     /**

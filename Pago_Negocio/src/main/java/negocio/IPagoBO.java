@@ -4,54 +4,132 @@
  */
 package negocio;
 
+import DTOs.BeneficiarioDTO;
+import DTOs.CuentaBancariaDTO;
 import DTOs.PagoDTO;
-import entidades.Pago;
+import excepcionBO.ExcepcionBO;
 import java.util.List;
 
-public interface IPagoBO{
-    
+/**
+ * Interfaz que define las operaciones relacionadas con pagos y cuentas bancarias.
+ * Las implementaciones de esta interfaz deben manejar excepciones del tipo ExcepcionBO.
+ * 
+ * @author PC Gamer
+ */
+public interface IPagoBO {
+
     /**
-     * Guarda un nuevo pago en la base de datos.
-     * 
-     * @param pagoDTO El objeto Pago que se desea guardar.
+     *
+     * @param pagoDTO
      */
-    void guardarPago(PagoDTO pagoDTO);
-    
+    void guardarPago(PagoDTO pagoDTO) throws ExcepcionBO;
+
     /**
-     * Actualiza la información de un pago existente en la base de datos.
-     * 
-     * @param pagoDTO El objeto Pago con los datos actualizados.
+     *
+     * @param pagoDTO
      */
-    void actualizarPago(PagoDTO pagoDTO);
-    
+    void actualizarPago(PagoDTO pagoDTO) throws ExcepcionBO;
+
     /**
-     * Elimina un pago de la base de datos.
-     * 
+     *
      * @param id
      */
-    void eliminarPago(Long id);
-    
+    void eliminarPago(Long id)throws ExcepcionBO;
+
     /**
-     * Busca y retorna un pago por su ID.
-     * 
-     * @param id El ID del pago que se desea buscar.
-     * @return El objeto Pago encontrado, o null si no existe.
+     *
+     * @param id
+     * @return
      */
-    PagoDTO buscarPagoPorId(Long id);
-    
+    PagoDTO buscarPagoPorId(Long id)throws ExcepcionBO;
+
     /**
-     * Retorna una lista con todos los pagos almacenados en la base de datos.
-     * 
-     * @return Lista de objetos Pago.
+     *
+     * @return
      */
-    List<PagoDTO> obtenerTodosLosPagos();
-    
+    List<PagoDTO> obtenerTodosLosPagos()throws ExcepcionBO;
+
     /**
-     * Retorna una lista con todos los pagos asociados a un beneficiario específico.
-     * 
+     *
      * @param idBeneficiario
-     * @return Lista de pagos asociados al beneficiario.
+     * @return
      */
-    List<PagoDTO> obtenerPagosPorBeneficiario(Long idBeneficiario);
+    List<PagoDTO> obtenerPagosPorBeneficiario(Long idBeneficiario)throws ExcepcionBO;
     
+    /**
+     * Guarda una cuenta bancaria en el sistema.
+     * 
+     * @param cuentaBancariaDTO Objeto CuentaBancariaDTO que representa la cuenta bancaria a guardar.
+     */
+    public void guardarCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO)throws ExcepcionBO;
+
+    /**
+     * Actualiza una cuenta bancaria existente en el sistema.
+     * 
+     * @param cuentaBancariaDTO Objeto CuentaBancariaDTO que representa la cuenta bancaria a actualizar.
+     */
+    public void actualizarCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO)throws ExcepcionBO;
+
+    /**
+     * Elimina una cuenta bancaria del sistema por su ID.
+     * 
+     * @param id Identificador único de la cuenta bancaria a eliminar.
+     */
+    public void eliminarCuentaBancaria(Long id)throws ExcepcionBO;
+
+    /**
+     * Busca una cuenta bancaria en el sistema por su ID.
+     * 
+     * @param id Identificador único de la cuenta bancaria a buscar.
+     * @return Objeto CuentaBancariaDTO si se encuentra, o null si no existe ninguna cuenta bancaria con ese ID.
+     */
+    public CuentaBancariaDTO buscarCuentaBancariaPorId(Long id)throws ExcepcionBO;
+
+    /**
+     * Obtiene todas las cuentas bancarias almacenadas en el sistema.
+     * 
+     * @return Lista de objetos CuentaBancariaDTO que representan todas las cuentas bancarias almacenadas.
+     */
+    public List<CuentaBancariaDTO> obtenerTodasLasCuentasBancarias()throws ExcepcionBO;
+    
+     /**
+     * Guarda un beneficiario en el sistema.
+     * 
+     * @param beneficiarioDTO Objeto BeneficiarioDTO que representa el beneficiario a guardar.
+     * @throws ExcepcionBO Si ocurre un error al intentar guardar el beneficiario.
+     */
+    void guardarBeneficiario(BeneficiarioDTO beneficiarioDTO) throws ExcepcionBO;
+
+    /**
+     * Actualiza un beneficiario existente en el sistema.
+     * 
+     * @param beneficiarioDTO Objeto BeneficiarioDTO que representa el beneficiario a actualizar.
+     * @throws ExcepcionBO Si ocurre un error al intentar actualizar el beneficiario.
+     */
+    void actualizarBeneficiario(BeneficiarioDTO beneficiarioDTO) throws ExcepcionBO;
+
+    /**
+     * Elimina un beneficiario del sistema por su ID.
+     * 
+     * @param id Identificador único del beneficiario a eliminar.
+     * @throws ExcepcionBO Si ocurre un error al intentar eliminar el beneficiario.
+     */
+    void eliminarBeneficiario(Long id) throws ExcepcionBO;
+
+    /**
+     * Busca un beneficiario en el sistema por su ID.
+     * 
+     * @param id Identificador único del beneficiario a buscar.
+     * @return Objeto BeneficiarioDTO si se encuentra, o null si no existe ningún beneficiario con ese ID.
+     * @throws ExcepcionBO Si ocurre un error al intentar buscar el beneficiario.
+     */
+    BeneficiarioDTO buscarBeneficiarioPorId(Long id) throws ExcepcionBO;
+
+    /**
+     * Obtiene todos los beneficiarios almacenados en el sistema.
+     * 
+     * @return Lista de objetos BeneficiarioDTO que representan todos los beneficiarios almacenados.
+     * @throws ExcepcionBO Si ocurre un error al intentar obtener todos los beneficiarios.
+     */
+    List<BeneficiarioDTO> obtenerTodosLosBeneficiarios() throws ExcepcionBO;
 }

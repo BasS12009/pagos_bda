@@ -39,97 +39,81 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
      * Guarda un nuevo beneficiario en la base de datos.
      * 
      * @param beneficiario El objeto Beneficiario que se desea guardar.
+     * @throws ExcepcionDAO Si ocurre un error durante la operación de persistencia.
      */
     @Override
-    public void guardarBeneficiario(Beneficiario beneficiario) {
-        EntityManager entityManager = null;
-    EntityTransaction transaction = null;
-
-    try {
-        entityManager = ConexionBD.getEntityManager();
-        transaction = entityManager.getTransaction();
-        transaction.begin();
+    public void guardarBeneficiario(Beneficiario beneficiario) throws ExcepcionDAO {
+        EntityTransaction transaction = null;
         
-        Beneficiario existingBeneficiario = buscarBeneficiarioPorClaveContrato(beneficiario.getClaveContrato());
-        if (existingBeneficiario == null) {
-            entityManager.persist(beneficiario);
-        } else {
-            System.out.println("Ya existe un beneficiario con la misma clave de contrato: " + beneficiario.getClaveContrato());
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            
+            Beneficiario existingBeneficiario = buscarBeneficiarioPorClaveContrato(beneficiario.getClaveContrato());
+            if (existingBeneficiario == null) {
+                entityManager.persist(beneficiario);
+            } else {
+                System.out.println("Ya existe un beneficiario con la misma clave de contrato: " + beneficiario.getClaveContrato());
+            }
+            
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new ExcepcionDAO("Error al guardar el beneficiario", e);
         }
-
-        transaction.commit();
-    } catch (Exception e) {
-        if (transaction != null && transaction.isActive()) {
-            transaction.rollback();
-        }
-        e.printStackTrace(); 
-    } finally {
-        if (entityManager != null) {
-            entityManager.close();
-        }
-    }
     }
 
     /**
      * Actualiza la información de un beneficiario existente en la base de datos.
      * 
      * @param beneficiario El objeto Beneficiario con los datos actualizados.
+     * @throws ExcepcionDAO Si ocurre un error durante la operación de merge.
      */
     @Override
-    public void actualizarBeneficiario(Beneficiario beneficiario) {
-        EntityManager entityManager = null;
+    public void actualizarBeneficiario(Beneficiario beneficiario) throws ExcepcionDAO {
         EntityTransaction transaction = null;
-
-    try {
-        entityManager = ConexionBD.getEntityManager();
-        transaction = entityManager.getTransaction();
-        transaction.begin();
-        entityManager.merge(beneficiario);
-
-        transaction.commit();
-    } catch (Exception e) {
-        if (transaction != null && transaction.isActive()) {
-            transaction.rollback();
+        
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            entityManager.merge(beneficiario);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new ExcepcionDAO("Error al actualizar el beneficiario", e);
         }
-        e.printStackTrace();
-    } finally {
-        if (entityManager != null) {
-            entityManager.close();
-        }
-    }
     }
 
     /**
      * Elimina un beneficiario de la base de datos.
      * 
      * @param beneficiario El objeto Beneficiario que se desea eliminar.
+     * @throws ExcepcionDAO Si ocurre un error durante la operación de eliminación.
      */
     @Override
-    public void eliminarBeneficiario(Beneficiario beneficiario) {
-        EntityManager entityManager = null;
+    public void eliminarBeneficiario(Beneficiario beneficiario) throws ExcepcionDAO {
         EntityTransaction transaction = null;
-
+        
         try {
-            entityManager = ConexionBD.getEntityManager();
             transaction = entityManager.getTransaction();
             transaction.begin();
             
             if (!entityManager.contains(beneficiario)) {
                 beneficiario = entityManager.merge(beneficiario);
             }
-
+            
             entityManager.remove(beneficiario);
-
+            
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            e.printStackTrace();
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+            throw new ExcepcionDAO("Error al eliminar el beneficiario", e);
         }
     }
 
@@ -138,66 +122,62 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
      * 
      * @param claveContrato La clave de contrato del beneficiario que se desea buscar.
      * @return El objeto Beneficiario encontrado, o null si no existe.
-     * @throws excepcion.ExcepcionDAO
+     * @throws ExcepcionDAO Si ocurre un error durante la consulta.
      */
     @Override
-    public Beneficiario buscarBeneficiarioPorClaveContrato(String claveContrato){
-        Beneficiario beneficiario = null;
-    EntityManager entityManager = null;
-
-    try {
-        entityManager = ConexionBD.getEntityManager();
-        TypedQuery<Beneficiario> query = entityManager.createQuery(
-            "SELECT b FROM Beneficiario b WHERE b.claveContrato = :clave", Beneficiario.class);
-        query.setParameter("clave", claveContrato);
-        beneficiario = query.getSingleResult();
-    } catch (NoResultException e) {
-        System.out.println(e.getMessage());
-    } catch (NonUniqueResultException e) {
-        e.printStackTrace();
-    } finally {
-        if (entityManager != null) {
-            entityManager.close();
+    public Beneficiario buscarBeneficiarioPorClaveContrato(String claveContrato) throws ExcepcionDAO {
+        try {
+            TypedQuery<Beneficiario> query = entityManager.createQuery(
+                "SELECT b FROM Beneficiario b WHERE b.claveContrato = :clave", Beneficiario.class);
+            query.setParameter("clave", claveContrato);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new ExcepcionDAO("Error al buscar el beneficiario por clave de contrato", e);
         }
     }
-    return beneficiario;
+    
+    /**
+     * Busca y retorna un beneficiario por su ID.
+     *
+     * @param id El ID del beneficiario que se desea buscar.
+     * @return El objeto Beneficiario encontrado, o null si no existe.
+     * @throws ExcepcionDAO Si ocurre un error durante la consulta.
+     */
+    @Override
+    public Beneficiario buscarBeneficiarioPorId(Long id) throws ExcepcionDAO {
+        try {
+            return entityManager.find(Beneficiario.class, id);
+        } catch (Exception e) {
+            throw new ExcepcionDAO("Error al buscar el beneficiario por ID", e);
+        }
     }
 
     /**
      * Retorna una lista con todos los beneficiarios almacenados en la base de datos.
      * 
      * @return Lista de objetos Beneficiario.
+     * @throws ExcepcionDAO Si ocurre un error durante la consulta.
      */
     @Override
-    public List<Beneficiario> obtenerTodosLosBeneficiarios() {
-        List<Beneficiario> beneficiarios = new ArrayList<>();
-    EntityManager entityManager = null;
-    EntityTransaction transaction = null;
-
-    try {
-        entityManager = ConexionBD.getEntityManager();
-        transaction = entityManager.getTransaction();
-        transaction.begin();
-
-        TypedQuery<Beneficiario> query = entityManager.createQuery("SELECT b FROM Beneficiario b", Beneficiario.class);
-        beneficiarios = query.getResultList();
-
-        transaction.commit();
-    } catch (Exception e) {
-        if (transaction != null && transaction.isActive()) {
-            transaction.rollback();
-        }
-        e.printStackTrace();
-    } finally {
-        if (entityManager != null) {
-            entityManager.close();
+    public List<Beneficiario> obtenerTodosLosBeneficiarios() throws ExcepcionDAO {
+        EntityTransaction transaction = null;
+        
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            
+            TypedQuery<Beneficiario> query = entityManager.createQuery("SELECT b FROM Beneficiario b", Beneficiario.class);
+            List<Beneficiario> beneficiarios = query.getResultList();
+            
+            transaction.commit();
+            return beneficiarios;
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new ExcepcionDAO("Error al obtener todos los beneficiarios", e);
         }
     }
-
-    return beneficiarios;
-    }
-    
-    
     
     /**
      * Cierra la conexión del EntityManager y el EntityManagerFactory.

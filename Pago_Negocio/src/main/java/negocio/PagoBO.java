@@ -4,240 +4,193 @@
  */
 package negocio;
 
-import DAOs.BeneficiarioDAO;
-import DAOs.IPagoDAO;
-import DTOs.AbonoDTO;
 import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
-import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
-import DTOs.TiposDTO;
-import entidades.Abono;
-import entidades.Beneficiario;
-import entidades.CuentaBancaria;
-import entidades.Estatus;
-import entidades.Pago;
-import entidades.PagosEstatus;
 import excepcionBO.ExcepcionBO;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
- * Clase de negocio para operaciones relacionadas con pagos.
+ * Implementación de la interfaz IPagoBO que actúa como fachada para las operaciones de pago.
+ * Esta clase delega las operaciones a un objeto IPagoNegocio.
  * 
  * @author PC Gamer
  */
-public class PagoBO implements IPagoBO {
+public class PagoBO implements IPagoBO{
+    
+    private final IPagoNegocio pagoNegocio;
 
-    private IPagoDAO pagoDAO;
-    long id;
 
     /**
-     * Constructor de la clase PagoNegocio.
-     * @param pagoDAO Objeto IPagoDAO que se utilizará para acceder a la capa de datos.
+     * Constructor que inicializa la clase con un objeto IPagoNegocio.
+     * 
+     * @param pagoNegocio Objeto IPagoNegocio que se utilizará para realizar operaciones de pago.
      */
-    public PagoBO(IPagoDAO pagoDAO) {
-        this.pagoDAO = pagoDAO;
+    public PagoBO(IPagoNegocio pagoNegocio) {
+        this.pagoNegocio = pagoNegocio;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-    
-
-    public BeneficiarioDTO login(BeneficiarioDTO beneficiario) {
-
-//        Beneficiario beneficiarioAuxiliar = null;
-//        try {
-//            beneficiarioAuxiliar = convertirAEntidadSinId(beneficiario);
-//
-//            return convertirAEntidad(BeneficiarioDAO.login(beneficiarioAuxiliar));
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (ExcepcionBO ex) {
-//            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-        return null;
-
-    }
-    
     /**
-     * Guarda un pago en la base de datos.
+     * Guarda un pago en el sistema.
+     * 
      * @param pagoDTO Objeto PagoDTO que representa el pago a guardar.
      */
     @Override
-    public void guardarPago(PagoDTO pagoDTO) {
-        Pago pago = convertir(pagoDTO);
-        pagoDAO.guardarPago(pago);
+    public void guardarPago(PagoDTO pagoDTO) throws ExcepcionBO {
+        pagoNegocio.guardarPago(pagoDTO);
     }
 
     /**
-     * Actualiza un pago existente en la base de datos.
+     * Actualiza un pago existente en el sistema.
+     * 
      * @param pagoDTO Objeto PagoDTO que representa el pago a actualizar.
      */
     @Override
-    public void actualizarPago(PagoDTO pagoDTO) {
-        Pago pago = convertir(pagoDTO);
-        pagoDAO.actualizarPago(pago);
+    public void actualizarPago(PagoDTO pagoDTO) throws ExcepcionBO {
+        pagoNegocio.actualizarPago(pagoDTO);
     }
 
     /**
-     * Elimina un pago de la base de datos por su ID.
+     * Elimina un pago del sistema por su ID.
+     * 
      * @param id Identificador único del pago a eliminar.
-     * @throws RuntimeException Si no se encuentra ningún pago con el ID especificado.
      */
     @Override
-    public void eliminarPago(Long id) {
-        Pago pago = pagoDAO.buscarPagoPorId(id);
-        if (pago != null) {
-            pagoDAO.eliminarPago(pago);
-        } else {
-            throw new RuntimeException("El pago con ID " + id + " no existe.");
-        }
+    public void eliminarPago(Long id) throws ExcepcionBO {
+        pagoNegocio.eliminarPago(id);
     }
 
     /**
-     * Busca un pago en la base de datos por su ID y lo convierte a PagoDTO.
+     * Busca un pago en el sistema por su ID.
+     * 
      * @param id Identificador único del pago a buscar.
      * @return Objeto PagoDTO si se encuentra, o null si no existe ningún pago con ese ID.
      */
     @Override
-    public PagoDTO buscarPagoPorId(Long id) {
-        PagoDTO pagoDTO = convertir(pagoDAO.buscarPagoPorId(id));
-        if (pagoDTO != null) {
-            return pagoDTO;
-        }
-        return null;
+    public PagoDTO buscarPagoPorId(Long id) throws ExcepcionBO{
+        return pagoNegocio.buscarPagoPorId(id);
     }
 
     /**
-     * Obtiene todos los pagos de la base de datos y los convierte a una lista de PagoDTO.
-     * @return Lista de PagoDTO que representa todos los pagos almacenados.
+     * Obtiene todos los pagos almacenados en el sistema.
+     * 
+     * @return Lista de objetos PagoDTO que representan todos los pagos almacenados.
      */
     @Override
-    public List<PagoDTO> obtenerTodosLosPagos() {
-        List<PagoDTO> pagosDTO = convertir(pagoDAO.obtenerTodosLosPagos());
-        return pagosDTO;
+    public List<PagoDTO> obtenerTodosLosPagos() throws ExcepcionBO{
+        return pagoNegocio.obtenerTodosLosPagos();
     }
 
     /**
-     * Obtiene todos los pagos asociados a un beneficiario específico y los convierte a una lista de PagoDTO.
+     * Obtiene todos los pagos asociados a un beneficiario específico.
+     * 
      * @param idBeneficiario Identificador único del beneficiario para el cual se obtienen los pagos.
-     * @return Lista de PagoDTO que representa los pagos asociados al beneficiario especificado.
+     * @return Lista de objetos PagoDTO que representan los pagos asociados al beneficiario especificado.
      */
     @Override
-    public List<PagoDTO> obtenerPagosPorBeneficiario(Long idBeneficiario) {
-        List<PagoDTO> pagosDTO = convertir(pagoDAO.obtenerPagosPorBeneficiario(idBeneficiario));
-        return pagosDTO;
-    }
-
-    /**
-     * Convierte un objeto PagoDTO a un objeto Pago.
-     * @param pagoDTO Objeto PagoDTO que se desea convertir.
-     * @return Objeto Pago resultante de la conversión.
-     */
-    private static Pago convertir(PagoDTO pagoDTO) {
-        Pago pago = new Pago();
-        pago.setId(pagoDTO.getId());
-        pago.setMonto(pagoDTO.getMonto());
-        pago.setFechaHora(pagoDTO.getFechaHora());
-        pago.setComprobante(pagoDTO.getComprobante());
-
-        if (pagoDTO.getAbonos() != null) {
-            List<Abono> abonos = pagoDTO.getAbonos().stream()
-                                    .map(AbonoDTO::convertir)
-                                    .collect(Collectors.toList());
-            pago.setAbonos(abonos);
-        }
-
-        if (pagoDTO.getEstatus() != null) {
-            List<PagosEstatus> estatus = (List<PagosEstatus>) pagoDTO.getEstatus().stream()
-                                        .map(EstatusDTO::convertir);
-            pago.setPagosEstatus(estatus);
-        }
-
-        pago.setTipo(TiposDTO.convertir(pagoDTO.getTipo()));
-
-        pago.setBeneficiario(BeneficiarioDTO.convertir(pagoDTO.getBeneficiario()));
-
-        if (pagoDTO.getCuentas() != null) {
-            List<CuentaBancaria> cuentasBancarias = pagoDTO.getCuentas().stream()
-                                                    .map(CuentaBancariaDTO::convertir)
-                                                    .collect(Collectors.toList());
-            pago.setCuentaBancaria((CuentaBancaria) cuentasBancarias);
-        }
-
-        return pago;
-    }
-
-    /**
-     * Convierte un objeto Pago a un objeto PagoDTO.
-     * @param pago Objeto Pago que se desea convertir.
-     * @return Objeto PagoDTO resultante de la conversión.
-     */
-    public static PagoDTO convertir(Pago pago) {
-        PagoDTO pagoDTO = new PagoDTO();
-        pagoDTO.setId(pago.getId());
-        pagoDTO.setMonto(pago.getMonto());
-        pagoDTO.setFechaHora(pago.getFechaHora());
-        pagoDTO.setComprobante(pago.getComprobante());
-
-        // Convertir abonos si existen
-        if (pago.getAbonos() != null) {
-            List<AbonoDTO> abonosDTO = pago.getAbonos().stream()
-                                        .map(AbonoDTO::convertir)
-                                        .collect(Collectors.toList());
-            pagoDTO.setAbonos(abonosDTO);
-        }
-
-        // Convertir estatus si existen
-        if (pago.getPagosEstatus() != null) {
-            List<EstatusDTO> estatusDTO = pago.getPagosEstatus().stream()
-                                             .map(PagosEstatus::getEstatus)
-                                             .map(EstatusDTO::convertir)
-                                             .collect(Collectors.toList());
-            pagoDTO.setEstatus(estatusDTO);
-        }
-
-        // Convertir tipo
-        pagoDTO.setTipo(TiposDTO.convertir(pago.getTipo()));
-
-        // Convertir beneficiario
-        pagoDTO.setBeneficiario(BeneficiarioDTO.convertir(pago.getBeneficiario()));
-
-        // Convertir cuentas bancarias si existe una
-        if (pago.getCuentaBancaria() != null) {
-            CuentaBancariaDTO cuentaDTO = CuentaBancariaDTO.convertir(pago.getCuentaBancaria());
-            pagoDTO.setCuentas(Collections.singletonList(cuentaDTO));   
-    }
-        return pagoDTO;
+    public List<PagoDTO> obtenerPagosPorBeneficiario(Long idBeneficiario) throws ExcepcionBO {
+        return pagoNegocio.obtenerPagosPorBeneficiario(idBeneficiario);
     }
     
+    /**
+     * Guarda una cuenta bancaria en el sistema.
+     * 
+     * @param cuentaBancariaDTO Objeto CuentaBancariaDTO que representa la cuenta bancaria a guardar.
+     */
+    @Override
+    public void guardarCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO) throws ExcepcionBO{
+        pagoNegocio.guardarCuentaBancaria(cuentaBancariaDTO);
+    }
 
     /**
-     * Convierte una lista de objetos Pago a una lista de objetos PagoDTO.
-     * @param pagos Lista de objetos Pago que se desea convertir.
-     * @return Lista de objetos PagoDTO resultante de la conversión.
+     * Actualiza una cuenta bancaria existente en el sistema.
+     * 
+     * @param cuentaBancariaDTO Objeto CuentaBancariaDTO que representa la cuenta bancaria a actualizar.
      */
-    public static List<PagoDTO> convertir(List<Pago> pagos) {
-        List<PagoDTO> pagosDTO = new ArrayList<>();
-        
-        for (Pago pago : pagos) {
-            PagoDTO pagoDTO = convertir(pago);
-            pagosDTO.add(pagoDTO);
-        }
-        
-        return pagosDTO;
+    @Override
+    public void actualizarCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO) throws ExcepcionBO{
+        pagoNegocio.actualizarCuentaBancaria(cuentaBancariaDTO);
+    }
+
+    /**
+     * Elimina una cuenta bancaria del sistema por su ID.
+     * 
+     * @param id Identificador único de la cuenta bancaria a eliminar.
+     */
+    @Override
+    public void eliminarCuentaBancaria(Long id) throws ExcepcionBO{
+        pagoNegocio.eliminarCuentaBancaria(id);
+    }
+
+    /**
+     * Busca una cuenta bancaria en el sistema por su ID.
+     * 
+     * @param id Identificador único de la cuenta bancaria a buscar.
+     * @return Objeto CuentaBancariaDTO si se encuentra, o null si no existe ninguna cuenta bancaria con ese ID.
+     */
+    @Override
+    public CuentaBancariaDTO buscarCuentaBancariaPorId(Long id) throws ExcepcionBO{
+        return pagoNegocio.buscarCuentaBancariaPorId(id);
+    }
+
+    /**
+     * Obtiene todas las cuentas bancarias almacenadas en el sistema.
+     * 
+     * @return Lista de objetos CuentaBancariaDTO que representan todas las cuentas bancarias almacenadas.
+     */
+    @Override
+    public List<CuentaBancariaDTO> obtenerTodasLasCuentasBancarias() throws ExcepcionBO{
+        return pagoNegocio.obtenerTodasLasCuentasBancarias();
+    }
+    
+    /**
+     * Guarda un beneficiario en el sistema.
+     * 
+     * @param beneficiarioDTO Objeto BeneficiarioDTO que representa el beneficiario a guardar.
+     */
+    @Override
+    public void guardarBeneficiario(BeneficiarioDTO beneficiarioDTO) throws ExcepcionBO {
+        pagoNegocio.guardarBeneficiario(beneficiarioDTO);
+    }
+
+    /**
+     * Actualiza un beneficiario existente en el sistema.
+     * 
+     * @param beneficiarioDTO Objeto BeneficiarioDTO que representa el beneficiario a actualizar.
+     */
+    @Override
+    public void actualizarBeneficiario(BeneficiarioDTO beneficiarioDTO) throws ExcepcionBO {
+        pagoNegocio.actualizarBeneficiario(beneficiarioDTO);
+    }
+
+    /**
+     * Elimina un beneficiario del sistema por su ID.
+     * 
+     * @param id Identificador único del beneficiario a eliminar.
+     */
+    @Override
+    public void eliminarBeneficiario(Long id) throws ExcepcionBO {
+        pagoNegocio.eliminarBeneficiario(id);
+    }
+
+    /**
+     * Busca un beneficiario en el sistema por su ID.
+     * 
+     * @param id Identificador único del beneficiario a buscar.
+     * @return Objeto BeneficiarioDTO si se encuentra, o null si no existe ningún beneficiario con ese ID.
+     */
+    @Override
+    public BeneficiarioDTO buscarBeneficiarioPorId(Long id) throws ExcepcionBO {
+        return pagoNegocio.buscarBeneficiarioPorId(id);
+    }
+
+    /**
+     * Obtiene todos los beneficiarios almacenados en el sistema.
+     * 
+     * @return Lista de objetos BeneficiarioDTO que representan todos los beneficiarios almacenados.
+     */
+    @Override
+    public List<BeneficiarioDTO> obtenerTodosLosBeneficiarios() throws ExcepcionBO {
+        return pagoNegocio.obtenerTodosLosBeneficiarios();
     }
 }
