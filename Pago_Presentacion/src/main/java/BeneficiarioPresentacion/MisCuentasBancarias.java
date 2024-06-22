@@ -50,16 +50,21 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
     }
 
     private void modificarCuenta() {
-    
-        ModificarCuenta modificarCuenta = new ModificarCuenta();
-        modificarCuenta.setVisible(true);
-        this.setVisible(false);
+        try {
+            long id = this.getIdSeleccionadoTabla();
+            ModificarCuenta modificarCuenta = new ModificarCuenta(pagoBO,id);
+            modificarCuenta.setVisible(true);
+            this.setVisible(false);
+            cargarEnTabla();
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     
     private void eliminar() throws ExcepcionPresentacion {
         try {
-        long id = this.getIdSeleccionadoTablaFunciones();
+        long id = this.getIdSeleccionadoTabla();
         CuentaBancariaDTO cuentaDTO = pagoBO.buscarCuentaBancariaPorId(id);
         int confirmacion = JOptionPane.showConfirmDialog(this, 
                             "¿Está seguro que desea eliminar al cliente?\n" +
@@ -79,7 +84,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         }
     }
     
-    private long getIdSeleccionadoTablaFunciones() {
+    private long getIdSeleccionadoTabla() {
         int indiceFilaSeleccionada = this.jTable1.getSelectedRow();
         if (indiceFilaSeleccionada != -1) {
             DefaultTableModel modelo = (DefaultTableModel) this.jTable1.getModel();

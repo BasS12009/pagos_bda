@@ -4,6 +4,11 @@
  */
 package BeneficiarioPresentacion;
 
+import DTOs.CuentaBancariaDTO;
+import excepcion.ExcepcionPresentacion;
+import excepcionBO.ExcepcionBO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import negocio.PagoBO;
 
 /**
@@ -12,13 +17,34 @@ import negocio.PagoBO;
  */
 public class ModificarCuenta extends javax.swing.JFrame {
     PagoBO pagoBO;
+    long id;
+    
     /**
      * Creates new form ModificarCuenta
      */
-    public ModificarCuenta() {
+    public ModificarCuenta(PagoBO pagoBO, long id) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
+        this.pagoBO=pagoBO;
+        this.id=id;
+        
+        cargarTextos();
+    }
+    
+    public void cargarTextos(){
+        try {
+            CuentaBancariaDTO cuenta=pagoBO.buscarCuentaBancariaPorId(id);
+            textoNumero.setText(cuenta.getNumeroCuenta());
+            textoClabe.setText(cuenta.getClave());
+            textoBanco.setText(cuenta.getBanco());
+        } catch (ExcepcionBO ex) {
+            try {
+                throw new ExcepcionPresentacion(ex.getMessage());
+            } catch (ExcepcionPresentacion ex1) {
+                Logger.getLogger(ModificarCuenta.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
     }
 
     /**
@@ -34,13 +60,13 @@ public class ModificarCuenta extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         btnRegresar3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        textoNumero = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        textoClabe = new javax.swing.JTextField();
         btnAbono1 = new javax.swing.JButton();
+        textoBanco = new javax.swing.JTextField();
 
         btnAbono.setText("Agregar Abono");
 
@@ -64,15 +90,12 @@ public class ModificarCuenta extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Modificar Cuenta");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 30, -1, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 160, 270, 30));
+        jPanel1.add(textoNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 160, 270, 30));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Clabe");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 220, -1, -1));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 340, 270, 30));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -83,13 +106,19 @@ public class ModificarCuenta extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("No. Cuenta");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, -1, -1));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 250, 270, 30));
+        jPanel1.add(textoClabe, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 260, 270, 30));
 
         btnAbono1.setBackground(new java.awt.Color(116, 114, 178));
         btnAbono1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         btnAbono1.setForeground(new java.awt.Color(255, 255, 255));
         btnAbono1.setText("Modificar Cuenta");
+        btnAbono1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbono1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAbono1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 460, 140, 30));
+        jPanel1.add(textoBanco, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 330, 270, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -112,52 +141,33 @@ public class ModificarCuenta extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnRegresar3ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    private void btnAbono1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbono1ActionPerformed
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+            CuentaBancariaDTO cuenta=pagoBO.buscarCuentaBancariaPorId(id);
+            cuenta.setNumeroCuenta(textoNumero.getText());
+            cuenta.setClave(textoClabe.getText());
+            cuenta.setBanco(textoBanco.getText());
+            pagoBO.actualizarCuentaBancaria(cuenta);
+        } catch (ExcepcionBO ex) {
+            try {
+                throw new ExcepcionPresentacion(ex.getMessage());
+            } catch (ExcepcionPresentacion ex1) {
+                Logger.getLogger(ModificarCuenta.class.getName()).log(Level.SEVERE, null, ex1);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificarCuenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificarCuenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificarCuenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificarCuenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ModificarCuenta().setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_btnAbono1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbono;
     private javax.swing.JButton btnAbono1;
     private javax.swing.JButton btnRegresar3;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField textoBanco;
+    private javax.swing.JTextField textoClabe;
+    private javax.swing.JTextField textoNumero;
     // End of variables declaration//GEN-END:variables
 }
