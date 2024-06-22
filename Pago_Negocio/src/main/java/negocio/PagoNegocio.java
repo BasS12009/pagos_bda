@@ -191,7 +191,7 @@ public class PagoNegocio implements IPagoNegocio {
     @Override
     public void guardarCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO) throws ExcepcionBO {
         try {
-            CuentaBancaria cuentaBancaria = convertir(cuentaBancariaDTO);
+            CuentaBancaria cuentaBancaria = convertirDAO(cuentaBancariaDTO);
             cuentaBancariaDAO.guardarCuentaBancaria(cuentaBancaria);
         } catch (ExcepcionDAO ex) {
             throw new ExcepcionBO("Error al guardar la cuenta", ex);
@@ -207,7 +207,7 @@ public class PagoNegocio implements IPagoNegocio {
     @Override
     public void actualizarCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO) throws ExcepcionBO {
         try {
-            CuentaBancaria cuentaBancaria = convertir(cuentaBancariaDTO);
+            CuentaBancaria cuentaBancaria = convertirDAO(cuentaBancariaDTO);
             cuentaBancariaDAO.actualizarCuentaBancaria(cuentaBancaria);
         } catch (ExcepcionDAO ex) {
             throw new ExcepcionBO("Error al actualizar la cuenta", ex);
@@ -269,6 +269,44 @@ public class PagoNegocio implements IPagoNegocio {
         }
     }
     
+   /**
+        * Obtiene todas las cuentas bancarias filtradas por el ID del beneficiario y las convierte a una lista de CuentaBancariaDTO.
+        * 
+        * @param idBeneficiario ID del beneficiario por el cual filtrar las cuentas bancarias.
+        * @return Lista de CuentaBancariaDTO que representa todas las cuentas bancarias del beneficiario especificado.
+        * @throws ExcepcionBO Si ocurre un error al obtener las cuentas bancarias por el beneficiario.
+        */
+       @Override
+       public List<CuentaBancariaDTO> obtenerTodasLasCuentasBancariasPorBeneficiario(long idBeneficiario) throws ExcepcionBO {
+           BeneficiarioDTO beneficiario = buscarBeneficiarioPorId(idBeneficiario);
+           if (beneficiario == null) {
+               throw new ExcepcionBO("No se encontró beneficiario con ID: " + idBeneficiario);
+           }
+           List<CuentaBancariaDTO> cuentasPorBeneficiario = new ArrayList<>();
+           for (CuentaBancariaDTO cuenta : beneficiario.getCuentasBancarias()) {
+               cuentasPorBeneficiario.add(cuenta);
+           }
+           return cuentasPorBeneficiario;
+       }
+
+       /**
+        * Convierte un objeto CuentaBancaria a CuentaBancariaDTO.
+        * 
+        * @param cuenta Objeto CuentaBancaria a convertir.
+        * @return CuentaBancariaDTO convertido.
+        */
+       private CuentaBancariaDTO convertir(CuentaBancaria cuenta) {
+           // Implementación de la conversión de CuentaBancaria a CuentaBancariaDTO
+           CuentaBancariaDTO cuentaDTO = new CuentaBancariaDTO();
+           cuentaDTO.setId(cuenta.getId());
+           cuentaDTO.setNumeroCuenta(cuenta.getNumeroCuenta());
+           cuentaDTO.setClave(cuenta.getClave());
+           cuentaDTO.setBanco(cuenta.getBanco());
+           // Otros campos que sean necesarios
+
+           return cuentaDTO;
+       }
+
     /**
      * Guarda un beneficiario en la base de datos.
      * 
@@ -474,7 +512,7 @@ public class PagoNegocio implements IPagoNegocio {
     * @param cuentaBancariaDTO Objeto CuentaBancariaDTO que se desea convertir.
     * @return Objeto CuentaBancaria resultante de la conversión.
     */
-   private static CuentaBancaria convertir(CuentaBancariaDTO cuentaBancariaDTO) {
+   private static CuentaBancaria convertirDAO(CuentaBancariaDTO cuentaBancariaDTO) {
        CuentaBancaria cuentaBancaria = new CuentaBancaria();
        cuentaBancaria.setId(cuentaBancariaDTO.getId());
        cuentaBancaria.setNumeroCuenta(cuentaBancariaDTO.getNumeroCuenta());
@@ -490,7 +528,7 @@ public class PagoNegocio implements IPagoNegocio {
     * @param cuentaBancaria Objeto CuentaBancaria que se desea convertir.
     * @return Objeto CuentaBancariaDTO resultante de la conversión.
     */
-   private static CuentaBancariaDTO convertir(CuentaBancaria cuentaBancaria) {
+   private static CuentaBancariaDTO convertirDTO(CuentaBancaria cuentaBancaria) {
        CuentaBancariaDTO cuentaBancariaDTO = new CuentaBancariaDTO();
        cuentaBancariaDTO.setId(cuentaBancaria.getId());
        cuentaBancariaDTO.setNumeroCuenta(cuentaBancaria.getNumeroCuenta());
@@ -558,7 +596,7 @@ public class PagoNegocio implements IPagoNegocio {
     */
    private static List<CuentaBancariaDTO> convertirCuentasBancarias(List<CuentaBancaria> cuentasBancarias) {
        return cuentasBancarias.stream()
-               .map(PagoNegocio::convertir)
+               .map(PagoNegocio::convertirDTO)
                .collect(Collectors.toList());
    }
    
@@ -570,7 +608,7 @@ public class PagoNegocio implements IPagoNegocio {
     */
    private static List<CuentaBancaria> convertirCuentasBancariasDTO(List<CuentaBancariaDTO> cuentasBancariasDTO) {
        return cuentasBancariasDTO.stream()
-               .map(PagoNegocio::convertir)
+               .map(PagoNegocio::convertirDAO)
                .collect(Collectors.toList());
    }
 

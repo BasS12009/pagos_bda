@@ -162,19 +162,19 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
     }
     
     private void cargarEnTabla() throws ExcepcionPresentacion {
-    try {
-        int indiceInicio = (pagina - 1) * LIMITE;
-        List<CuentaBancariaDTO> todas = pagoBO.obtenerTodasLasCuentasBancarias();
-        int indiceFin = Math.min(indiceInicio + LIMITE, todas.size());
+        try {
+                int indiceInicio = (pagina - 1) * LIMITE;
+                List<CuentaBancariaDTO> todas = pagoBO.obtenerTodasLasCuentasBancariasPorBeneficiario(pagoBO.getId());
+                int indiceFin = Math.min(indiceInicio + LIMITE, todas.size());
 
-        List<CuentaBancariaDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
+                List<CuentaBancariaDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
 
-        llenarTabla(enPagina);
+                llenarTabla(enPagina);
 
-        actualizarNumeroDePagina();
-    } catch (ExcepcionBO ex) {
-        throw new ExcepcionPresentacion("Error al eliminar la cuenta bancaria.", ex);
-        }
+                actualizarNumeroDePagina();
+            } catch (ExcepcionBO ex) {
+                throw new ExcepcionPresentacion("Error al cargar las cuentas bancarias del beneficiario.", ex);
+            }
     }
     
     private List<CuentaBancariaDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {

@@ -118,6 +118,14 @@ public interface IPagoNegocio {
     List<CuentaBancariaDTO> obtenerTodasLasCuentasBancarias() throws ExcepcionBO;
     
     /**
+     *
+     * @param idBeneficiario
+     * @return
+     * @throws ExcepcionBO
+     */
+    public List<CuentaBancariaDTO> obtenerTodasLasCuentasBancariasPorBeneficiario(long idBeneficiario) throws ExcepcionBO;
+    
+    /**
      * Guarda un beneficiario en la base de datos.
      * 
      * @param beneficiarioDTO Objeto BeneficiarioDTO que representa el beneficiario a guardar.

@@ -103,6 +103,8 @@ public interface IPagoBO {
      */
     public List<CuentaBancariaDTO> obtenerTodasLasCuentasBancarias()throws ExcepcionBO;
     
+    public List<CuentaBancariaDTO> obtenerTodasLasCuentasBancariasPorBeneficiario(long idBeneficiario) throws ExcepcionBO;
+    
      /**
      * Guarda un beneficiario en el sistema.
      * 

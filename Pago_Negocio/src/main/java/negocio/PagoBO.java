@@ -208,4 +208,9 @@ public class PagoBO implements IPagoBO{
     public void setId(long id){
         pagoNegocio.setId(id);
     }
+
+    @Override
+    public List<CuentaBancariaDTO> obtenerTodasLasCuentasBancariasPorBeneficiario(long idBeneficiario) throws ExcepcionBO {
+        return pagoNegocio.obtenerTodasLasCuentasBancariasPorBeneficiario(idBeneficiario);
+    }
 }
