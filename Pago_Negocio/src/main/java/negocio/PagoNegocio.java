@@ -28,6 +28,9 @@ import DTOs.BeneficiarioDTO;
 import DTOs.PagosEstatusDTO;
 import entidades.Estatus;
 import excepcion.ExcepcionDAO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -77,21 +80,17 @@ public class PagoNegocio implements IPagoNegocio {
     }
     
 
+    /**
+     * Método que logea al beneficiario
+     * @param beneficiario Objeto beneficiario
+     * @return Objeto conversion de BeneficiarioDTO
+     */
     public BeneficiarioDTO login(BeneficiarioDTO beneficiario) {
 
-//        Beneficiario beneficiarioAuxiliar = null;
-//        try {
-//            beneficiarioAuxiliar = convertirAEntidadSinId(beneficiario);
-//
-//            return convertirAEntidad(BeneficiarioDAO.login(beneficiarioAuxiliar));
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (ExcepcionBO ex) {
-//            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-        return null;
+        Beneficiario beneficiarioAuxiliar = null;
+        beneficiarioAuxiliar = convertir(beneficiario);
+        return convertir(beneficiarioDAO.login(beneficiarioAuxiliar));
+
 
     }
     
