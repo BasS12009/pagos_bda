@@ -38,9 +38,9 @@ public class Run {
         IPagoNegocio pagoNegocio = new PagoNegocio(pago, cuenta, beneficiario, pagoE);
         PagoBO pagoBO = new PagoBO(pagoNegocio);
         
-//        logIn login = new logIn(pagoBO);
-//        login.show();
-//        
+        logIn login = new logIn(pagoBO);
+        login.show();
+        
         
         
     }
