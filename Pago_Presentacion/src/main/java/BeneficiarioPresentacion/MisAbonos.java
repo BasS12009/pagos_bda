@@ -19,6 +19,8 @@ import negocio.PagoBO;
  */
 public class MisAbonos extends javax.swing.JFrame {
     PagoBO pagoBO;
+     private int pagina=1;
+    private int LIMITE=3;
     
     /**
      * Creates new form MisAbonos
@@ -41,7 +43,8 @@ public class MisAbonos extends javax.swing.JFrame {
                 
             }               
         };
-            
+          
+        
         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
         int indiceColumnaEliminar = 5;
         Color color = new Color(255, 105, 97);
@@ -64,6 +67,9 @@ public class MisAbonos extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnAtras = new javax.swing.JButton();
+        btnSiguiente = new javax.swing.JButton();
+        NumeroDePagina = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnInicio = new javax.swing.JRadioButtonMenuItem();
@@ -114,6 +120,40 @@ public class MisAbonos extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 900, 230));
+
+        btnAtras.setBackground(new java.awt.Color(12, 33, 63));
+        btnAtras.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
+        btnAtras.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtras.setText("←");
+        btnAtras.setContentAreaFilled(false);
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 480, -1, -1));
+
+        btnSiguiente.setBackground(new java.awt.Color(12, 33, 63));
+        btnSiguiente.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
+        btnSiguiente.setForeground(new java.awt.Color(255, 255, 255));
+        btnSiguiente.setText("→");
+        btnSiguiente.setContentAreaFilled(false);
+        btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSiguienteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 480, -1, -1));
+
+        NumeroDePagina.setBackground(new java.awt.Color(204, 169, 221));
+        NumeroDePagina.setForeground(new java.awt.Color(255, 255, 255));
+        NumeroDePagina.setText("1");
+        NumeroDePagina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NumeroDePaginaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(NumeroDePagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 480, 20, -1));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -251,6 +291,20 @@ public class MisAbonos extends javax.swing.JFrame {
         this.dispose(); 
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_btnAtrasActionPerformed
+
+    private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
+     
+    }//GEN-LAST:event_btnSiguienteActionPerformed
+
+    private void NumeroDePaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumeroDePaginaActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_NumeroDePaginaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -287,12 +341,15 @@ public class MisAbonos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField NumeroDePagina;
     private javax.swing.JRadioButtonMenuItem btnAbonos;
     private javax.swing.JButton btnAgregarAbono;
+    private javax.swing.JButton btnAtras;
     private javax.swing.JRadioButtonMenuItem btnCerrarSesion;
     private javax.swing.JRadioButtonMenuItem btnCuentasBancarias;
     private javax.swing.JRadioButtonMenuItem btnInicio;
     private javax.swing.JRadioButtonMenuItem btnPagos;
+    private javax.swing.JButton btnSiguiente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

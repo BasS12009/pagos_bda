@@ -276,9 +276,10 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 190, 810, 230));
 
         btnAtras.setBackground(new java.awt.Color(12, 33, 63));
-        btnAtras.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnAtras.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
         btnAtras.setForeground(new java.awt.Color(255, 255, 255));
-        btnAtras.setText("Atras");
+        btnAtras.setText("←");
+        btnAtras.setContentAreaFilled(false);
         btnAtras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtrasActionPerformed(evt);
@@ -287,9 +288,10 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 490, -1, -1));
 
         btnSiguiente.setBackground(new java.awt.Color(12, 33, 63));
-        btnSiguiente.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnSiguiente.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
         btnSiguiente.setForeground(new java.awt.Color(255, 255, 255));
-        btnSiguiente.setText("Siguiente");
+        btnSiguiente.setText("→");
+        btnSiguiente.setContentAreaFilled(false);
         btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSiguienteActionPerformed(evt);
