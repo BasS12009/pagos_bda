@@ -95,7 +95,6 @@ public class PagoNegocio implements IPagoNegocio {
             throw new ExcepcionBO("Error al iniciar sesión :(", ex);
         }
 
-
     }
     
     /**

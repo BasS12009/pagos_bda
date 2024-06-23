@@ -66,6 +66,10 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
         }
     }
     
+    
+    
+    
+    
     /**
      * Actualiza la información de un beneficiario existente en la base de datos.
      * 

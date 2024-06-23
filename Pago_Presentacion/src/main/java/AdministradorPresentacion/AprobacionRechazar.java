@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.TableColumnModel;
+import negocio.PagoBO;
 
 /**
  *
@@ -18,6 +19,8 @@ import javax.swing.table.TableColumnModel;
  */
 public class AprobacionRechazar extends javax.swing.JFrame {
 
+    private PagoBO pagoBO;
+    
     /**
      * Creates new form AprobacionRechazar
      */
@@ -261,7 +264,7 @@ public class AprobacionRechazar extends javax.swing.JFrame {
 
     private void jRadioButtonMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItem1ActionPerformed
         // TODO add your handling code here:
-        logIn lIn = new logIn();
+        logIn lIn = new logIn(pagoBO);
         lIn.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jRadioButtonMenuItem1ActionPerformed
