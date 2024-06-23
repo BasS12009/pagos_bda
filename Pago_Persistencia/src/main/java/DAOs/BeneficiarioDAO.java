@@ -34,6 +34,7 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
     public BeneficiarioDAO() {
         this.entityManager = ConexionBD.getEntityManager();
     }
+    
 
     /**
      * Guarda un nuevo beneficiario en la base de datos.
@@ -63,6 +64,12 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
             }
             throw new ExcepcionDAO("Error al guardar el beneficiario", e);
         }
+    }
+    
+    public Beneficiario login(Beneficiario beneficiario){
+        
+        return beneficiario;
+        
     }
 
     /**

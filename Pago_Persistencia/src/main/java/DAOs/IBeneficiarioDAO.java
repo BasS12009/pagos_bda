@@ -67,4 +67,12 @@ public interface IBeneficiarioDAO {
      * @throws excepcion.ExcepcionDAO
      */
     public Beneficiario buscarBeneficiarioPorId(Long id)throws ExcepcionDAO;
+    
+    /**
+     * Logea al beneficiario
+     * @param beneficiario Beneficiario a logear
+     * @return 
+     * @throws ExcepcionDAO 
+     */
+    public Beneficiario login(Beneficiario beneficiario)throws ExcepcionDAO;
 }
