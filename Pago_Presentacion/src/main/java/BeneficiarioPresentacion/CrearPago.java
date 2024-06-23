@@ -4,7 +4,26 @@
  */
 package BeneficiarioPresentacion;
 
+import DTOs.CuentaBancariaDTO;
+import DTOs.EstatusDTO;
+import DTOs.PagoDTO;
+import DTOs.TiposDTO;
+import excepcionBO.ExcepcionBO;
+import java.awt.Component;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.ListCellRenderer;
 import negocio.PagoBO;
+
 
 /**
  *
@@ -15,11 +34,54 @@ public class CrearPago extends javax.swing.JFrame {
     /**
      * Creates new form CrearPago
      */
-    public CrearPago() {
+    public CrearPago(PagoBO pagoBO) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
+        this.pagoBO=pagoBO;
+        
+        llenarComboBoxTipos();
+        llenarComboBoxCuentas();
     }
+    
+    
+    public void llenarComboBoxCuentas() {
+        try {
+            jComboCuenta.removeAllItems();
+
+            List<CuentaBancariaDTO> cuentas = pagoBO.obtenerTodasLasCuentasBancariasPorBeneficiario(pagoBO.getId());
+
+            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+            for (CuentaBancariaDTO cuenta : cuentas) {
+                model.addElement(cuenta.getNumeroCuenta()); 
+            }
+
+            jComboCuenta.setModel(model);
+
+            jComboCuenta.setRenderer(new ListCellRenderer<String>() {
+                @Override
+                public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+                    JLabel label = new JLabel(value);
+                    if (isSelected) {
+                        label.setBackground(list.getSelectionBackground());
+                        label.setForeground(list.getSelectionForeground());
+                    } else {
+                        label.setBackground(list.getBackground());
+                        label.setForeground(list.getForeground());
+                    }
+                    label.setOpaque(true);
+                    return label;
+                }
+            });
+        } catch (ExcepcionBO ex) {
+            Logger.getLogger(CrearPago.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void llenarComboBoxTipos(){
+        
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,13 +96,13 @@ public class CrearPago extends javax.swing.JFrame {
         btnRegresar3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        jComboTipo = new javax.swing.JComboBox<>();
+        Crear = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        textoMonto = new javax.swing.JTextField();
+        jComboCuenta = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(175, 176, 212));
@@ -66,9 +128,8 @@ public class CrearPago extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Fecha");
+        jLabel3.setText("Cuenta");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 310, -1, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 260, 380, 40));
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 380, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
@@ -76,20 +137,26 @@ public class CrearPago extends javax.swing.JFrame {
         jLabel5.setText("Tipo");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, -1, -1));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 180, 380, 40));
+        jPanel1.add(jComboTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 190, 380, 40));
 
-        jButton1.setBackground(new java.awt.Color(116, 114, 178));
-        jButton1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Crear Pago");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 480, 100, 30));
+        Crear.setBackground(new java.awt.Color(116, 114, 178));
+        Crear.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        Crear.setForeground(new java.awt.Color(255, 255, 255));
+        Crear.setText("Crear Pago");
+        Crear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CrearActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Crear, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 480, 100, 30));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Ingresa el monto:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 230, -1, -1));
-        jPanel1.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 350, 380, 40));
+        jPanel1.add(textoMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 260, 380, 40));
+
+        jPanel1.add(jComboCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 350, 380, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -114,52 +181,69 @@ public class CrearPago extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnRegresar3ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void CrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearActionPerformed
+            try {
+            PagoDTO pago = new PagoDTO();
+            
+            String montoTexto = textoMonto.getText().trim();
+            if (montoTexto.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar un monto válido", "Error", JOptionPane.ERROR_MESSAGE);
+                return; 
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CrearPago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CrearPago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CrearPago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CrearPago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CrearPago().setVisible(true);
+            BigDecimal monto;
+            try {
+                monto = new BigDecimal(montoTexto);
+                if (monto.compareTo(BigDecimal.ZERO) <= 0) {
+                    JOptionPane.showMessageDialog(this, "El monto debe ser mayor que cero", "Error", JOptionPane.ERROR_MESSAGE);
+                    return; 
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "El monto ingresado no es válido", "Error", JOptionPane.ERROR_MESSAGE);
+                return; 
             }
-        });
-    }
+
+            pago.setTipo((TiposDTO) jComboTipo.getSelectedItem());
+
+            pago.setBeneficiario(pagoBO.buscarBeneficiarioPorId(pagoBO.getId()));
+
+            CuentaBancariaDTO cuenta = (CuentaBancariaDTO) jComboCuenta.getSelectedItem();
+            pago.setCuentas(Arrays.asList(pagoBO.buscarCuentaBancariaPorId(cuenta.getId()))); 
+
+            pago.setFechaHora(LocalDateTime.now());
+
+            pago.setMonto(monto);
+            
+                List<EstatusDTO> listaEstatus = pago.getEstatus();
+            if (listaEstatus == null) {
+                listaEstatus = new ArrayList<>();
+            }
+             EstatusDTO estatusCreado = new EstatusDTO();
+            estatusCreado.setNombre("Creado"); 
+            listaEstatus.add(estatusCreado);
+            pago.setEstatus(listaEstatus);
+        } catch (ExcepcionBO ex) {
+            Logger.getLogger(CrearPago.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "El monto ingresado no es válido", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            Logger.getLogger(CrearPago.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Ocurrió un error al crear el pago", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_CrearActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Crear;
     private javax.swing.JButton btnRegresar3;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JComboBox<String> jComboCuenta;
+    private javax.swing.JComboBox<String> jComboTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField textoMonto;
     // End of variables declaration//GEN-END:variables
 }

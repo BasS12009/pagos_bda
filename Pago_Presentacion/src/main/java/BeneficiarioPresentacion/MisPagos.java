@@ -468,7 +468,7 @@ public class MisPagos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCuentasBancariasActionPerformed
 
     private void btnCrearPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPagoActionPerformed
-        CrearPago crearPago = new CrearPago();
+        CrearPago crearPago = new CrearPago(pagoBO);
         crearPago.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCrearPagoActionPerformed
