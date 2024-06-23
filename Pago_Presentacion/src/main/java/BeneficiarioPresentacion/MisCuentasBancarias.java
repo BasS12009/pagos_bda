@@ -44,6 +44,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
             this.setSize(965, 610);
             this.pagoBO=pagoBO;
             cargarMetodosIniciales();
+            System.out.println(pagoBO.getId());
         } catch (ExcepcionPresentacion ex) {
             Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -88,10 +89,22 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         int indiceFilaSeleccionada = this.jTable1.getSelectedRow();
         if (indiceFilaSeleccionada != -1) {
             DefaultTableModel modelo = (DefaultTableModel) this.jTable1.getModel();
-            long indiceColumnaId = 0;
-            long idSocioSeleccionado = (long) modelo.getValueAt(indiceFilaSeleccionada,
-                   (int) indiceColumnaId);
-            return idSocioSeleccionado;
+            int indiceColumnaId = 0; // Suponiendo que el índice de la columna que contiene el ID es 0
+            Object valor = modelo.getValueAt(indiceFilaSeleccionada, indiceColumnaId);
+            if (valor instanceof Long) {
+                return (long) valor;
+            } else if (valor instanceof Integer) {
+                return (long) (int) valor;
+            } else if (valor instanceof String) {
+                try {
+                    return Long.parseLong((String) valor);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    return 0; 
+                }
+            } else {
+                return 0;
+            }
         } else {
             return 0;
         }
@@ -115,7 +128,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         };
         int indiceColumnaEditar = 4;
         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
-        Color color = new Color(178, 218, 250);
+        Color color = new Color(253, 253, 150);
         modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Modificar",color));
         modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Modificar", onModificarClickListener));
       

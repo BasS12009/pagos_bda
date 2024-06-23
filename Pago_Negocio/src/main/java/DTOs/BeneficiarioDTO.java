@@ -106,6 +106,10 @@ public class BeneficiarioDTO {
     }
 
     public static BeneficiarioDTO convertir(Beneficiario beneficiario) {
+        if (beneficiario == null) {
+            return null;
+        }
+
         BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
         beneficiarioDTO.setId(beneficiario.getId());
         beneficiarioDTO.setClaveContrato(beneficiario.getClaveContrato());
@@ -113,24 +117,36 @@ public class BeneficiarioDTO {
         beneficiarioDTO.setNombre(NombreDTO.convertir(beneficiario.getNombre()));
         beneficiarioDTO.setUsuario(beneficiario.getUsuario());
         beneficiarioDTO.setContraseña(beneficiario.getContraseña());
-
-        // Convertir la lista de Pago a lista de PagoDTO usando stream y map
+        if(beneficiario.getPagos()!=null){
         List<PagoDTO> pagosDTO = beneficiario.getPagos().stream()
-                .map(PagoDTO::convertir)
+                .map(pago -> {
+                    PagoDTO pagoDTO = new PagoDTO();
+                    pagoDTO.setId(pago.getId());
+                    return pagoDTO;
+                })
                 .collect(Collectors.toList());
         beneficiarioDTO.setPagos(pagosDTO);
-
-        // Convertir la lista de cuentas bancarias
+        }
+        if(beneficiario.getCuentasBancarias()!=null){
         List<CuentaBancariaDTO> cuentasBancariasDTO = beneficiario.getCuentasBancarias().stream()
-                .map(CuentaBancariaDTO::convertir)
+                .map(cuentaBancaria -> {
+                    CuentaBancariaDTO cuentaBancariaDTO = new CuentaBancariaDTO();
+                    cuentaBancariaDTO.setId(cuentaBancaria.getId());
+                    cuentaBancariaDTO.setNumeroCuenta(cuentaBancaria.getNumeroCuenta());
+                    cuentaBancariaDTO.setClave(cuentaBancaria.getClave());
+                    cuentaBancariaDTO.setBanco(cuentaBancaria.getBanco());
+                    cuentaBancariaDTO.setEliminada(cuentaBancaria.getEliminada());
+                    cuentaBancariaDTO.setBeneficiario(beneficiarioDTO);
+                    return cuentaBancariaDTO;
+                })
                 .collect(Collectors.toList());
         beneficiarioDTO.setCuentasBancarias(cuentasBancariasDTO);
-
+        }
         return beneficiarioDTO;
     }
     
     public static Beneficiario convertir(BeneficiarioDTO beneficiarioDTO) {
-        if (beneficiarioDTO == null) {
+            if (beneficiarioDTO == null) {
             return null;
         }
 
@@ -141,21 +157,23 @@ public class BeneficiarioDTO {
         beneficiario.setNombre(NombreDTO.convertir(beneficiarioDTO.getNombre()));
         beneficiario.setUsuario(beneficiarioDTO.getUsuario());
         beneficiario.setContraseña(beneficiarioDTO.getContraseña());
-
-        // Convertir la lista de PagoDTO a lista de Pago
-        List<Pago> pagos = new ArrayList<>();
-        for (PagoDTO pagoDTO : beneficiarioDTO.getPagos()) {
-            pagos.add(PagoDTO.convertir(pagoDTO));
+        if (beneficiarioDTO.getPagos() != null) {
+            List<Pago> pagos = beneficiarioDTO.getPagos().stream()
+                    .map(pagoDTO -> {
+                        Pago pago = new Pago();
+                        pago.setId(pagoDTO.getId());
+                        return pago;
+                    })
+                    .collect(Collectors.toList());
+            beneficiario.setPagos(pagos);
         }
-        beneficiario.setPagos(pagos);
-
-        // Convertir la lista de CuentaBancariaDTO a lista de CuentaBancaria
-        List<CuentaBancaria> cuentasBancarias = new ArrayList<>();
-        for (CuentaBancariaDTO cuentaBancariaDTO : beneficiarioDTO.getCuentasBancarias()) {
-            cuentasBancarias.add(CuentaBancariaDTO.convertir(cuentaBancariaDTO));
-        }
+        
+        if(beneficiarioDTO.getCuentasBancarias()!=null){
+        List<CuentaBancaria> cuentasBancarias = beneficiarioDTO.getCuentasBancarias().stream()
+                .map(CuentaBancariaDTO::convertir)
+                .collect(Collectors.toList());
         beneficiario.setCuentasBancarias(cuentasBancarias);
-
+        }
         return beneficiario;
     }
     

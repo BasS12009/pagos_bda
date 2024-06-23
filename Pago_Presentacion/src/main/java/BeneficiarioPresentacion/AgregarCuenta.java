@@ -151,28 +151,29 @@ public class AgregarCuenta extends javax.swing.JFrame {
             nuevaCuenta.setNumeroCuenta(numeroCuenta);
             nuevaCuenta.setClave(clabe);
             nuevaCuenta.setBanco(banco);
-            nuevaCuenta.setEliminada(false); // Inicialmente no eliminada
-
-            // Obtener y validar el beneficiario
+            nuevaCuenta.setEliminada(false);
             Long idBeneficiario = pagoBO.getId();
+            if (idBeneficiario == null) {
+                JOptionPane.showMessageDialog(this, "ID de beneficiario no válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            System.out.println(idBeneficiario);
             if (idBeneficiario != null) {
                 BeneficiarioDTO beneficiario = pagoBO.buscarBeneficiarioPorId(idBeneficiario);
                 if (beneficiario != null) {
-                    // Agregar la nueva cuenta bancaria a la lista de cuentas del beneficiario
+                    nuevaCuenta.setBeneficiario(beneficiario);
                     beneficiario.getCuentasBancarias().add(nuevaCuenta);
-
-                    // Guardar la nueva cuenta bancaria utilizando pagoBO
+                    
                     pagoBO.guardarCuentaBancaria(nuevaCuenta);
-
-                    // Mostrar mensaje de éxito
+                    System.out.println(nuevaCuenta.getBeneficiario().getId());
                     JOptionPane.showMessageDialog(this, "Cuenta bancaria agregada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-                    // Limpiar los campos del formulario
                     textoNumero.setText("");
                     textoClabe.setText("");
                     textoBanco.setText("");
                     
                     MisCuentasBancarias cuentas=new MisCuentasBancarias(pagoBO);
+                    cuentas.show();
                     this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Beneficiario no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);

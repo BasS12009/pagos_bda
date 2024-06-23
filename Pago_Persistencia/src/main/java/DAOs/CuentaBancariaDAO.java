@@ -5,11 +5,17 @@
 package DAOs;
 
 import conexion.ConexionBD;
+import entidades.Beneficiario;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import entidades.CuentaBancaria; 
 import excepcion.ExcepcionDAO;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 
 /**
  * Implementación concreta de DAO para la entidad CuentaBancaria.
@@ -127,7 +133,7 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO{
      * @throws ExcepcionDAO Si ocurre un error durante la consulta.
      */
     @Override
-    public List<CuentaBancaria> obtenerCuentasBancariasPorBeneficiario(String claveContrato) throws ExcepcionDAO {
+    public List<CuentaBancaria> obtenerCuentasBancariasPorBeneficiarioContrato(String claveContrato) throws ExcepcionDAO {
         try {
             TypedQuery<CuentaBancaria> query = entityManager.createQuery(
                     "SELECT c FROM CuentaBancaria c WHERE c.beneficiario.claveContrato = :claveContrato", CuentaBancaria.class);
@@ -137,6 +143,33 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO{
             throw new ExcepcionDAO("Error al obtener las cuentas bancarias por beneficiario", e);
         }
     }
+    
+    /**
+        * Retorna una lista con todas las cuentas bancarias asociadas a un beneficiario por su ID.
+        * 
+        * @param idBeneficiario ID del beneficiario.
+        * @return Lista de cuentas bancarias asociadas al beneficiario especificado.
+        * @throws ExcepcionDAO Si ocurre un error durante la consulta.
+        */
+       @Override
+       public List<CuentaBancaria> obtenerCuentasBancariasPorIdBeneficiario(long idBeneficiario) throws ExcepcionDAO {
+           try {
+               CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+               CriteriaQuery<CuentaBancaria> cq = cb.createQuery(CuentaBancaria.class);
+               Root<CuentaBancaria> root = cq.from(CuentaBancaria.class);
+
+               // Join con la entidad Beneficiario para filtrar por ID del beneficiario
+               Join<CuentaBancaria, Beneficiario> beneficiarioJoin = root.join("beneficiario", JoinType.INNER);
+
+               // Filtrar por ID del beneficiario
+               cq.where(cb.equal(beneficiarioJoin.get("id"), idBeneficiario));
+
+               TypedQuery<CuentaBancaria> query = entityManager.createQuery(cq);
+               return query.getResultList();
+           } catch (Exception e) {
+               throw new ExcepcionDAO("Error al obtener las cuentas bancarias por ID de beneficiario", e);
+           }
+       }
     
     /**
      * Busca y retorna una cuenta bancaria por su ID.
@@ -153,6 +186,8 @@ public class CuentaBancariaDAO implements ICuentaBancariaDAO{
             throw new ExcepcionDAO("Error al buscar la cuenta bancaria por ID", e);
         }
     }
+    
+    
     
     /**
      * Cierra la conexión del EntityManager y el EntityManagerFactory.

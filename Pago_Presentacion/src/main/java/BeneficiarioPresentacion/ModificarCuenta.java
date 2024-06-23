@@ -4,6 +4,7 @@
  */
 package BeneficiarioPresentacion;
 
+import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
 import excepcion.ExcepcionPresentacion;
 import excepcionBO.ExcepcionBO;
@@ -142,12 +143,29 @@ public class ModificarCuenta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegresar3ActionPerformed
 
     private void btnAbono1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbono1ActionPerformed
-        try {
-            CuentaBancariaDTO cuenta=pagoBO.buscarCuentaBancariaPorId(id);
-            cuenta.setNumeroCuenta(textoNumero.getText());
-            cuenta.setClave(textoClabe.getText());
-            cuenta.setBanco(textoBanco.getText());
-            pagoBO.actualizarCuentaBancaria(cuenta);
+         try {
+            CuentaBancariaDTO cuenta = pagoBO.buscarCuentaBancariaPorId(id);
+
+            if (cuenta != null) {
+                cuenta.setNumeroCuenta(textoNumero.getText());
+                cuenta.setClave(textoClabe.getText());
+                cuenta.setBanco(textoBanco.getText());
+                cuenta.setEliminada(false);
+
+                BeneficiarioDTO beneficiario = cuenta.getBeneficiario();
+                if (beneficiario != null) {
+                    System.out.println("ID del beneficiario asociado: " + beneficiario.getId());
+                    pagoBO.actualizarCuentaBancaria(cuenta);
+                    MisCuentasBancarias cuentas=new MisCuentasBancarias(pagoBO);
+                    cuentas.show();
+                    this.dispose();
+                } else {
+                   
+                    System.out.println("El beneficiario asociado a la cuenta es nulo.");
+                }
+            } else {
+                System.out.println("La cuenta bancaria no se encontró para el ID proporcionado: " + id);
+            }
         } catch (ExcepcionBO ex) {
             try {
                 throw new ExcepcionPresentacion(ex.getMessage());

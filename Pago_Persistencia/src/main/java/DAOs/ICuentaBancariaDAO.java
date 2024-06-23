@@ -60,11 +60,11 @@ public interface ICuentaBancariaDAO {
     /**
      * Retorna una lista con todas las cuentas bancarias asociadas a un beneficiario específico.
      * 
-     * @param claveContrato La clave de contrato del beneficiario.
+     * @param idBeneficiario La clave de contrato del beneficiario.
      * @return Lista de cuentas bancarias asociadas al beneficiario.
      * @throws excepcion.ExcepcionDAO
      */
-    List<CuentaBancaria> obtenerCuentasBancariasPorBeneficiario(String claveContrato) throws ExcepcionDAO;
+      public List<CuentaBancaria> obtenerCuentasBancariasPorIdBeneficiario(long idBeneficiario) throws ExcepcionDAO;
     
     /**
      * Busca y retorna una cuenta bancaria por su ID.
@@ -74,5 +74,7 @@ public interface ICuentaBancariaDAO {
      * @throws excepcion.ExcepcionDAO
      */
     CuentaBancaria buscarCuentaBancariaPorId(Long id)throws ExcepcionDAO;
+    
+    public List<CuentaBancaria> obtenerCuentasBancariasPorBeneficiarioContrato(String claveContrato) throws ExcepcionDAO;
     
 }
