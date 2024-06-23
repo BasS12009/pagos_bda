@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -161,7 +162,9 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
     modeloTabla.setRowCount(0);
     if (cuentaLista != null) {
         cuentaLista.forEach(row -> {
-            String eliminada = row.getEliminada() ? "Eliminada" : "No eliminada";
+            String eliminada = Optional.ofNullable(row.getEliminada())
+                                       .map(elim -> elim ? "Eliminada" : "No eliminada")
+                                       .orElse("No disponible");
             Object[] fila = new Object[6];
             fila[0] = row.getNumeroCuenta();
             fila[1] = row.getClave();

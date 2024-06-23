@@ -468,7 +468,6 @@ public class MisPagos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCuentasBancariasActionPerformed
 
     private void btnCrearPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPagoActionPerformed
-        // TODO add your handling code here:
         CrearPago crearPago = new CrearPago();
         crearPago.setVisible(true);
         this.dispose();

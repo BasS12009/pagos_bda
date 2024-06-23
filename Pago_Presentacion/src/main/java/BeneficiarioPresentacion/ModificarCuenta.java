@@ -150,7 +150,6 @@ public class ModificarCuenta extends javax.swing.JFrame {
                 cuenta.setNumeroCuenta(textoNumero.getText());
                 cuenta.setClave(textoClabe.getText());
                 cuenta.setBanco(textoBanco.getText());
-                cuenta.setEliminada(false);
 
                 BeneficiarioDTO beneficiario = cuenta.getBeneficiario();
                 if (beneficiario != null) {

@@ -313,6 +313,7 @@ public class PagoNegocio implements IPagoNegocio {
            cuentaDTO.setClave(cuenta.getClave());
            cuentaDTO.setBanco(cuenta.getBanco());
            cuentaDTO.setBeneficiario(convertir(cuenta.getBeneficiario()));
+           cuentaDTO.setEliminada(cuenta.getEliminada());
 
            return cuentaDTO;
        }
