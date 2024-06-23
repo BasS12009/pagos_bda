@@ -196,8 +196,14 @@ public class PagoBO implements IPagoBO{
         return pagoNegocio.obtenerTodosLosBeneficiarios();
     }
     
+    /**
+     *
+     * @param beneficiario
+     * @return
+     * @throws ExcepcionBO
+     */
     @Override
-    public BeneficiarioDTO login(BeneficiarioDTO beneficiario){
+    public BeneficiarioDTO login(BeneficiarioDTO beneficiario) throws ExcepcionBO{
         return pagoNegocio.login(beneficiario);
     }
     

@@ -25,7 +25,7 @@ public interface IPagoBO {
      * @param beneficiario
      * @return
      */
-    public BeneficiarioDTO login(BeneficiarioDTO beneficiario);
+    public BeneficiarioDTO login(BeneficiarioDTO beneficiario) throws ExcepcionBO;
     
     public long getId();
     

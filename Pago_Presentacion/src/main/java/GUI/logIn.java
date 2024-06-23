@@ -7,7 +7,10 @@ package GUI;
 import AdministradorPresentacion.MenuAdministrador;
 import BeneficiarioPresentacion.MenuBeneficiario;
 import DTOs.BeneficiarioDTO;
+import excepcionBO.ExcepcionBO;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import negocio.PagoBO;
 
@@ -16,6 +19,7 @@ import negocio.PagoBO;
  * @author diana
  */
 public class logIn extends javax.swing.JFrame {
+
 
     PagoBO negocio;
     
@@ -29,6 +33,33 @@ public class logIn extends javax.swing.JFrame {
         this.negocio = negocio;
     }
 
+    public void inicioSesion(){
+        
+        try {
+            // TODO add your handling code here:
+            
+            //Se setea la clave de contrato y la contraseña que se recive en el text area
+            
+            BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
+            beneficiarioDTO.setClaveContrato(clave.getText());
+            beneficiarioDTO.setContraseña(contrasena.getText());
+            BeneficiarioDTO beneficiarioAutenticado = negocio.login(beneficiarioDTO);
+            //se valida que si es diferente de null se muestre el menu del beneficiario
+            if (beneficiarioAutenticado != null) {
+                negocio.setId(beneficiarioAutenticado.getId());
+                MenuBeneficiario m=new MenuBeneficiario();
+                m.setVisible(true);
+                this.disable();
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+            }
+        } catch (ExcepcionBO ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo comprobar las credenciales");
+        }
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -146,25 +177,8 @@ public class logIn extends javax.swing.JFrame {
     }//GEN-LAST:event_claveActionPerformed
 
     private void iniciarSesionBeneficiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionBeneficiarioActionPerformed
-        // TODO add your handling code here:
-        
-        //Se setea la clave de contrato y la contraseña que se recive en el text area 
-        
-        BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
-        beneficiarioDTO.setClaveContrato(clave.getText());
-        beneficiarioDTO.setContraseña(contrasena.getText());
-        BeneficiarioDTO beneficiarioAutenticado = negocio.login(beneficiarioDTO);
-        //se valida que si es diferente de null se muestre el menu del beneficiario 
-        if (beneficiarioAutenticado != null) {
-           negocio.setId(beneficiarioAutenticado.getId());
-            MenuBeneficiario m=new MenuBeneficiario();
-            m.setVisible(true);
-            this.disable();
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
-        }
 
+        inicioSesion();
         
     }//GEN-LAST:event_iniciarSesionBeneficiarioActionPerformed
 

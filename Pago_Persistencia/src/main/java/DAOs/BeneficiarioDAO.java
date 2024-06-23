@@ -66,12 +66,6 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
         }
     }
     
-    public Beneficiario login(Beneficiario beneficiario){
-        
-        return beneficiario;
-        
-    }
-
     /**
      * Actualiza la información de un beneficiario existente en la base de datos.
      * 
@@ -193,5 +187,32 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
     public void cerrarConexion() {
         entityManager.close();
         ConexionBD.close();
+    }
+    /**
+     * Valida que exista un registro con la clabe y contraseña ingresadas
+     * @return Boolean
+     */
+    
+    public Beneficiario login(Beneficiario beneficiario) throws ExcepcionDAO{
+        EntityTransaction transaction = null;
+        
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            
+            TypedQuery<Beneficiario> query = entityManager.createQuery("SELECT b.claveContrato, b.contraseña FROM Beneficiario b WHERE b.claveContrateo = :cContrato AND b.contraseña = :contraseña", Beneficiario.class);
+            query.setParameter("cContrato", beneficiario.getClaveContrato());
+            query.setParameter("contraseña", beneficiario.getContraseña());
+            List<Beneficiario> beneficiarios = query.getResultList();
+            
+            return beneficiario;
+        } catch(Exception e){
+                if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new ExcepcionDAO("Error al iniciar sesión  8(", e);
+        }
+    
+
     }
 }

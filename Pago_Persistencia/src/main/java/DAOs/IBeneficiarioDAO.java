@@ -75,4 +75,5 @@ public interface IBeneficiarioDAO {
      * @throws ExcepcionDAO 
      */
     public Beneficiario login(Beneficiario beneficiario)throws ExcepcionDAO;
+    
 }

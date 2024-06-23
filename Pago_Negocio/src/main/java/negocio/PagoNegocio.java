@@ -85,11 +85,15 @@ public class PagoNegocio implements IPagoNegocio {
      * @param beneficiario Objeto beneficiario
      * @return Objeto conversion de BeneficiarioDTO
      */
-    public BeneficiarioDTO login(BeneficiarioDTO beneficiario) {
+    public BeneficiarioDTO login(BeneficiarioDTO beneficiario) throws ExcepcionBO{
 
         Beneficiario beneficiarioAuxiliar = null;
         beneficiarioAuxiliar = convertir(beneficiario);
-        return convertir(beneficiarioDAO.login(beneficiarioAuxiliar));
+        try {
+            return convertir(beneficiarioDAO.login(beneficiarioAuxiliar));
+        } catch (ExcepcionDAO ex) {
+            throw new ExcepcionBO("Error al iniciar sesión :(", ex);
+        }
 
 
     }
