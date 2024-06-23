@@ -6,8 +6,13 @@ package GUI;
 
 import AdministradorPresentacion.MenuAdministrador;
 import BeneficiarioPresentacion.MenuBeneficiario;
+import DAOs.BeneficiarioDAO;
 import DTOs.BeneficiarioDTO;
 import excepcionBO.ExcepcionBO;
+import javax.swing.JOptionPane;
+import negocio.PagoBO;
+import excepcionBO.ExcepcionBO;
+import conexion.ConexionBD;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +31,7 @@ public class logIn extends javax.swing.JFrame {
     /**
      * Creates new form logIn
      */
-    public logIn() {
+    public logIn(PagoBO negocio) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(700, 560);
@@ -178,6 +183,8 @@ public class logIn extends javax.swing.JFrame {
 
     private void iniciarSesionBeneficiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionBeneficiarioActionPerformed
 
+        // TODO add your handling code here:
+
         inicioSesion();
         
     }//GEN-LAST:event_iniciarSesionBeneficiarioActionPerformed
@@ -228,6 +235,9 @@ public class logIn extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        
+        PagoBO b= new PagoBO(pagoNegocio);
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

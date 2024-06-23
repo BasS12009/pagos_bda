@@ -180,7 +180,7 @@ public class MenuBeneficiario extends javax.swing.JFrame {
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         // TODO add your handling code here:
-        logIn lIn = new logIn();
+        logIn lIn = new logIn(pagoBO);
         lIn.setVisible(true);
         this.dispose(); 
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
