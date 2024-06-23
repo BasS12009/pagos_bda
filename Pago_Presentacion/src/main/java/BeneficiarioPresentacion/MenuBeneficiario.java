@@ -159,7 +159,7 @@ public class MenuBeneficiario extends javax.swing.JFrame {
 
     private void btnPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagosActionPerformed
         // TODO add your handling code here:
-        MisPagos misPagos = new MisPagos();
+        MisPagos misPagos = new MisPagos(pagoBO);
         misPagos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPagosActionPerformed

@@ -192,7 +192,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
     
     private List<CuentaBancariaDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
         try {
-            List<CuentaBancariaDTO> todas = pagoBO.obtenerTodasLasCuentasBancarias();
+            List<CuentaBancariaDTO> todas = pagoBO.obtenerTodasLasCuentasBancariasPorBeneficiario(pagoBO.getId());
             List<CuentaBancariaDTO> todasLasPaginas = new ArrayList<>();
             indiceFin = Math.min(indiceFin, todas.size());
             for (int i = indiceInicio; i < indiceFin; i++) {
@@ -407,7 +407,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
 
     private void btnPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagosActionPerformed
         // TODO add your handling code here:
-        MisPagos misPagos = new MisPagos();
+        MisPagos misPagos = new MisPagos(pagoBO);
         misPagos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPagosActionPerformed

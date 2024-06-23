@@ -6,7 +6,9 @@ package negocio;
 
 import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
+import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
+import DTOs.PagosEstatusDTO;
 import entidades.Beneficiario;
 import entidades.Pago;
 import excepcionBO.ExcepcionBO;
@@ -165,4 +167,8 @@ public interface IPagoNegocio {
      * @throws ExcepcionBO Si ocurre un error al obtener todos los beneficiarios.
      */
     List<BeneficiarioDTO> obtenerTodosLosBeneficiarios() throws ExcepcionBO;
+    
+    public List<PagosEstatusDTO> obtenerPagosEstatusParaPagos(List<PagoDTO> pagos);
+    
+    public void guardarPagoConEstatus(PagoDTO pagoDTO, EstatusDTO estatusDTO);
 }

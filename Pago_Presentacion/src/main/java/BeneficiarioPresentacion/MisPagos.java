@@ -4,12 +4,25 @@
  */
 package BeneficiarioPresentacion;
 
+import DTOs.CuentaBancariaDTO;
+import DTOs.EstatusDTO;
+import DTOs.PagoDTO;
+import DTOs.PagosEstatusDTO;
 import GUI.logIn;
 import Utilerias.JButtonCellEditor;
 import Utilerias.JButtonRenderer;
+import excepcion.ExcepcionPresentacion;
+import excepcionBO.ExcepcionBO;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import negocio.PagoBO;
 
@@ -19,57 +32,220 @@ import negocio.PagoBO;
  */
 public class MisPagos extends javax.swing.JFrame {
     PagoBO pagoBO;
+    private int pagina=1;
+    private int LIMITE=3;
+    boolean conFiltro;
+    
+    
     /**
      * Creates new form MisPagos
      */
-    public MisPagos() {
-        initComponents();
-        this.setLocationRelativeTo(this);
-        this.setSize(965, 610);
-        cargarConfiguracionInicialTabla();
+    public MisPagos(PagoBO pagoBO) {
+        try {
+            initComponents();
+            this.setLocationRelativeTo(this);
+            this.setSize(965, 610);
+            cargarConfiguracionInicialTabla();
+            this.pagoBO=pagoBO;
+            cargarMetodosIniciales();
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(MisPagos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void modificarPago(){
-    
-        ModificarPago modificarPago = new ModificarPago();
-        modificarPago.setVisible(true);
-        this.dispose();      
+        try {
+            long id = this.getIdSeleccionadoTabla();
+            ModificarPago modificarPago = new ModificarPago();
+            modificarPago.setVisible(true);
+            this.setVisible(false);   
+            cargarEnTabla();
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(MisPagos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     
+    private void eliminar() throws ExcepcionPresentacion {
+        try {
+        long id = this.getIdSeleccionadoTabla();
+        PagoDTO pagoDTO = pagoBO.buscarPagoPorId(id);
+        int confirmacion = JOptionPane.showConfirmDialog(this, 
+                            "¿Está seguro que desea eliminar al cliente?\n" +
+                            "ID: " + pagoDTO.getId()+ "\n" +
+                            "Beneficiario: " + pagoDTO.getBeneficiario().getNombre()+ "\n" +
+                            "Fecha: " + pagoDTO.getFechaHora(),
+                            "Confirmar eliminación",
+                            JOptionPane.YES_NO_OPTION);
+        
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            pagoBO.eliminarCuentaBancaria(id);
+            JOptionPane.showMessageDialog(this, "Pago eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            cargarEnTabla();
+        }
+        } catch (ExcepcionBO ex) {
+        throw new ExcepcionPresentacion("Error al eliminar,", ex);
+        }
+    }
+    
+    private long getIdSeleccionadoTabla() {
+        int indiceFilaSeleccionada = this.jTable1.getSelectedRow();
+        if (indiceFilaSeleccionada != -1) {
+            DefaultTableModel modelo = (DefaultTableModel) this.jTable1.getModel();
+            int indiceColumnaId = 0; // Suponiendo que el índice de la columna que contiene el ID es 0
+            Object valor = modelo.getValueAt(indiceFilaSeleccionada, indiceColumnaId);
+            if (valor instanceof Long) {
+                return (long) valor;
+            } else if (valor instanceof Integer) {
+                return (long) (int) valor;
+            } else if (valor instanceof String) {
+                try {
+                    return Long.parseLong((String) valor);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    return 0; 
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+    
+    private void cargarMetodosIniciales() throws ExcepcionPresentacion {
+        this.cargarConfiguracionInicialTabla();
+        this.cargarEnTabla();
+    }
+    
     private void cargarConfiguracionInicialTabla() { 
+        
+        ActionListener onModificarClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                modificarPago();
+                
+            }               
+        };
+        int indiceColumnaEditar = 4;
+        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
+        Color color = new Color(253, 253, 150);
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Modificar",color));
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Modificar", onModificarClickListener));
+      
         
         ActionListener onEliminarClickListener = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-               
+                try {
+                    eliminar();
+                } catch (ExcepcionPresentacion ex) {
+                    Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             }               
         };
-         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();    
-        Color color = new Color(255, 105, 97);
-        modeloColumnas.getColumn(5).setCellRenderer(new JButtonRenderer("Eliminar",color));
-        modeloColumnas.getColumn(5).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
-          
-        ActionListener onModificarClickListener = new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-               modificarPago();
-                
-            }               
-        };
-            
-        int indiceColumnaEditar = 4;
-        color = new Color(253, 253, 150);
-        modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Modificar",color));
-        modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Modificar", onModificarClickListener));
-                 
+        int indiceColumnaEliminar = 5;
+        color = new Color(255, 105, 97);
+        modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar",color));
+        modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
     }       
-        
+     
+    private void llenarTabla(List<PagoDTO> pagoLista, List<PagosEstatusDTO> pagosEstatusLista) {
+        DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
+        modeloTabla.setRowCount(0);
+
+        if (pagoLista != null) {
+            pagoLista.forEach(pago -> {
+                Object[] fila = new Object[6];
+
+                if (pago.getCuentas() != null && !pago.getCuentas().isEmpty()) {
+                    fila[0] = obtenerNumeroCuentaDeseada(pago.getCuentas());
+                } else {
+                    fila[0] = "";
+                }
+
+                if (pago.getMonto() != null) {
+                    fila[1] = pago.getMonto();
+                } else {
+                    fila[1] = BigDecimal.ZERO;
+                }
+
+                fila[2] = obtenerNombreEstatus(pago, pagosEstatusLista);
+                fila[3] = obtenerMensajeParaPago(pago, pagosEstatusLista);
+                fila[4] = "Eliminar";
+                fila[5] = "Editar";
+
+                modeloTabla.addRow(fila);
+            });
+        }
+    }
+    
+    private String obtenerNumeroCuentaDeseada(List<CuentaBancariaDTO> cuentas) {
+    if (!cuentas.isEmpty()) {
+        return cuentas.get(0).getNumeroCuenta();
+    }
+    return "";
+    }
+    
+    private String obtenerNombreEstatus(PagoDTO pago, List<PagosEstatusDTO> pagosEstatusLista) {
+        if (pagosEstatusLista != null) {
+            for (PagosEstatusDTO pagosEstatus : pagosEstatusLista) {
+                if (pagosEstatus.getPago() != null && pagosEstatus.getPago().getId().equals(pago.getId())) {
+                    return pagosEstatus.getEstatus().getNombre();
+                }
+            }
+        }
+        return "";
+    }
+
+    private String obtenerMensajeParaPago(PagoDTO pago, List<PagosEstatusDTO> pagosEstatusLista) {
+        if (pagosEstatusLista != null) {
+            for (PagosEstatusDTO pagosEstatus : pagosEstatusLista) {
+                if (pagosEstatus.getPago() != null && pagosEstatus.getPago().getId().equals(pago.getId())) {
+                    return pagosEstatus.getMensaje();
+                }
+            }
+        }
+        return "";
+    }
+    
+    private void cargarEnTabla() throws ExcepcionPresentacion {
+            try {
+                int indiceInicio = (pagina - 1) * LIMITE;
+                List<PagoDTO> todosPagos = pagoBO.obtenerPagosPorBeneficiario(pagoBO.getId()); 
+                int indiceFin = Math.min(indiceInicio + LIMITE, todosPagos.size());
+
+                List<PagoDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
+                List<PagosEstatusDTO> pagosEstatusLista = pagoBO.obtenerPagosEstatusParaPagos(enPagina);
+
+                llenarTabla(enPagina, pagosEstatusLista); 
+
+                actualizarNumeroDePagina(); 
+            } catch (ExcepcionBO ex) {
+                throw new ExcepcionPresentacion("Error al cargar los pagos del beneficiario.", ex);
+            }
+    }
+    
+
+        private List<PagoDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
+            try {
+                List<PagoDTO> todos = pagoBO.obtenerPagosPorBeneficiario(pagoBO.getId()); 
+                List<PagoDTO> todasLasPaginas = new ArrayList<>();
+                indiceFin = Math.min(indiceFin, todos.size());
+                for (int i = indiceInicio; i < indiceFin; i++) {
+                    todasLasPaginas.add(todos.get(i));
+                }
+                return todasLasPaginas;
+            } catch (ExcepcionBO ex) {
+            throw new ExcepcionPresentacion("Error al eliminar la cuenta bancaria.", ex);
+            }
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -85,6 +261,9 @@ public class MisPagos extends javax.swing.JFrame {
         btnCrearPago = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnAtras = new javax.swing.JButton();
+        btnSiguiente = new javax.swing.JButton();
+        NumeroDePagina = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         Inicio = new javax.swing.JMenu();
         btnInicio = new javax.swing.JRadioButtonMenuItem();
@@ -133,6 +312,38 @@ public class MisPagos extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 890, 210));
+
+        btnAtras.setBackground(new java.awt.Color(12, 33, 63));
+        btnAtras.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnAtras.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtras.setText("Atras");
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 480, -1, -1));
+
+        btnSiguiente.setBackground(new java.awt.Color(12, 33, 63));
+        btnSiguiente.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnSiguiente.setForeground(new java.awt.Color(255, 255, 255));
+        btnSiguiente.setText("Siguiente");
+        btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSiguienteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 480, -1, -1));
+
+        NumeroDePagina.setBackground(new java.awt.Color(204, 169, 221));
+        NumeroDePagina.setForeground(new java.awt.Color(255, 255, 255));
+        NumeroDePagina.setText("1");
+        NumeroDePagina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NumeroDePaginaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(NumeroDePagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 480, 20, -1));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -237,7 +448,7 @@ public class MisPagos extends javax.swing.JFrame {
 
     private void btnPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagosActionPerformed
         // TODO add your handling code here:
-        MisPagos misPagos = new MisPagos();
+        MisPagos misPagos = new MisPagos(pagoBO);
         misPagos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPagosActionPerformed
@@ -270,49 +481,90 @@ public class MisPagos extends javax.swing.JFrame {
         this.dispose(); 
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
+        // TODO add your handling code here:
+        if (pagina > 1) {
+            try {
+                pagina--;
+                cargarEnTabla();
+                actualizarNumeroDePagina();
+            } catch (ExcepcionPresentacion ex) {
+                Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MisPagos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MisPagos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MisPagos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MisPagos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+    }//GEN-LAST:event_btnAtrasActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MisPagos().setVisible(true);
+    private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
+        try {
+            List<CuentaBancariaDTO> todas = pagoBO.obtenerTodasLasCuentasBancarias();
+
+            int totalPaginas = (int) Math.ceil((double) todas.size() / LIMITE);
+
+            if (pagina < totalPaginas) {
+                pagina++;
+                cargarEnTabla();
+                actualizarNumeroDePagina();
+            } else {
+
+                JOptionPane.showMessageDialog(this, "No hay más páginas disponibles", "Información", JOptionPane.INFORMATION_MESSAGE);
             }
-        });
-    }
+        } catch (ExcepcionBO ex) {
+            try {
+                throw new ExcepcionPresentacion("Error al eliminar la cuenta bancaria.", ex);
+            } catch (ExcepcionPresentacion ex1) {
+                Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSiguienteActionPerformed
 
+    private void NumeroDePaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumeroDePaginaActionPerformed
+        // TODO add your handling code here:
+        try {
+            List<CuentaBancariaDTO> todas= pagoBO.obtenerTodasLasCuentasBancarias();
+
+            int totalPaginas = (int) Math.ceil((double) todas.size() / LIMITE);
+
+            int nuevaPagina = Integer.parseInt(NumeroDePagina.getText());
+
+            if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+                pagina = nuevaPagina;
+
+                cargarEnTabla();
+
+                actualizarNumeroDePagina();
+            } else {
+                JOptionPane.showMessageDialog(this, "Número de página inválido", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Ingrese un número válido para la página", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ExcepcionBO ex) {
+            try {
+                throw new ExcepcionPresentacion("Error al eliminar la cuenta bancaria.", ex);
+            } catch (ExcepcionPresentacion ex1) {
+                Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_NumeroDePaginaActionPerformed
+
+    private void actualizarNumeroDePagina() {
+    NumeroDePagina.setText(""+pagina);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Inicio;
+    private javax.swing.JTextField NumeroDePagina;
     private javax.swing.JRadioButtonMenuItem btnAbonos;
+    private javax.swing.JButton btnAtras;
     private javax.swing.JRadioButtonMenuItem btnCerrarSesion;
     private javax.swing.JButton btnCrearPago;
     private javax.swing.JRadioButtonMenuItem btnCuentasBancarias;
     private javax.swing.JRadioButtonMenuItem btnInicio;
     private javax.swing.JRadioButtonMenuItem btnPagos;
+    private javax.swing.JButton btnSiguiente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

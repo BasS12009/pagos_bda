@@ -6,7 +6,9 @@ package negocio;
 
 import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
+import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
+import DTOs.PagosEstatusDTO;
 import excepcionBO.ExcepcionBO;
 import java.util.List;
 
@@ -145,4 +147,8 @@ public interface IPagoBO {
      * @throws ExcepcionBO Si ocurre un error al intentar obtener todos los beneficiarios.
      */
     List<BeneficiarioDTO> obtenerTodosLosBeneficiarios() throws ExcepcionBO;
+    
+    public List<PagosEstatusDTO> obtenerPagosEstatusParaPagos(List<PagoDTO> pagos);
+    
+    public void guardarPagoConEstatus(PagoDTO pagoDTO, EstatusDTO estatusDTO);
 }

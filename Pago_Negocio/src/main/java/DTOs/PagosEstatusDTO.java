@@ -12,6 +12,7 @@ public class PagosEstatusDTO {
     private Long id;
     private PagoDTO pago;
     private EstatusDTO estatus;
+    private String mensaje;
 
     public PagosEstatusDTO() {
     }
@@ -45,4 +46,14 @@ public class PagosEstatusDTO {
     public void setEstatus(EstatusDTO estatus) {
         this.estatus = estatus;
     }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+    
+    
 }

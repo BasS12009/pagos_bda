@@ -4,12 +4,14 @@
  */
 package BeneficiarioPresentacion;
 
+import negocio.PagoBO;
+
 /**
  *
  * @author diana
  */
 public class ModificarPago extends javax.swing.JFrame {
-
+    PagoBO pagoBO;
     /**
      * Creates new form ModificarPago
      */
@@ -101,7 +103,7 @@ public class ModificarPago extends javax.swing.JFrame {
 
     private void btnRegresar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresar3ActionPerformed
         // TODO add your handling code here:
-        MisPagos misPagos = new MisPagos();
+        MisPagos misPagos = new MisPagos(pagoBO);
         misPagos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresar3ActionPerformed

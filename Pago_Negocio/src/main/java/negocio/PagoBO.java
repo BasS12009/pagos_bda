@@ -6,7 +6,9 @@ package negocio;
 
 import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
+import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
+import DTOs.PagosEstatusDTO;
 import excepcionBO.ExcepcionBO;
 import java.util.List;
 
@@ -212,5 +214,19 @@ public class PagoBO implements IPagoBO{
     @Override
     public List<CuentaBancariaDTO> obtenerTodasLasCuentasBancariasPorBeneficiario(long idBeneficiario) throws ExcepcionBO {
         return pagoNegocio.obtenerTodasLasCuentasBancariasPorBeneficiario(idBeneficiario);
+    }
+    
+    @Override
+    public List<PagosEstatusDTO> obtenerPagosEstatusParaPagos(List<PagoDTO> pagos){
+        return pagoNegocio.obtenerPagosEstatusParaPagos(pagos);
+    }
+    
+    /**
+     *
+     * @param pagoDTO
+     * @param estatusDTO
+     */
+    public void guardarPagoConEstatus(PagoDTO pagoDTO, EstatusDTO estatusDTO){
+        pagoNegocio.guardarPagoConEstatus(pagoDTO, estatusDTO);
     }
 }

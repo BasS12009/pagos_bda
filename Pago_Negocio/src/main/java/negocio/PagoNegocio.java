@@ -6,6 +6,7 @@ import DAOs.IBeneficiarioDAO;
 import DAOs.ICuentaBancariaDAO;
 import DAOs.IPagoDAO;
 import DAOs.PagoDAO;
+import DAOs.PagosEstatusDAO;
 import DTOs.AbonoDTO;
 import DTOs.CuentaBancariaDTO;
 import DTOs.EstatusDTO;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import DTOs.BeneficiarioDTO;
+import DTOs.PagosEstatusDTO;
+import entidades.Estatus;
 import excepcion.ExcepcionDAO;
 
 
@@ -37,6 +40,7 @@ public class PagoNegocio implements IPagoNegocio {
     private PagoDAO pagoDAO;
     private CuentaBancariaDAO cuentaBancariaDAO;
     private BeneficiarioDAO beneficiarioDAO;
+    private PagosEstatusDAO pagoEstatusDAO;
     long id;
     
 
@@ -47,10 +51,11 @@ public class PagoNegocio implements IPagoNegocio {
      * @param cuentaBancariaDAO   Objeto ICuentaBancariaDAO que se utilizará para acceder a la capa de datos de cuentas bancarias.
      * @param beneficiarioDAO     Objeto IBeneficiarioDAO que se utilizará para acceder a la capa de datos de beneficiarios.
      */
-    public PagoNegocio(PagoDAO pagoDAO, CuentaBancariaDAO cuentaBancariaDAO, BeneficiarioDAO beneficiarioDAO) {
+    public PagoNegocio(PagoDAO pagoDAO, CuentaBancariaDAO cuentaBancariaDAO, BeneficiarioDAO beneficiarioDAO, PagosEstatusDAO pagoEstatusDAO) {
         this.pagoDAO = pagoDAO;
         this.cuentaBancariaDAO = cuentaBancariaDAO;
         this.beneficiarioDAO = beneficiarioDAO;
+        this.pagoEstatusDAO=pagoEstatusDAO;
     }
 
     /**
@@ -621,5 +626,42 @@ public class PagoNegocio implements IPagoNegocio {
                .collect(Collectors.toList());
    }
 
+
+    public List<PagosEstatusDTO> obtenerPagosEstatusParaPagos(List<PagoDTO> pagos) {
+        List<PagosEstatusDTO> pagosEstatus = new ArrayList<>();
+
+        for (PagoDTO pago : pagos) {
+            PagosEstatusDTO pagoEstatus = new PagosEstatusDTO();
+            pagoEstatus.setId(pago.getId());
+            pagoEstatus.setEstatus(obtenerEstatusParaPago(pago));
+
+            pagosEstatus.add(pagoEstatus);
+        }
+
+        return pagosEstatus;
+    }
+
+    
+    
+   private EstatusDTO obtenerEstatusParaPago(PagoDTO pago) {
+      
+        PagosEstatus pagosEstatus = (PagosEstatus) pagoEstatusDAO.obtenerEstatusPagosPorPago(PagoDTO.convertir(pago));
+
+        if (pagosEstatus != null) {
+            return EstatusDTO.convertir(pagosEstatus.getEstatus());
+        } else {
+            return null;
+        }
+    }
+    
+    public void guardarPagoConEstatus(PagoDTO pagoDTO, EstatusDTO estatusDTO) {
+        Pago pago = PagoDTO.convertir(pagoDTO);
+        Estatus estatus = EstatusDTO.convertir(estatusDTO);
+        PagosEstatus pagosEstatus = new PagosEstatus();
+        pagosEstatus.setPago(pago);
+        pagosEstatus.setEstatus(estatus);
+
+        pagoEstatusDAO.guardarPagosEstatus(pagosEstatus);
+    }
    
 }
