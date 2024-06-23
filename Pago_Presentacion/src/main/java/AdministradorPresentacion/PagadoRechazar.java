@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.TableColumnModel;
+import negocio.PagoBO;
 
 /**
  *
@@ -18,6 +19,8 @@ import javax.swing.table.TableColumnModel;
  */
 public class PagadoRechazar extends javax.swing.JFrame {
 
+    PagoBO pagoBO;
+    
     /**
      * Creates new form PagadoRechazar
      */
@@ -261,7 +264,7 @@ public class PagadoRechazar extends javax.swing.JFrame {
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         // TODO add your handling code here:
-        logIn lIn = new logIn();
+        logIn lIn = new logIn(pagoBO);
         lIn.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
