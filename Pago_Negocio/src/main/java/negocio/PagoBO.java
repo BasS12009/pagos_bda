@@ -4,6 +4,7 @@
  */
 package negocio;
 
+import DTOs.AbonoDTO;
 import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
 import DTOs.EstatusDTO;
@@ -52,8 +53,8 @@ public class PagoBO implements IPagoBO{
      * @param pagoDTO Objeto PagoDTO que representa el pago a actualizar.
      */
     @Override
-    public void actualizarPago(PagoDTO pagoDTO) throws ExcepcionBO {
-        pagoNegocio.actualizarPago(pagoDTO);
+   public void actualizarPago(PagoDTO pagoDTO, EstatusDTO estatus) throws ExcepcionBO {
+        pagoNegocio.actualizarPago(pagoDTO,estatus);
     }
 
     /**
@@ -258,5 +259,40 @@ public class PagoBO implements IPagoBO{
     public List<PagosEstatusDTO> obtenerPagosEstatusPorBeneficiario(long id){
         return pagoNegocio.obtenerPagosEstatusPorBeneficiario(id);
     }
+
+
+    @Override
+    public void agregarAbono(AbonoDTO abonoDTO, PagoDTO pago) {
+        pagoNegocio.agregarAbono(abonoDTO, pago);
+    }
+    
+    @Override
+    public List<AbonoDTO> obtenerAbonosPorBeneficiario(long id){
+        return pagoNegocio.obtenerAbonosPorBeneficiario(id);
+    }
+    @Override
+    public void editarAbono(AbonoDTO abonoDTO,PagoDTO pago){
+        pagoNegocio.editarAbono(abonoDTO, pago);
+    }
+    
+    @Override
+    public AbonoDTO buscarAbonoPorID(long id){
+        return pagoNegocio.buscarAbonoPorID(id);
+    }
+    
+    @Override
+    public void eliminarAbono(AbonoDTO abonoDTO){
+        pagoNegocio.eliminarAbono(abonoDTO);
+    }
+    @Override
+    public List<EstatusDTO> obtenerTodosLosEstatus(){
+        return pagoNegocio.obtenerEstatus();
+    }
+    
+    @Override
+    public EstatusDTO obtenerEstatuPorId(long id){
+        return pagoNegocio.obtenerEstatuPorId(id);
+    }
+
     
 }

@@ -4,6 +4,26 @@
  */
 package BeneficiarioPresentacion;
 
+import DTOs.BeneficiarioDTO;
+import DTOs.CuentaBancariaDTO;
+import DTOs.EstatusDTO;
+import DTOs.PagoDTO;
+import DTOs.TiposDTO;
+import Utilerias.TiposComboBoxModel;
+import excepcion.ExcepcionPresentacion;
+import excepcionBO.ExcepcionBO;
+import java.awt.Component;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.ListCellRenderer;
 import negocio.PagoBO;
 
 /**
@@ -12,15 +32,120 @@ import negocio.PagoBO;
  */
 public class ModificarPago extends javax.swing.JFrame {
     PagoBO pagoBO;
+    List<TiposDTO> tiposCrear;
+    TiposDTO tipoSeleccionado;
+    List<CuentaBancariaDTO> cuentasCrear;
+    CuentaBancariaDTO cuentaSeleccionada;
+    long id;
+    
     /**
      * Creates new form ModificarPago
      */
-    public ModificarPago() { 
+    public ModificarPago(PagoBO pagoBO,long id) { 
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
+        this.id=id;
+        this.pagoBO=pagoBO;
+        
+        inicializarValoresInicialesC();
+        inicializarValoresInicialesT();
+        
     }
 
+    public void inicializarValoresInicialesC() {
+    try {
+        
+        // Llenar el JComboBox de cuentas
+        llenarComboBoxCuentas();
+        PagoDTO pago=pagoBO.buscarPagoPorId(id);
+        textoMonto.setText(String.valueOf(pago.getMonto()));
+        // Obtener el número de cuenta del pago y establecerlo como seleccionado en el JComboBox
+        if (pago != null && pago.getCuentas() != null && !pago.getCuentas().isEmpty()) {
+            String numeroCuentaPago = pago.getCuentas().get(0).getNumeroCuenta();
+            jComboBoxCuenta.setSelectedItem(numeroCuentaPago);
+        }
+    } catch (ExcepcionBO ex) {
+        Logger.getLogger(CrearPago.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
+        
+    public void inicializarValoresInicialesT() {
+    try {
+            llenarComboBoxTipos();
+            PagoDTO pago=pagoBO.buscarPagoPorId(id);
+
+            if (pago != null && pago.getTipo() != null) {
+                String nombreTipoPago = pago.getTipo().getNombre() + " " + pago.getTipo().getNumeroParcialidades() + " Pagos";
+                jComboBoxTipo.setSelectedItem(nombreTipoPago);
+            }
+        } catch (ExcepcionBO ex) {
+            Logger.getLogger(CrearPago.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void llenarComboBoxCuentas() {
+        try {
+            jComboBoxCuenta.removeAllItems();
+
+            cuentasCrear = pagoBO.obtenerTodasLasCuentasBancariasPorBeneficiario(pagoBO.getId());
+
+            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+            for (CuentaBancariaDTO cuenta : cuentasCrear) {
+                model.addElement(cuenta.getNumeroCuenta()); 
+            }
+
+            jComboBoxCuenta.setModel(model);
+
+            jComboBoxCuenta.setRenderer(new ListCellRenderer<String>() {
+                @Override
+                public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+                    JLabel label = new JLabel(value);
+                    if (isSelected) {
+                        label.setBackground(list.getSelectionBackground());
+                        label.setForeground(list.getSelectionForeground());
+                    } else {
+                        label.setBackground(list.getBackground());
+                        label.setForeground(list.getForeground());
+                    }
+                    label.setOpaque(true);
+                    return label;
+                }
+            });
+        } catch (ExcepcionBO ex) {
+            Logger.getLogger(CrearPago.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void llenarComboBoxTipos() {
+        try {
+            jComboBoxTipo.removeAllItems();
+
+            tiposCrear = pagoBO.obtenerTodosLosTipos();
+
+            TiposComboBoxModel model = new TiposComboBoxModel(tiposCrear);
+            jComboBoxTipo.setModel(model);
+
+            jComboBoxTipo.setRenderer(new ListCellRenderer<String>() {
+                @Override
+                public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+                    JLabel label = new JLabel(value);
+                    if (isSelected) {
+                        label.setBackground(list.getSelectionBackground());
+                        label.setForeground(list.getSelectionForeground());
+                    } else {
+                        label.setBackground(list.getBackground());
+                        label.setForeground(list.getForeground());
+                    }
+                    label.setOpaque(true);
+                    return label;
+                }
+            });
+        } catch (ExcepcionBO ex) {
+            Logger.getLogger(CrearPago.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,11 +157,11 @@ public class ModificarPago extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         btnRegresar3 = new javax.swing.JButton();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        jComboBoxTipo = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        textoMonto = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBoxCuenta = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -58,26 +183,29 @@ public class ModificarPago extends javax.swing.JFrame {
         });
         jPanel1.add(btnRegresar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 40));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 170, 270, 30));
+        jComboBoxTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTipoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jComboBoxTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 170, 270, 30));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Tipo ");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 130, -1, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 260, 270, 30));
+        jPanel1.add(textoMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 260, 270, 30));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Monto");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 230, -1, -1));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 350, 270, 30));
+        jPanel1.add(jComboBoxCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 350, 270, 30));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Fecha");
+        jLabel6.setText("Cuenta");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 310, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
@@ -89,6 +217,11 @@ public class ModificarPago extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Modificar Pago");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 490, -1, -1));
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
@@ -115,52 +248,122 @@ public class ModificarPago extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnRegresar3ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    private void jComboBoxTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxTipoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+            PagoDTO pago = pagoBO.buscarPagoPorId(id);
+
+            if (pago != null) {
+                if (pago.getAbonos() != null && !pago.getAbonos().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "No se puede modificar el tipo de pago porque ya se han realizado abonos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                String montoTexto = textoMonto.getText().trim();
+            if (montoTexto.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar un monto válido", "Error", JOptionPane.ERROR_MESSAGE);
+                return; 
+            }
+
+            BigDecimal monto;
+            try {
+                monto = new BigDecimal(montoTexto);
+                if (monto.compareTo(BigDecimal.ZERO) <= 0) {
+                    JOptionPane.showMessageDialog(this, "El monto debe ser mayor que cero", "Error", JOptionPane.ERROR_MESSAGE);
+                    return; 
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "El monto ingresado no es válido", "Error", JOptionPane.ERROR_MESSAGE);
+                return; 
+            }
+            pago.setMonto(monto);
+
+            String nombreTipoSeleccionado = (String) jComboBoxTipo.getSelectedItem();
+
+            for (TiposDTO tipo : tiposCrear) {
+                String nombreTipo = tipo.getNombre() + " " + tipo.getNumeroParcialidades() + " Pagos";
+                if (nombreTipo.equals(nombreTipoSeleccionado)) {
+                    tipoSeleccionado = tipo;
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificarPago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificarPago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificarPago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificarPago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ModificarPago().setVisible(true);
+            if (tipoSeleccionado == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró el tipo seleccionado en la lista", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        });
-    }
+
+            pago.setTipo(tipoSeleccionado);
+            
+            String nombreCuentaSeleccionado = (String) jComboBoxCuenta.getSelectedItem();
+
+            for (CuentaBancariaDTO cuenta : cuentasCrear) {
+                String nombreCuenta = cuenta.getNumeroCuenta();
+                if (nombreCuenta.equals(nombreCuentaSeleccionado)) {
+                    cuentaSeleccionada = cuenta;
+                    break;
+                }
+            }
+
+            if (cuentaSeleccionada == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró la cuenta seleccionada en la lista", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            pago.setCuentas(Arrays.asList(cuentaSeleccionada)); 
+            } else {
+                System.out.println("La cuenta bancaria no se encontró para el ID proporcionado: " + id);
+            }
+            
+            
+            List<EstatusDTO> listaEstatus = new ArrayList<>();
+            EstatusDTO estatusCreado = null;
+            List<EstatusDTO> estatus = pagoBO.obtenerEstatus();
+            for (EstatusDTO estatu : estatus) {
+                if ("Modificado".equals(estatu.getNombre())) {
+                    estatusCreado = estatu;
+                    break;
+                }
+            }
+
+            if (estatusCreado == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró el estatus 'Creado' en la lista", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            listaEstatus.add(estatusCreado);
+            pago.setEstatus(listaEstatus);
+            
+            pagoBO.actualizarPago(pago,estatusCreado);
+            MisPagos p=new MisPagos(pagoBO);
+            p.show();
+            this.dispose();
+        } catch (ExcepcionBO ex) {
+            try {
+                throw new ExcepcionPresentacion(ex.getMessage());
+            } catch (ExcepcionPresentacion ex1) {
+                Logger.getLogger(ModificarCuenta.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegresar3;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBoxCuenta;
+    private javax.swing.JComboBox<String> jComboBoxTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel logo;
+    private javax.swing.JTextField textoMonto;
     // End of variables declaration//GEN-END:variables
 }

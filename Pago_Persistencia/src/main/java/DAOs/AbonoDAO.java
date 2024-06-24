@@ -137,10 +137,10 @@ public class AbonoDAO implements IAbonoDAO{
      * @return
      */
     @Override
-    public List<Abono> obtenerAbonosPorBeneficiario(String claveContrato) {
+    public List<Abono> obtenerAbonosPorBeneficiario(Long beneficiarioId) {
         TypedQuery<Abono> query = entityManager.createQuery(
-                "SELECT a FROM Abono a WHERE a.beneficiario.claveContrato = :claveContrato", Abono.class);
-        query.setParameter("claveContrato", claveContrato);
+                "SELECT a FROM Abono a WHERE a.beneficiario.id = :beneficiarioId", Abono.class);
+        query.setParameter("beneficiarioId", beneficiarioId);
         return query.getResultList();
     }
     
@@ -152,4 +152,5 @@ public class AbonoDAO implements IAbonoDAO{
         entityManager.close();
         ConexionBD.close();
     }
+
 }

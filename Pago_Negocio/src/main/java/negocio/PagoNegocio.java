@@ -1,12 +1,15 @@
 package negocio;
 
+import DAOs.AbonoDAO;
 import DAOs.BeneficiarioDAO;
 import DAOs.CuentaBancariaDAO;
+import DAOs.EstatusDAO;
 import DAOs.IBeneficiarioDAO;
 import DAOs.ICuentaBancariaDAO;
 import DAOs.IPagoDAO;
 import DAOs.PagoDAO;
 import DAOs.PagosEstatusDAO;
+import DAOs.TiposDAO;
 import DTOs.AbonoDTO;
 import DTOs.CuentaBancariaDTO;
 import DTOs.EstatusDTO;
@@ -27,8 +30,10 @@ import java.util.stream.Collectors;
 import DTOs.BeneficiarioDTO;
 import DTOs.PagosEstatusDTO;
 import entidades.Estatus;
+import entidades.Tipos;
 import excepcion.ExcepcionDAO;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,6 +49,9 @@ public class PagoNegocio implements IPagoNegocio {
     private CuentaBancariaDAO cuentaBancariaDAO;
     private BeneficiarioDAO beneficiarioDAO;
     private PagosEstatusDAO pagoEstatusDAO;
+    private TiposDAO tiposDAO;
+    private EstatusDAO estatusDAO;
+    private AbonoDAO abonoDAO;
     long id;
     
 
@@ -54,11 +62,14 @@ public class PagoNegocio implements IPagoNegocio {
      * @param cuentaBancariaDAO   Objeto ICuentaBancariaDAO que se utilizará para acceder a la capa de datos de cuentas bancarias.
      * @param beneficiarioDAO     Objeto IBeneficiarioDAO que se utilizará para acceder a la capa de datos de beneficiarios.
      */
-    public PagoNegocio(PagoDAO pagoDAO, CuentaBancariaDAO cuentaBancariaDAO, BeneficiarioDAO beneficiarioDAO, PagosEstatusDAO pagoEstatusDAO) {
+    public PagoNegocio(PagoDAO pagoDAO, CuentaBancariaDAO cuentaBancariaDAO, BeneficiarioDAO beneficiarioDAO, PagosEstatusDAO pagoEstatusDAO, TiposDAO tiposDAO, EstatusDAO estatus,AbonoDAO abonoDAO) {
         this.pagoDAO = pagoDAO;
         this.cuentaBancariaDAO = cuentaBancariaDAO;
         this.beneficiarioDAO = beneficiarioDAO;
         this.pagoEstatusDAO=pagoEstatusDAO;
+        this.tiposDAO=tiposDAO;
+        this.estatusDAO=estatus;
+        this.abonoDAO=abonoDAO;
     }
 
     /**
@@ -92,9 +103,14 @@ public class PagoNegocio implements IPagoNegocio {
         try {
             return convertir(beneficiarioDAO.login(beneficiarioAuxiliar));
         } catch (ExcepcionDAO ex) {
+            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            return convertir(beneficiarioDAO.login(beneficiarioAuxiliar));
+        } catch (ExcepcionDAO ex) {
             throw new ExcepcionBO("Error al iniciar sesión :(", ex);
         }
-
+        
     }
     
     /**
@@ -102,10 +118,17 @@ public class PagoNegocio implements IPagoNegocio {
      * @param pagoDTO Objeto PagoDTO que representa el pago a guardar.
      */
     @Override
-    public void guardarPago(PagoDTO pagoDTO) throws ExcepcionBO {
+    public void guardarPago(PagoDTO pagoDTO, EstatusDTO estatus) throws ExcepcionBO {
         try {
             Pago pago = convertir(pagoDTO);
-            pagoDAO.guardarPago(pago);
+            pago.setFechaHora(pagoDTO.getFechaHora());
+            pago.setMonto(pagoDTO.getMonto());
+            pago.setComprobante("esperando Pago");
+            pago = pagoDAO.guardarPago(pago);
+            PagoDTO pagod = new PagoDTO();
+            pagod.setId(pago.getId());
+            System.out.println("Pago ID: " + pagod.getId());
+            this.guardarPagoConEstatus(pagod, estatus);
         } catch (Exception ex) {
             throw new ExcepcionBO("Error al guardar el pago", ex);
         }
@@ -116,10 +139,15 @@ public class PagoNegocio implements IPagoNegocio {
      * @param pagoDTO Objeto PagoDTO que representa el pago a actualizar.
      */
     @Override
-    public void actualizarPago(PagoDTO pagoDTO) throws ExcepcionBO{
+    public void actualizarPago(PagoDTO pagoDTO, EstatusDTO estatus) throws ExcepcionBO{
         try {
-            Pago pago = convertir(pagoDTO);
+            Pago pago = pagoDAO.buscarPagoPorId(pagoDTO.getId());
+            PagosEstatus pe=(PagosEstatus) pagoEstatusDAO.obtenerEstatusPagosPorPago(pago).get(0);
             pagoDAO.actualizarPago(pago);
+            pe.setPago(pago);
+            pe.setEstatus(estatusDAO.buscarEstatusPorId(estatus.getId()));
+            pe.setMensaje("El pago ha sido modificado");
+            pagoEstatusDAO.actualizarPagosEstatus(pe);
         } catch (ExcepcionDAO ex) {
             throw new ExcepcionBO("Error al actualizar el pago", ex);
         }
@@ -150,16 +178,12 @@ public class PagoNegocio implements IPagoNegocio {
      * @return Objeto PagoDTO si se encuentra, o null si no existe ningún pago con ese ID.
      */
     @Override
-    public PagoDTO buscarPagoPorId(Long id) throws ExcepcionBO {
-        try {
-            PagoDTO pagoDTO = convertir(pagoDAO.buscarPagoPorId(id));
-            if (pagoDTO != null) {
-                return pagoDTO;
-            }
-            return null;
-        } catch (ExcepcionDAO ex) {
-            throw new ExcepcionBO("Error al buscar el pago", ex);
+    public PagoDTO buscarPagoPorId(Long id) {
+        PagoDTO pagoDTO = convertir(pagoDAO.buscarPagoPorId(id));
+        if (pagoDTO != null) {
+            return pagoDTO;
         }
+        return null;
     }
 
     /**
@@ -404,6 +428,17 @@ public class PagoNegocio implements IPagoNegocio {
             throw new ExcepcionBO("Error al buscar todos los beneficiarios", ex);
         }
     }
+    
+    /**
+     *
+     * @return
+     * @throws ExcepcionBO
+     */
+    @Override
+    public List<TiposDTO> obtenerTodosLosTipos() throws ExcepcionBO{
+        List<TiposDTO> tipos= convertir(tiposDAO.obtenerTodosLosTipos());
+        return tipos;
+    }
 
     /**
      * Convierte un objeto PagoDTO a un objeto Pago.
@@ -411,39 +446,44 @@ public class PagoNegocio implements IPagoNegocio {
      * @return Objeto Pago resultante de la conversión.
      */
     private Pago convertir(PagoDTO pagoDTO) {
-        Pago pago = new Pago();
-        pago.setId(pagoDTO.getId());
-        pago.setMonto(pagoDTO.getMonto());
-        pago.setFechaHora(pagoDTO.getFechaHora());
-        pago.setComprobante(pagoDTO.getComprobante());
-
-        if (pagoDTO.getAbonos() != null) {
-            List<Abono> abonos = pagoDTO.getAbonos().stream()
-                                    .map(AbonoDTO::convertir)
-                                    .collect(Collectors.toList());
-            pago.setAbonos(abonos);
+        try {
+            Pago pago = new Pago();
+            if(pagoDTO.getId()!=null){
+               pago.setId(pagoDTO.getId()); 
+            }
+            pago.setMonto(pagoDTO.getMonto());
+            pago.setFechaHora(pagoDTO.getFechaHora());
+            pago.setComprobante(pagoDTO.getComprobante());
+            if (pagoDTO.getAbonos() != null) {
+                List<Abono> abonos = pagoDTO.getAbonos().stream()
+                        .map(AbonoDTO::convertir)
+                        .collect(Collectors.toList());
+                pago.setAbonos(abonos);
+            }
+            List<PagosEstatus> p=pagoEstatusDAO.obtenerEstatusPagosPorPago(pago);
+            pago.setPagosEstatus(p);
+            pago.setTipo(TiposDTO.convertir(pagoDTO.getTipo()));
+            pago.setBeneficiario(beneficiarioDAO.buscarBeneficiarioPorId(id));
+            if (pagoDTO.getCuentas() != null) {
+                List<CuentaBancaria> cuentasBancarias = pagoDTO.getCuentas().stream()
+                        .map(CuentaBancariaDTO::convertir)
+                        .collect(Collectors.toList());
+                pago.setCuentaBancaria(cuentasBancarias.getFirst());
+            }
+            return pago;
+        } catch (ExcepcionDAO ex) {
+            Logger.getLogger(PagoNegocio.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        if (pagoDTO.getEstatus() != null) {
-            List<PagosEstatus> estatus = (List<PagosEstatus>) pagoDTO.getEstatus().stream()
-                                        .map(EstatusDTO::convertir);
-            pago.setPagosEstatus(estatus);
-        }
-
-        pago.setTipo(TiposDTO.convertir(pagoDTO.getTipo()));
-
-        pago.setBeneficiario(convertir(pagoDTO.getBeneficiario()));
-
-        if (pagoDTO.getCuentas() != null) {
-            List<CuentaBancaria> cuentasBancarias = pagoDTO.getCuentas().stream()
-                                                    .map(CuentaBancariaDTO::convertir)
-                                                    .collect(Collectors.toList());
-            pago.setCuentaBancaria((CuentaBancaria) cuentasBancarias);
-        }
-
-        return pago;
+        return null;
     }
 
+    public PagosEstatus convertirEPDAO(PagosEstatusDTO pagos){
+        PagosEstatus estatus=new PagosEstatus();
+        estatus=pagoEstatusDAO.buscarPagosEstatusPorId(id);
+        
+        return estatus;
+    }
+    
     /**
      * Convierte un objeto Pago a un objeto PagoDTO.
      * @param pago Objeto Pago que se desea convertir.
@@ -632,27 +672,49 @@ public class PagoNegocio implements IPagoNegocio {
                .collect(Collectors.toList());
                      else return null;
    }
+   
+   private List<TiposDTO> convertir(List<Tipos> tipos) {
+        List<TiposDTO> tiposDTOList = new ArrayList<>();
+        for (Tipos tipo : tipos) {
+            TiposDTO dto = new TiposDTO();
+            dto.setId(tipo.getId());
+            dto.setNombre(tipo.getNombre());
+            dto.setNumeroParcialidades(tipo.getNumeroParcialidades());
+            if(tipo.getPagos().isEmpty()){
 
+            }else{
+                dto.setPagos(convertirDAO(tipo.getPagos()));
+            }
+            tiposDTOList.add(dto);
+        }
+        return tiposDTOList;
+    }
 
     public List<PagosEstatusDTO> obtenerPagosEstatusParaPagos(List<PagoDTO> pagos) {
         List<PagosEstatusDTO> pagosEstatus = new ArrayList<>();
 
-        for (PagoDTO pago : pagos) {
-            PagosEstatusDTO pagoEstatus = new PagosEstatusDTO();
-            pagoEstatus.setId(pago.getId());
-            pagoEstatus.setEstatus(obtenerEstatusParaPago(pago));
-
-            pagosEstatus.add(pagoEstatus);
-        }
+//        for (PagoDTO pago : pagos) {
+//            PagosEstatusDTO pagoEstatus = new PagosEstatusDTO();
+//            pagoEstatus.setId(obtenerEstatusParaPago(pago).);
+//            pagoEstatus.setEstatus(obtenerEstatusParaPago(pago));
+//            pagoEstatus.setPago(pago);
+//            pagosEstatus.add(pagoEstatus);
+//            
+//        }
 
         return pagosEstatus;
     }
 
+    @Override
+    public List<PagosEstatusDTO> obtenerPagosEstatusPorBeneficiario(long id){
+        List<PagosEstatusDTO> pagosEstatus=convertirPE(pagoEstatusDAO.obtenerPagosEstatusPorBeneficiario(id));
+        return pagosEstatus;
+    }
     
     
-   private EstatusDTO obtenerEstatusParaPago(PagoDTO pago) {
-      
-        PagosEstatus pagosEstatus = (PagosEstatus) pagoEstatusDAO.obtenerEstatusPagosPorPago(PagoDTO.convertir(pago));
+    
+   private EstatusDTO obtenerEstatusParaPago(PagoDTO pago) throws ExcepcionDAO {
+        PagosEstatus pagosEstatus = (PagosEstatus) pagoEstatusDAO.obtenerEstatusPagosPorPago(pagoDAO.buscarPagoPorId(pago.getId()));
 
         if (pagosEstatus != null) {
             return EstatusDTO.convertir(pagosEstatus.getEstatus());
@@ -660,15 +722,158 @@ public class PagoNegocio implements IPagoNegocio {
             return null;
         }
     }
-    
-    public void guardarPagoConEstatus(PagoDTO pagoDTO, EstatusDTO estatusDTO) {
-        Pago pago = PagoDTO.convertir(pagoDTO);
-        Estatus estatus = EstatusDTO.convertir(estatusDTO);
+   
+    /**
+     *
+     * @param pagoDTO
+     * @param estatusDTO
+     * @throws ExcepcionDAO
+     */
+    @Override
+    public void guardarPagoConEstatus(PagoDTO pagoDTO, EstatusDTO estatusDTO) throws ExcepcionDAO {
         PagosEstatus pagosEstatus = new PagosEstatus();
-        pagosEstatus.setPago(pago);
-        pagosEstatus.setEstatus(estatus);
+        pagosEstatus.setPago(pagoDAO.buscarPagoPorId(pagoDTO.getId()));
+        pagosEstatus.setEstatus(estatusDAO.buscarEstatusPorId(estatusDTO.getId()));
+        pagosEstatus.setFechaHora(LocalDateTime.now());
+        pagosEstatus.setMensaje("El pago ha sido creado");
 
         pagoEstatusDAO.guardarPagosEstatus(pagosEstatus);
     }
-   
+
+    
+    private List<EstatusDTO> convertirEstatus(List<Estatus> estatus){
+        List<EstatusDTO> estatua = new ArrayList<>();
+
+        for (Estatus estatu : estatus) {
+            EstatusDTO status = new EstatusDTO();
+            status.setId(estatu.getId());
+            status.setNombre(estatu.getNombre());
+            if(estatus!=null){
+                status.setPagos(obtenerPagosEstatusPorEstatus(estatu.getNombre()));
+            }
+            estatua.add(status);
+        }
+
+        return estatua;
+    }
+    
+    private List<PagosEstatusDTO> convertirPE(List<PagosEstatus> pagosEstatus) {
+        if (pagosEstatus == null) {
+            System.out.println("Es null");
+            return Collections.emptyList();
+        }
+
+        System.out.println("Número de PagosEstatus recibidos para conversión: " + pagosEstatus.size());
+
+        List<PagosEstatusDTO> estatusDTO = pagosEstatus.stream()
+                .map(pe -> {
+                    PagosEstatusDTO peDTO = new PagosEstatusDTO();
+                    peDTO.setId(pe.getId());
+                    peDTO.setEstatus(EstatusDTO.convertir(pe.getEstatus()));
+                    peDTO.setPago(convertir(pe.getPago()));
+                    peDTO.setMensaje(pe.getMensaje());
+                    System.out.println("Convertido PagosEstatus a PagosEstatusDTO: " + peDTO);
+                    return peDTO;
+                })
+                .collect(Collectors.toList());
+
+        System.out.println("Número de PagosEstatusDTO convertidos: " + estatusDTO.size());
+        return estatusDTO;
+    }
+    
+    @Override
+    public List<EstatusDTO> obtenerEstatus(){
+        
+        return convertirEstatus(estatusDAO.obtenerTodosLosEstatus());
+    }
+    
+    
+    public List<PagoDTO> obtenerPagosEstatusPorEstatus(String nombre){
+        return convertirDAO(pagoDAO.obtenerPagosEstatusPorEstatus(nombre));
+    }
+    
+    public List<Pago> obtenerPagosEstatusPorEstatusDAO(String nombre){
+        return pagoDAO.obtenerPagosEstatusPorEstatus(nombre);
+    }
+    
+    @Override
+    public void agregarAbono(AbonoDTO abonoDTO, PagoDTO pago){
+        Abono abono=new Abono();
+        abono.setMonto(abonoDTO.getMonto());
+        abono.setPago(pagoDAO.buscarPagoPorId(pago.getId()));
+        abonoDAO.guardarAbono(abono);
+    }
+    
+    public List<AbonoDTO> obtenerAbonosPorBeneficiario(long id){
+        List<Abono> abonos=abonoDAO.obtenerAbonosPorBeneficiario(id);
+        List<AbonoDTO> abonosDTO=convertirAbonosADTO(abonos);
+        return abonosDTO;
+    }
+    
+    public List<AbonoDTO> convertirAbonosADTO(List<Abono> abonos){
+         List<AbonoDTO> abonosDTO= new ArrayList<>();
+        for(Abono abono:abonos){
+            AbonoDTO abonoDTO=new AbonoDTO();
+            abonoDTO.setFechaHora(abono.getFechaHora());
+            abonoDTO.setId(abono.getId());
+            abonoDTO.setMonto(abono.getMonto());
+            abonoDTO.setPagoDTO(convertir(abono.getPago()));
+            abonosDTO.add(abonoDTO);
+        }
+        return abonosDTO;
+    }
+    
+    @Override
+    public void editarAbono(AbonoDTO abonoDTO,PagoDTO pago){
+        Abono abono= abonoDAO.buscarAbonoPorId(abonoDTO.getId());
+        abono.setMonto(abonoDTO.getMonto());
+        abono.setPago(pagoDAO.buscarPagoPorId(pago.getId()));
+        abono.setFechaHora(LocalDateTime.now());
+        abonoDAO.actualizarAbono(abono);
+        
+    }
+    
+    @Override
+    public void eliminarAbono(AbonoDTO abonoDTO){
+        Abono abono= abonoDAO.buscarAbonoPorId(abonoDTO.getId());
+        abonoDAO.eliminarAbono(abono);
+    }
+    
+    @Override
+    public AbonoDTO buscarAbonoPorID(long id){
+        Abono abono=abonoDAO.buscarAbonoPorId(id);
+        AbonoDTO abonoDTO = new AbonoDTO();
+        abonoDTO.setFechaHora(abono.getFechaHora());
+        abonoDTO.setId(abono.getId());
+        abonoDTO.setMonto(abono.getMonto());
+        abonoDTO.setPagoDTO(convertir(abono.getPago()));
+        return abonoDTO;
+    }
+    
+    @Override
+    public List<EstatusDTO> obtenerTodosLosEstatus(){
+        List<Estatus> estatus=estatusDAO.obtenerTodosLosEstatus();
+        List<EstatusDTO> estatusDTO=new ArrayList<>();
+        for(Estatus estatu:estatus){
+            EstatusDTO estatuDTO=new EstatusDTO();
+            estatuDTO.setId(estatu.getId());
+            estatuDTO.setNombre(estatu.getNombre());
+            estatusDTO.add(estatuDTO);
+        }
+        return estatusDTO;
+    }
+    
+    @Override
+    public EstatusDTO obtenerEstatuPorId(long id){
+        Estatus estatu=estatusDAO.buscarEstatusPorId(id);
+        EstatusDTO estatusDTO=new EstatusDTO();
+        estatusDTO.setId(estatu.getId());
+        estatusDTO.setNombre(estatusDTO.getNombre());
+        if(estatu.getPagosEstatus()!=null){
+        List<PagoDTO> pagos=new ArrayList<>();
+        pagos.add(convertir(estatu.getPagosEstatus().get(0).getPago()));
+        estatusDTO.setPagos(pagos);  
+        }
+        return estatusDTO;
+    }
 }

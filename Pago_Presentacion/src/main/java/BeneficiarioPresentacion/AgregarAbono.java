@@ -4,6 +4,19 @@
  */
 package BeneficiarioPresentacion;
 
+import DTOs.AbonoDTO;
+import DTOs.EstatusDTO;
+import DTOs.PagoDTO;
+import DTOs.PagosEstatusDTO;
+import excepcionBO.ExcepcionBO;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import negocio.PagoBO;
 
 /**
@@ -13,15 +26,38 @@ import negocio.PagoBO;
 public class AgregarAbono extends javax.swing.JFrame {
 
     PagoBO pagoBO;
+    List<PagosEstatusDTO> pagos;
+    List ids;
+    PagoDTO pagoSeleccionado;
+    
     /**
      * Creates new form AgregarAbono
      */
     public AgregarAbono(PagoBO negocio) {
-        initComponents();
-        this.setLocationRelativeTo(this);
-        this.setSize(965, 610);
-        this.pagoBO = negocio;
-    }
+            initComponents();
+            this.setLocationRelativeTo(this);
+            this.setSize(965, 610);
+            this.pagoBO = negocio;
+            ids = new ArrayList<>(); // Inicialización de la lista de IDs
+            pagos=new ArrayList<>();
+            llenarComboPagos();
+        }
+
+        public void llenarComboPagos() {
+            pagos = pagoBO.obtenerPagosEstatusPorBeneficiario(pagoBO.getId()); // Manejo de excepciones
+            DefaultComboBoxModel<String> modelPagos = new DefaultComboBoxModel<>();
+            for (PagosEstatusDTO pago : pagos) {
+                //50
+                if (pago.getEstatus().getNombre().equals("Aprobado")) {
+                    ids.add(pago.getId());
+                    String displayText = pago.getPago().getTipo().getNombre() + " " +
+                            (pago.getPago().getTipo().getNumeroParcialidades() - pago.getPago().getAbonos().size());
+                    modelPagos.addElement(displayText);
+                }
+            }
+            jComboBoxPagos.setModel(modelPagos);
+        }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,11 +72,9 @@ public class AgregarAbono extends javax.swing.JFrame {
         btnRegresar3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        textoMonto = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        jComboBoxPagos = new javax.swing.JComboBox<>();
         btnAbono = new javax.swing.JButton();
         logo = new javax.swing.JLabel();
 
@@ -68,29 +102,25 @@ public class AgregarAbono extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Monto");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 190, -1, -1));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 310, 270, 30));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Beneficiario");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 270, -1, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, 270, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 270, -1, -1));
+        jPanel1.add(textoMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 270, 30));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Tipo de abono");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, -1, -1));
+        jLabel7.setText("Pago");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 180, -1, -1));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, 270, 30));
+        jPanel1.add(jComboBoxPagos, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, 270, 30));
 
         btnAbono.setBackground(new java.awt.Color(116, 114, 178));
         btnAbono.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         btnAbono.setForeground(new java.awt.Color(255, 255, 255));
         btnAbono.setText("Agregar Abono");
+        btnAbono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbonoActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAbono, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 490, 170, 40));
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
@@ -117,19 +147,100 @@ public class AgregarAbono extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnRegresar3ActionPerformed
 
+    private void btnAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonoActionPerformed
+        try {                                         
+            AbonoDTO abono = new AbonoDTO();
+            String montoTexto = textoMonto.getText().trim();
+            if (montoTexto.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar un monto válido", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            double monto;
+            try {
+                monto = Double.parseDouble(montoTexto);
+                if (monto <= 0) {
+                    JOptionPane.showMessageDialog(this, "El monto debe ser mayor que cero", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                abono.setMonto(monto);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "El monto ingresado no es válido", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // Obtener el pago seleccionado del combo box
+            pagoSeleccionado = pagos.get(jComboBoxPagos.getSelectedIndex()).getPago();
+            if (pagoSeleccionado == null) {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un pago válido", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // Validar que el monto del abono no exceda lo que falta pagar según las parcialidades
+            double montoRestante = Double.valueOf(pagoSeleccionado.getMonto().doubleValue());
+            if (monto > montoRestante) {
+                JOptionPane.showMessageDialog(this, "El monto del abono no puede ser mayor al monto restante por pagar", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int parcialidadesRestantes = pagoSeleccionado.getTipo().getNumeroParcialidades() - pagoSeleccionado.getAbonos().size();
+            if (monto > parcialidadesRestantes * pagoSeleccionado.getTipo().getNumeroParcialidades()) {
+                JOptionPane.showMessageDialog(this, "El abono excede el número de parcialidades restantes", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            
+            BigDecimal nuevoMonto = pagoSeleccionado.getMonto().subtract(BigDecimal.valueOf(monto));
+            
+            if (nuevoMonto.compareTo(BigDecimal.ZERO) <= 0) {
+                List<EstatusDTO> estatus= pagoBO.obtenerEstatus();
+                EstatusDTO estatuSeleccionado;
+                for(EstatusDTO estatu:estatus){
+                    if(estatu.getNombre().equals("Pagado")){
+                        estatuSeleccionado=pagoBO.obtenerEstatuPorId(estatu.getId());
+                        estatus.clear();
+                        estatus.add(estatuSeleccionado);
+                        break;
+                    }
+                }
+                
+                pagoSeleccionado.setEstatus(estatus);
+                generarComprobante(pagoSeleccionado);
+                pagoBO.actualizarPago(pagoSeleccionado, pagoSeleccionado.getEstatus().get(0));
+                abono.setFechaHora(LocalDateTime.now());
+                pagoBO.agregarAbono(abono, pagoSeleccionado);
+                MisAbonos misAbonos=new MisAbonos(pagoBO);
+                misAbonos.show();
+                this.dispose();
+            }
+            
+            pagoSeleccionado.setMonto(nuevoMonto);
+            
+            abono.setPagoDTO(pagoSeleccionado);
+            pagoBO.actualizarPago(pagoSeleccionado, pagoSeleccionado.getEstatus().get(0));
+            abono.setFechaHora(LocalDateTime.now());
+            pagoBO.agregarAbono(abono, pagoSeleccionado);
+            MisAbonos misAbonos=new MisAbonos(pagoBO);
+            misAbonos.show();
+            this.dispose();
 
+        } catch (ExcepcionBO ex) {
+            Logger.getLogger(AgregarAbono.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnAbonoActionPerformed
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbono;
     private javax.swing.JButton btnRegresar3;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBoxPagos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel logo;
+    private javax.swing.JTextField textoMonto;
     // End of variables declaration//GEN-END:variables
+
+    private void generarComprobante(PagoDTO pagoSeleccionado) {
+        
+    }
 }
