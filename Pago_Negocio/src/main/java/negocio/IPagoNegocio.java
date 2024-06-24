@@ -48,7 +48,7 @@ public interface IPagoNegocio {
      * 
      * @param pagoDTO El objeto Pago con los datos actualizados.
      */
-    void actualizarPago(PagoDTO pagoDTO) throws ExcepcionBO;
+    public void actualizarPago(PagoDTO pagoDTO, EstatusDTO estatus) throws ExcepcionBO;
     
     /**
      * Elimina un pago de la base de datos.

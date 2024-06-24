@@ -136,10 +136,15 @@ public class PagoNegocio implements IPagoNegocio {
      * @param pagoDTO Objeto PagoDTO que representa el pago a actualizar.
      */
     @Override
-    public void actualizarPago(PagoDTO pagoDTO) throws ExcepcionBO{
+    public void actualizarPago(PagoDTO pagoDTO, EstatusDTO estatus) throws ExcepcionBO{
         try {
-            Pago pago = convertir(pagoDTO);
+            Pago pago = pagoDAO.buscarPagoPorId(pagoDTO.getId());
+            PagosEstatus pe=(PagosEstatus) pagoEstatusDAO.obtenerEstatusPagosPorPago(pago).get(0);
             pagoDAO.actualizarPago(pago);
+            pe.setPago(pago);
+            pe.setEstatus(estatusDAO.buscarEstatusPorId(estatus.getId()));
+            pe.setMensaje("El pago ha sido modificado");
+            pagoEstatusDAO.actualizarPagosEstatus(pe);
         } catch (ExcepcionDAO ex) {
             throw new ExcepcionBO("Error al actualizar el pago", ex);
         }

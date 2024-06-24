@@ -42,7 +42,7 @@ public interface IPagoBO {
      *
      * @param pagoDTO
      */
-    void actualizarPago(PagoDTO pagoDTO) throws ExcepcionBO;
+    public void actualizarPago(PagoDTO pagoDTO, EstatusDTO estatus) throws ExcepcionBO;
 
     /**
      *

@@ -52,8 +52,8 @@ public class PagoBO implements IPagoBO{
      * @param pagoDTO Objeto PagoDTO que representa el pago a actualizar.
      */
     @Override
-    public void actualizarPago(PagoDTO pagoDTO) throws ExcepcionBO {
-        pagoNegocio.actualizarPago(pagoDTO);
+   public void actualizarPago(PagoDTO pagoDTO, EstatusDTO estatus) throws ExcepcionBO {
+        pagoNegocio.actualizarPago(pagoDTO,estatus);
     }
 
     /**

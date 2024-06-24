@@ -57,7 +57,7 @@ public class MisPagos extends javax.swing.JFrame {
     public void modificarPago(){
         try {
             long id = this.getIdSeleccionadoTabla();
-            ModificarPago modificarPago = new ModificarPago();
+            ModificarPago modificarPago = new ModificarPago(pagoBO,id);
             modificarPago.setVisible(true);
             this.setVisible(false);   
             cargarEnTabla();
