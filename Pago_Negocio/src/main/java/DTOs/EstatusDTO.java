@@ -96,4 +96,25 @@ public class EstatusDTO {
 
         return estatus;
     }
+    
+    /**
+     * Convierte un EstatusDTO en un objeto PagosEstatus.
+     *
+     * @param estatusDTO El EstatusDTO a convertir.
+     * @return El PagosEstatus resultante.
+     */
+    public static PagosEstatus convertirToPagosEstatus(EstatusDTO estatusDTO) {
+        if (estatusDTO == null) {
+            return null;
+        }
+
+        PagosEstatus pagosEstatus = new PagosEstatus();
+        Estatus estatus = new Estatus();
+        estatus.setId(estatusDTO.getId());
+        estatus.setNombre(estatusDTO.getNombre());
+        pagosEstatus.setEstatus(estatus);
+
+        return pagosEstatus;
+    }
+   
 }

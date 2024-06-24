@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import entidades.Pago;
+import entidades.PagosEstatus;
 import excepcion.ExcepcionDAO;
 import javax.persistence.EntityTransaction;
 
@@ -32,27 +33,32 @@ public class PagoDAO implements IPagoDAO {
     }
 
     /**
-     * Guarda un nuevo pago en la base de datos.
-     * 
-     * @param pago El objeto Pago que se desea guardar.
-     * @throws ExcepcionDAO Si ocurre un error durante la operación de persistencia.
-     */
-    @Override
-    public void guardarPago(Pago pago) throws ExcepcionDAO {
-        EntityTransaction transaction = null;
-        
-        try {
-            transaction = entityManager.getTransaction();
-            transaction.begin();
-            entityManager.persist(pago);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
+        * Guarda un nuevo pago en la base de datos.
+        * 
+        * @param pago El objeto Pago que se desea guardar.
+        * @return El objeto Pago guardado en la base de datos.
+        * @throws ExcepcionDAO Si ocurre un error durante la operación de persistencia.
+        */
+       @Override
+        public Pago guardarPago(Pago pago) throws ExcepcionDAO {
+            EntityTransaction transaction = null;
+            try {
+                transaction = entityManager.getTransaction();
+                transaction.begin();
+
+                entityManager.persist(pago);
+                entityManager.flush(); 
+
+                transaction.commit();
+                return pago;
+            } catch (Exception e) {
+                if (transaction != null && transaction.isActive()) {
+                    transaction.rollback();
+                }
+                throw new ExcepcionDAO("Error al guardar el pago", e);
             }
-            throw new ExcepcionDAO("Error al guardar el pago", e);
         }
-    }
+
 
     /**
      * Actualiza la información de un pago existente en la base de datos.
@@ -114,12 +120,11 @@ public class PagoDAO implements IPagoDAO {
      * @throws ExcepcionDAO Si ocurre un error durante la consulta.
      */
     @Override
-    public Pago buscarPagoPorId(Long id) throws ExcepcionDAO {
-        try {
-            return entityManager.find(Pago.class, id);
-        } catch (Exception e) {
-            throw new ExcepcionDAO("Error al buscar el pago por ID", e);
+    public Pago buscarPagoPorId(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
         }
+        return entityManager.find(Pago.class, id);
     }
 
     /**
@@ -185,6 +190,22 @@ public class PagoDAO implements IPagoDAO {
         } catch (Exception e) {
             throw new ExcepcionDAO("Error al obtener los pagos por clave de contrato", e);
         }
+    }
+    
+     /**
+     * Obtiene una lista de PagoDTO asociados a un estatus específico por su nombre.
+     *
+     * @param nombre El nombre del estatus por el cual se desea buscar los pagos.
+     * @return Lista de PagoDTO asociados al estatus.
+     */
+    public List<Pago> obtenerPagosEstatusPorEstatus(String nombre) {
+        TypedQuery<Pago> query = entityManager.createQuery(
+                "SELECT p FROM Pago p JOIN p.pagosEstatus pe JOIN pe.estatus e WHERE e.nombre = :nombre",
+                Pago.class);
+        query.setParameter("nombre", nombre);
+        List<Pago> pagos = query.getResultList();
+
+        return pagos;
     }
 
     /**

@@ -4,6 +4,12 @@
  */
 package DTOs;
 
+import entidades.Estatus;
+import entidades.PagosEstatus;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author PC Gamer
@@ -55,5 +61,27 @@ public class PagosEstatusDTO {
         this.mensaje = mensaje;
     }
     
-    
+    /**
+     * Convierte un PagosEstatus en un objeto EstatusDTO.
+     * 
+     * @param pagosEstatus El PagosEstatus a convertir.
+     * @return El EstatusDTO resultante.
+     */
+    public static EstatusDTO convertirToEstatusDTO(PagosEstatus pagosEstatus) {
+        if (pagosEstatus == null) {
+            return null;
+        }
+
+        EstatusDTO estatusDTO = new EstatusDTO();
+        estatusDTO.setId(pagosEstatus.getEstatus().getId());
+        estatusDTO.setNombre(pagosEstatus.getEstatus().getNombre());
+
+        List<PagoDTO> pagosDTO = new ArrayList<>();
+        pagosDTO.add(PagoDTO.convertir(pagosEstatus.getPago()));
+        
+        estatusDTO.setPagos(pagosDTO);
+        
+
+        return estatusDTO;
+    }
 }
