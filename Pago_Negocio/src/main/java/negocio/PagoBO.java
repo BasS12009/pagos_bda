@@ -260,6 +260,7 @@ public class PagoBO implements IPagoBO{
         return pagoNegocio.obtenerPagosEstatusPorBeneficiario(id);
     }
 
+
     @Override
     public void agregarAbono(AbonoDTO abonoDTO, PagoDTO pago) {
         pagoNegocio.agregarAbono(abonoDTO, pago);
@@ -292,5 +293,6 @@ public class PagoBO implements IPagoBO{
     public EstatusDTO obtenerEstatuPorId(long id){
         return pagoNegocio.obtenerEstatuPorId(id);
     }
+
     
 }

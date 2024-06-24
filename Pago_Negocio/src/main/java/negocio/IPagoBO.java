@@ -169,4 +169,5 @@ public interface IPagoBO {
     public void eliminarAbono(AbonoDTO abonoDTO);
     public List<EstatusDTO> obtenerTodosLosEstatus();
     public EstatusDTO obtenerEstatuPorId(long id);
+
 }
