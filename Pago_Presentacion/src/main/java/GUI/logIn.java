@@ -67,7 +67,6 @@ public class logIn extends javax.swing.JFrame {
                     } else {
                         
                     }   } catch (ExcepcionBO ex) {
-                    Logger.getLogger(logIn.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
                 }
 
