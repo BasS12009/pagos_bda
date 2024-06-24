@@ -68,6 +68,7 @@ public class ModificarCuenta extends javax.swing.JFrame {
         textoClabe = new javax.swing.JTextField();
         btnAbono1 = new javax.swing.JButton();
         textoBanco = new javax.swing.JTextField();
+        logo = new javax.swing.JLabel();
 
         btnAbono.setText("Agregar Abono");
 
@@ -120,6 +121,9 @@ public class ModificarCuenta extends javax.swing.JFrame {
         });
         jPanel1.add(btnAbono1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 460, 140, 30));
         jPanel1.add(textoBanco, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 330, 270, 30));
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 480, 180, 80));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -183,6 +187,7 @@ public class ModificarCuenta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel logo;
     private javax.swing.JTextField textoBanco;
     private javax.swing.JTextField textoClabe;
     private javax.swing.JTextField textoNumero;

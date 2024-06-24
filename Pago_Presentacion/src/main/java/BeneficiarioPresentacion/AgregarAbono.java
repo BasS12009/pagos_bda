@@ -38,6 +38,7 @@ public class AgregarAbono extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox<>();
         btnAbono = new javax.swing.JButton();
+        logo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,6 +88,9 @@ public class AgregarAbono extends javax.swing.JFrame {
         btnAbono.setForeground(new java.awt.Color(255, 255, 255));
         btnAbono.setText("Agregar Abono");
         jPanel1.add(btnAbono, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 490, 170, 40));
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 480, 180, 80));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,5 +162,6 @@ public class AgregarAbono extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel logo;
     // End of variables declaration//GEN-END:variables
 }

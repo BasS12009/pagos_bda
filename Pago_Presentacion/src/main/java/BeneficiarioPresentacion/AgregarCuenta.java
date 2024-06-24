@@ -50,6 +50,7 @@ public class AgregarCuenta extends javax.swing.JFrame {
         agregar = new javax.swing.JButton();
         jTextField3 = new javax.swing.JTextField();
         textoBanco = new javax.swing.JTextField();
+        logo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -107,6 +108,9 @@ public class AgregarCuenta extends javax.swing.JFrame {
         jPanel1.add(agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(399, 460, 140, 30));
         jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 230, 270, 30));
         jPanel1.add(textoBanco, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 310, 270, 30));
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 470, 180, 80));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -200,6 +204,7 @@ public class AgregarCuenta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JLabel logo;
     private javax.swing.JTextField textoBanco;
     private javax.swing.JTextField textoClabe;
     private javax.swing.JTextField textoNumero;

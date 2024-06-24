@@ -226,6 +226,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
         btnAtras = new javax.swing.JButton();
         btnSiguiente = new javax.swing.JButton();
         NumeroDePagina = new javax.swing.JTextField();
+        logo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnInicio = new javax.swing.JRadioButtonMenuItem();
@@ -308,6 +309,9 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
             }
         });
         jPanel1.add(NumeroDePagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 490, 20, -1));
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 10, 150, 80));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -544,5 +548,6 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel logo;
     // End of variables declaration//GEN-END:variables
 }

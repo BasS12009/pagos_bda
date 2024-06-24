@@ -43,6 +43,7 @@ public class EliminarCuenta extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         btnAbono1 = new javax.swing.JButton();
+        logo = new javax.swing.JLabel();
 
         btnAbono.setText("Agregar Abono");
 
@@ -98,6 +99,9 @@ public class EliminarCuenta extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnAbono1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 420, -1, 30));
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 480, 180, 80));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -174,5 +178,6 @@ public class EliminarCuenta extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel logo;
     // End of variables declaration//GEN-END:variables
 }

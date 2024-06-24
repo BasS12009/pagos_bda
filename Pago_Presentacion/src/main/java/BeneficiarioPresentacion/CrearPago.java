@@ -103,6 +103,7 @@ public class CrearPago extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         textoMonto = new javax.swing.JTextField();
         jComboCuenta = new javax.swing.JComboBox<>();
+        logo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(175, 176, 212));
@@ -157,6 +158,9 @@ public class CrearPago extends javax.swing.JFrame {
         jPanel1.add(textoMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 260, 380, 40));
 
         jPanel1.add(jComboCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 350, 380, 40));
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 180, 80));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -244,6 +248,7 @@ public class CrearPago extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel logo;
     private javax.swing.JTextField textoMonto;
     // End of variables declaration//GEN-END:variables
 }
