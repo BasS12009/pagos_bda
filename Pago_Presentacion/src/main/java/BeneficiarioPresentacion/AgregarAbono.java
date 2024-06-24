@@ -5,6 +5,7 @@
 package BeneficiarioPresentacion;
 
 import DTOs.AbonoDTO;
+import DTOs.BeneficiarioDTO;
 import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
 import DTOs.PagosEstatusDTO;
@@ -185,9 +186,15 @@ public class AgregarAbono extends javax.swing.JFrame {
                 return;
             }
             
-            
-            BigDecimal nuevoMonto = pagoSeleccionado.getMonto().subtract(BigDecimal.valueOf(monto));
-            
+            double saldoBeneficiario = pagoBO.buscarBeneficiarioPorId(pagoBO.getId()).getSaldo();
+        if (monto > saldoBeneficiario) {
+            JOptionPane.showMessageDialog(this, "El monto del abono no puede exceder el saldo del beneficiario", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        BigDecimal nuevoMonto = pagoSeleccionado.getMonto().subtract(BigDecimal.valueOf(monto));
+        Double nuevoSaldoBeneficiario = ((pagoBO.buscarBeneficiarioPorId(pagoBO.getId()).getSaldo())-((monto)));
+
             if (nuevoMonto.compareTo(BigDecimal.ZERO) <= 0) {
                 List<EstatusDTO> estatus= pagoBO.obtenerEstatus();
                 EstatusDTO estatuSeleccionado;
@@ -200,11 +207,17 @@ public class AgregarAbono extends javax.swing.JFrame {
                     }
                 }
                 
+                
+                
                 pagoSeleccionado.setEstatus(estatus);
                 generarComprobante(pagoSeleccionado);
                 pagoBO.actualizarPago(pagoSeleccionado, pagoSeleccionado.getEstatus().get(0));
                 abono.setFechaHora(LocalDateTime.now());
                 pagoBO.agregarAbono(abono, pagoSeleccionado);
+                BeneficiarioDTO beneficiario=pagoBO.buscarBeneficiarioPorId(pagoBO.getId());
+                beneficiario.setSaldo(nuevoSaldoBeneficiario);
+                pagoBO.actualizarBeneficiario(beneficiario);
+                
                 MisAbonos misAbonos=new MisAbonos(pagoBO);
                 misAbonos.show();
                 this.dispose();
@@ -216,6 +229,9 @@ public class AgregarAbono extends javax.swing.JFrame {
             pagoBO.actualizarPago(pagoSeleccionado, pagoSeleccionado.getEstatus().get(0));
             abono.setFechaHora(LocalDateTime.now());
             pagoBO.agregarAbono(abono, pagoSeleccionado);
+            BeneficiarioDTO beneficiario=pagoBO.buscarBeneficiarioPorId(pagoBO.getId());
+            beneficiario.setSaldo(nuevoSaldoBeneficiario);
+            pagoBO.actualizarBeneficiario(beneficiario);
             MisAbonos misAbonos=new MisAbonos(pagoBO);
             misAbonos.show();
             this.dispose();
