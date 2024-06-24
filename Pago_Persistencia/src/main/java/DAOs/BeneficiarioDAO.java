@@ -204,12 +204,12 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
             transaction = entityManager.getTransaction();
             transaction.begin();
             
-            TypedQuery<Beneficiario> query = entityManager.createQuery("SELECT b.claveContrato, b.contraseña FROM Beneficiario b WHERE b.claveContrato = :cContrato AND b.contraseña = :contraseña", Beneficiario.class);
+            TypedQuery<Beneficiario> query = entityManager.createQuery("SELECT b FROM Beneficiario b WHERE b.claveContrato = :cContrato AND b.contraseña = :contraseña", Beneficiario.class);
             query.setParameter("cContrato", beneficiario.getClaveContrato());
             query.setParameter("contraseña", beneficiario.getContraseña());
-            List<Beneficiario> beneficiarios = query.getResultList();
+            Beneficiario beneficiarios = query.getSingleResult();
             
-            return beneficiario;
+            return beneficiarios;
         } catch(Exception e){
                 if (transaction != null && transaction.isActive()) {
                 transaction.rollback();

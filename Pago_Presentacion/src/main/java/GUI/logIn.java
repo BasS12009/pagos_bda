@@ -53,10 +53,8 @@ public class logIn extends javax.swing.JFrame {
             BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
             beneficiarioDTO.setClaveContrato(clave.getText());
             beneficiarioDTO.setContraseña(contrasena.getText());
-            
 
 
-            if (beneficiarioDTO.getContraseña() != null){
                 try {
                     //se valida que si es diferente de null se muestre el menu del beneficiario
                     BeneficiarioDTO beneficiarioAutenticado = negocio.login(beneficiarioDTO);
@@ -67,11 +65,12 @@ public class logIn extends javax.swing.JFrame {
                         this.disable();
                         this.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+                        
                     }   } catch (ExcepcionBO ex) {
                     Logger.getLogger(logIn.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
                 }
-            } else {JOptionPane.showMessageDialog(null, "Rellena los campos para iniciar sesión");}
+
 
         
     }

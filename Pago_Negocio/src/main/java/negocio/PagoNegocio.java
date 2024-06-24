@@ -614,9 +614,11 @@ public class PagoNegocio implements IPagoNegocio {
     * @return Lista de objetos CuentaBancariaDTO resultante de la conversión.
     */
    private static List<CuentaBancariaDTO> convertirCuentasBancarias(List<CuentaBancaria> cuentasBancarias) {
+       if(cuentasBancarias != null){
        return cuentasBancarias.stream()
                .map(CuentaBancariaDTO::convertir)
-               .collect(Collectors.toList());
+               .collect(Collectors.toList());}
+              else return null;
    }
    
    /**
@@ -626,9 +628,11 @@ public class PagoNegocio implements IPagoNegocio {
     * @return Lista de objetos CuentaBancaria resultante de la conversión.
     */
    private static List<CuentaBancaria> convertirCuentasBancariasDTO(List<CuentaBancariaDTO> cuentasBancariasDTO) {
+       if(cuentasBancariasDTO != null){
        return cuentasBancariasDTO.stream()
                .map(CuentaBancariaDTO::convertir)
-               .collect(Collectors.toList());
+               .collect(Collectors.toList());}
+              else return null;
    }
 
 
