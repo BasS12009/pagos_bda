@@ -46,7 +46,7 @@ public class MisAbonos extends javax.swing.JFrame {
           
         
         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
-        int indiceColumnaEliminar = 5;
+        int indiceColumnaEliminar = 4;
         Color color = new Color(255, 105, 97);
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar",color));
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
@@ -108,13 +108,13 @@ public class MisAbonos extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "$2,500", "Enviado", "1er abono enviado", null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Cuenta", "Monto", "Estatus", "Comentarios", "Eliminar Abono"
+
             }
         ));
         jScrollPane1.setViewportView(jTable1);

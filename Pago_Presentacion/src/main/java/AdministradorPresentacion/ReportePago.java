@@ -5,7 +5,19 @@
 package AdministradorPresentacion;
 
 import GUI.logIn;
+
+
+import java.io.FileNotFoundException;
+import java.sql.Timestamp;
+import java.util.List;
+import javax.swing.JOptionPane;
 import negocio.PagoBO;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+
 
 /**
  *
@@ -53,6 +65,11 @@ public class ReportePago extends javax.swing.JFrame {
         jComboBox2 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblReportePagos = new javax.swing.JTable();
+<<<<<<< Updated upstream
+=======
+        logo = new javax.swing.JLabel();
+        btnGenerarReporte = new javax.swing.JButton();
+>>>>>>> Stashed changes
         jMenuBar1 = new javax.swing.JMenuBar();
         Inicio = new javax.swing.JMenu();
         btnInicio = new javax.swing.JRadioButtonMenuItem();
@@ -160,6 +177,20 @@ public class ReportePago extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 840, 220));
 
+<<<<<<< Updated upstream
+=======
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 10, 150, 80));
+
+        btnGenerarReporte.setText("Generar Reporte");
+        btnGenerarReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarReporteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnGenerarReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+
+>>>>>>> Stashed changes
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
 
@@ -312,6 +343,51 @@ public class ReportePago extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
+    private void btnGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReporteActionPerformed
+
+        generarReporte();
+    }//GEN-LAST:event_btnGenerarReporteActionPerformed
+    
+    private void generarReporte(){
+
+        String dest = "reportePagos.pdf";
+
+        try {
+
+            PdfWriter writer = new PdfWriter(dest);
+            PdfDocument pdfDoc = new PdfDocument(writer);
+            Document document = new Document(pdfDoc);
+
+
+            document.add(new Paragraph("Estatus"));
+            document.add(new Paragraph("FechaHora"));
+            document.add(new Paragraph("Total"));
+            document.add(new Paragraph("A la cuenta tipo" + "abono"));
+            document.add(new Paragraph("Beneficiario"));
+            document.add(new Paragraph("Cuenta"));
+
+
+
+            float[] columnWidths = {200, 200, 200, 200, 200, 200};
+            Table table = new Table(columnWidths);          
+        
+
+
+            document.add(table);
+
+            document.close();
+
+            System.out.println("¡Reporte generado con éxito!");
+
+            JOptionPane.showMessageDialog(this, "Reporte generado con éxito!");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();    
+
+    }
+
+    }
+     
     /**
      * @param args the command line arguments
      */
@@ -352,6 +428,7 @@ public class ReportePago extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem btnAdministracionBeneficiarios;
     private javax.swing.JRadioButtonMenuItem btnAprobacionRechazar;
     private javax.swing.JRadioButtonMenuItem btnCerrarSesion;
+    private javax.swing.JButton btnGenerarReporte;
     private javax.swing.JRadioButtonMenuItem btnInicio;
     private javax.swing.JRadioButtonMenuItem btnPagadoRechazar;
     private javax.swing.JRadioButtonMenuItem btnReportePago;
