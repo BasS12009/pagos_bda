@@ -7,6 +7,9 @@ package GUI;
 import AdministradorPresentacion.MenuAdministrador;
 import BeneficiarioPresentacion.MenuBeneficiario;
 import DAOs.BeneficiarioDAO;
+import DAOs.CuentaBancariaDAO;
+import DAOs.PagoDAO;
+import DAOs.PagosEstatusDAO;
 import DTOs.BeneficiarioDTO;
 import excepcionBO.ExcepcionBO;
 import javax.swing.JOptionPane;
@@ -17,7 +20,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import negocio.IPagoNegocio;
 import negocio.PagoBO;
+import negocio.PagoNegocio;
 
 /**
  *
@@ -40,7 +45,7 @@ public class logIn extends javax.swing.JFrame {
 
     public void inicioSesion(){
         
-        try {
+ 
             // TODO add your handling code here:
             
             //Se setea la clave de contrato y la contraseña que se recive en el text area
@@ -48,20 +53,26 @@ public class logIn extends javax.swing.JFrame {
             BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
             beneficiarioDTO.setClaveContrato(clave.getText());
             beneficiarioDTO.setContraseña(contrasena.getText());
-            BeneficiarioDTO beneficiarioAutenticado = negocio.login(beneficiarioDTO);
-            //se valida que si es diferente de null se muestre el menu del beneficiario
-            if (beneficiarioAutenticado != null) {
-                negocio.setId(beneficiarioAutenticado.getId());
-                MenuBeneficiario m=new MenuBeneficiario();
-                m.setVisible(true);
-                this.disable();
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
-            }
-        } catch (ExcepcionBO ex) {
-            JOptionPane.showMessageDialog(this, "No se pudo comprobar las credenciales");
-        }
+            
+
+
+            if (beneficiarioDTO.getContraseña() != null){
+                try {
+                    //se valida que si es diferente de null se muestre el menu del beneficiario
+                    BeneficiarioDTO beneficiarioAutenticado = negocio.login(beneficiarioDTO);
+                    if (beneficiarioAutenticado != null) {
+                        negocio.setId(beneficiarioAutenticado.getId());
+                        MenuBeneficiario m=new MenuBeneficiario();
+                        m.setVisible(true);
+                        this.disable();
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+                    }   } catch (ExcepcionBO ex) {
+                    Logger.getLogger(logIn.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {JOptionPane.showMessageDialog(null, "Rellena los campos para iniciar sesión");}
+
         
     }
     
@@ -208,7 +219,47 @@ public class logIn extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_clave3ActionPerformed
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(logIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(logIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(logIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(logIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
+        BeneficiarioDAO beneficiario = new BeneficiarioDAO();
+        PagoDAO pago = new PagoDAO();
+        CuentaBancariaDAO cuenta = new CuentaBancariaDAO();
+        PagosEstatusDAO pagoE = new PagosEstatusDAO();
+        IPagoNegocio pagoNegocio = new PagoNegocio(pago, cuenta, beneficiario, pagoE);
+        PagoBO pagoBO = new PagoBO(pagoNegocio);
+        
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new logIn(pagoBO).setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField clave;
