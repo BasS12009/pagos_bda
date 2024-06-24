@@ -84,7 +84,7 @@ public class ReportePago extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(116, 114, 178));
-        jLabel2.setText("Rango de fechas:");
+        jLabel2.setText("*Rango de fechas:");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, -1, -1));
         jPanel2.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 110, -1));
 
@@ -96,7 +96,7 @@ public class ReportePago extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(116, 114, 178));
-        jLabel4.setText("Estatus:");
+        jLabel4.setText("*Estatus:");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, -1, -1));
 
         jCheckBox1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
@@ -131,12 +131,12 @@ public class ReportePago extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(116, 114, 178));
-        jLabel5.setText("Tipo:");
+        jLabel5.setText("*Tipo:");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 10, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(116, 114, 178));
-        jLabel6.setText("Abonos Terminados:");
+        jLabel6.setText("*Abonos Terminados:");
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 10, -1, -1));
 
         jComboBox2.setBackground(new java.awt.Color(116, 114, 178));
