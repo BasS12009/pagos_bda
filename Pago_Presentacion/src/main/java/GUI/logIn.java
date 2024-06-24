@@ -85,6 +85,7 @@ public class logIn extends javax.swing.JFrame {
         clave1 = new javax.swing.JTextField();
         clave2 = new javax.swing.JTextField();
         clave3 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -163,6 +164,9 @@ public class logIn extends javax.swing.JFrame {
         });
         jPanel1.add(clave3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 310, 260, -1));
 
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/potroPago.png"))); // NOI18N
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 60, 330, 190));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -221,6 +225,7 @@ public class logIn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
