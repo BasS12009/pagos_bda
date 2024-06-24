@@ -8,6 +8,7 @@ import DTOs.CuentaBancariaDTO;
 import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
 import DTOs.TiposDTO;
+import Utilerias.TiposComboBoxModel;
 import excepcionBO.ExcepcionBO;
 import java.awt.Component;
 import java.math.BigDecimal;
@@ -31,6 +32,11 @@ import negocio.PagoBO;
  */
 public class CrearPago extends javax.swing.JFrame {
     PagoBO pagoBO;
+    List<TiposDTO> tiposCrear;
+    TiposDTO tipoSeleccionado;
+    List<CuentaBancariaDTO> cuentasCrear;
+    CuentaBancariaDTO cuentaSeleccionada;
+    
     /**
      * Creates new form CrearPago
      */
@@ -49,10 +55,10 @@ public class CrearPago extends javax.swing.JFrame {
         try {
             jComboCuenta.removeAllItems();
 
-            List<CuentaBancariaDTO> cuentas = pagoBO.obtenerTodasLasCuentasBancariasPorBeneficiario(pagoBO.getId());
+            cuentasCrear = pagoBO.obtenerTodasLasCuentasBancariasPorBeneficiario(pagoBO.getId());
 
             DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-            for (CuentaBancariaDTO cuenta : cuentas) {
+            for (CuentaBancariaDTO cuenta : cuentasCrear) {
                 model.addElement(cuenta.getNumeroCuenta()); 
             }
 
@@ -78,9 +84,35 @@ public class CrearPago extends javax.swing.JFrame {
         }
     }
     
-    public void llenarComboBoxTipos(){
-        
+    public void llenarComboBoxTipos() {
+        try {
+            jComboTipo.removeAllItems();
+
+            tiposCrear = pagoBO.obtenerTodosLosTipos();
+
+            TiposComboBoxModel model = new TiposComboBoxModel(tiposCrear);
+            jComboTipo.setModel(model);
+
+            jComboTipo.setRenderer(new ListCellRenderer<String>() {
+                @Override
+                public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+                    JLabel label = new JLabel(value);
+                    if (isSelected) {
+                        label.setBackground(list.getSelectionBackground());
+                        label.setForeground(list.getSelectionForeground());
+                    } else {
+                        label.setBackground(list.getBackground());
+                        label.setForeground(list.getForeground());
+                    }
+                    label.setOpaque(true);
+                    return label;
+                }
+            });
+        } catch (ExcepcionBO ex) {
+            Logger.getLogger(CrearPago.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
     
 
     /**
@@ -207,25 +239,66 @@ public class CrearPago extends javax.swing.JFrame {
                 return; 
             }
 
-            pago.setTipo((TiposDTO) jComboTipo.getSelectedItem());
+            String nombreTipoSeleccionado = (String) jComboTipo.getSelectedItem();
 
+            for (TiposDTO tipo : tiposCrear) {
+                String nombreTipo = tipo.getNombre() + " " + tipo.getNumeroParcialidades() + " Pagos";
+                if (nombreTipo.equals(nombreTipoSeleccionado)) {
+                    tipoSeleccionado = tipo;
+                    break;
+                }
+            }
+
+            if (tipoSeleccionado == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró el tipo seleccionado en la lista", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            pago.setTipo(tipoSeleccionado);
+            
+            String nombreCuentaSeleccionado = (String) jComboCuenta.getSelectedItem();
+
+            for (CuentaBancariaDTO cuenta : cuentasCrear) {
+                String nombreCuenta = cuenta.getNumeroCuenta();
+                if (nombreCuenta.equals(nombreCuentaSeleccionado)) {
+                    cuentaSeleccionada = cuenta;
+                    break;
+                }
+            }
+
+            if (cuentaSeleccionada == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró la cuenta seleccionada en la lista", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
             pago.setBeneficiario(pagoBO.buscarBeneficiarioPorId(pagoBO.getId()));
 
-            CuentaBancariaDTO cuenta = (CuentaBancariaDTO) jComboCuenta.getSelectedItem();
-            pago.setCuentas(Arrays.asList(pagoBO.buscarCuentaBancariaPorId(cuenta.getId()))); 
+            pago.setCuentas(Arrays.asList(cuentaSeleccionada)); 
 
             pago.setFechaHora(LocalDateTime.now());
 
             pago.setMonto(monto);
             
-                List<EstatusDTO> listaEstatus = pago.getEstatus();
-            if (listaEstatus == null) {
-                listaEstatus = new ArrayList<>();
+            List<EstatusDTO> listaEstatus = new ArrayList<>();
+            EstatusDTO estatusCreado = null;
+            List<EstatusDTO> estatus = pagoBO.obtenerEstatus();
+            for (EstatusDTO estatu : estatus) {
+                if ("Creado".equals(estatu.getNombre())) {
+                    estatusCreado = estatu;
+                    break;
+                }
             }
-             EstatusDTO estatusCreado = new EstatusDTO();
-            estatusCreado.setNombre("Creado"); 
+
+            if (estatusCreado == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró el estatus 'Creado' en la lista", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             listaEstatus.add(estatusCreado);
             pago.setEstatus(listaEstatus);
+            
+                pagoBO.guardarPago(pago, estatusCreado);
+            JOptionPane.showMessageDialog(this, "Pago creado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (ExcepcionBO ex) {
             Logger.getLogger(CrearPago.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NumberFormatException ex) {

@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -92,7 +93,7 @@ public class MisPagos extends javax.swing.JFrame {
         int indiceFilaSeleccionada = this.jTable1.getSelectedRow();
         if (indiceFilaSeleccionada != -1) {
             DefaultTableModel modelo = (DefaultTableModel) this.jTable1.getModel();
-            int indiceColumnaId = 0; // Suponiendo que el índice de la columna que contiene el ID es 0
+            int indiceColumnaId = 0;
             Object valor = modelo.getValueAt(indiceFilaSeleccionada, indiceColumnaId);
             if (valor instanceof Long) {
                 return (long) valor;
@@ -154,98 +155,46 @@ public class MisPagos extends javax.swing.JFrame {
         color = new Color(255, 105, 97);
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar",color));
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
-    }       
-     
-    private void llenarTabla(List<PagoDTO> pagoLista, List<PagosEstatusDTO> pagosEstatusLista) {
-        DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
-        modeloTabla.setRowCount(0);
-
-        if (pagoLista != null) {
-            pagoLista.forEach(pago -> {
-                Object[] fila = new Object[6];
-
-                if (pago.getCuentas() != null && !pago.getCuentas().isEmpty()) {
-                    fila[0] = obtenerNumeroCuentaDeseada(pago.getCuentas());
-                } else {
-                    fila[0] = "";
-                }
-
-                if (pago.getMonto() != null) {
-                    fila[1] = pago.getMonto();
-                } else {
-                    fila[1] = BigDecimal.ZERO;
-                }
-
-                fila[2] = obtenerNombreEstatus(pago, pagosEstatusLista);
-                fila[3] = obtenerMensajeParaPago(pago, pagosEstatusLista);
-                fila[4] = "Eliminar";
-                fila[5] = "Editar";
-
-                modeloTabla.addRow(fila);
-            });
-        }
     }
     
-    private String obtenerNumeroCuentaDeseada(List<CuentaBancariaDTO> cuentas) {
-    if (!cuentas.isEmpty()) {
-        return cuentas.get(0).getNumeroCuenta();
-    }
-    return "";
-    }
     
-    private String obtenerNombreEstatus(PagoDTO pago, List<PagosEstatusDTO> pagosEstatusLista) {
-        if (pagosEstatusLista != null) {
-            for (PagosEstatusDTO pagosEstatus : pagosEstatusLista) {
-                if (pagosEstatus.getPago() != null && pagosEstatus.getPago().getId().equals(pago.getId())) {
-                    return pagosEstatus.getEstatus().getNombre();
-                }
-            }
-        }
-        return "";
-    }
+    private void llenarTabla(List<PagosEstatusDTO> lista) {
+         DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
 
-    private String obtenerMensajeParaPago(PagoDTO pago, List<PagosEstatusDTO> pagosEstatusLista) {
-        if (pagosEstatusLista != null) {
-            for (PagosEstatusDTO pagosEstatus : pagosEstatusLista) {
-                if (pagosEstatus.getPago() != null && pagosEstatus.getPago().getId().equals(pago.getId())) {
-                    return pagosEstatus.getMensaje();
-                }
-            }
-        }
-        return "";
+    // Clear existing rows
+    modeloTabla.setRowCount(0);
+    if (lista != null) {
+        lista.forEach(row -> {
+            Object[] fila = new Object[6];
+            fila[0] = row.getPago().getCuentas().get(0).getNumeroCuenta();;
+            fila[1] = row.getPago().getMonto();
+            fila[2] =row.getEstatus().getNombre();
+            fila[3] = row.getMensaje();
+            fila[4] = "Modificar";
+            fila[5] = "Eliminar"; 
+            modeloTabla.addRow(fila); 
+        });
+    }
     }
     
     private void cargarEnTabla() throws ExcepcionPresentacion {
-            try {
-                int indiceInicio = (pagina - 1) * LIMITE;
-                List<PagoDTO> todosPagos = pagoBO.obtenerPagosPorBeneficiario(pagoBO.getId()); 
-                int indiceFin = Math.min(indiceInicio + LIMITE, todosPagos.size());
-
-                List<PagoDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
-                List<PagosEstatusDTO> pagosEstatusLista = pagoBO.obtenerPagosEstatusParaPagos(enPagina);
-
-                llenarTabla(enPagina, pagosEstatusLista); 
-
-                actualizarNumeroDePagina(); 
-            } catch (ExcepcionBO ex) {
-                throw new ExcepcionPresentacion("Error al cargar los pagos del beneficiario.", ex);
-            }
+        int indiceInicio = (pagina - 1) * LIMITE;
+        List<PagosEstatusDTO> todas = pagoBO.obtenerPagosEstatusPorBeneficiario(pagoBO.getId());
+        int indiceFin = Math.min(indiceInicio + LIMITE, todas.size());
+        List<PagosEstatusDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
+        llenarTabla(enPagina);
+        actualizarNumeroDePagina();
     }
     
-
-        private List<PagoDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
-            try {
-                List<PagoDTO> todos = pagoBO.obtenerPagosPorBeneficiario(pagoBO.getId()); 
-                List<PagoDTO> todasLasPaginas = new ArrayList<>();
-                indiceFin = Math.min(indiceFin, todos.size());
-                for (int i = indiceInicio; i < indiceFin; i++) {
-                    todasLasPaginas.add(todos.get(i));
-                }
-                return todasLasPaginas;
-            } catch (ExcepcionBO ex) {
-            throw new ExcepcionPresentacion("Error al eliminar la cuenta bancaria.", ex);
-            }
+    private List<PagosEstatusDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
+        List<PagosEstatusDTO> todas = pagoBO.obtenerPagosEstatusPorBeneficiario(pagoBO.getId());
+        List<PagosEstatusDTO> todasLasPaginas = new ArrayList<>();
+        indiceFin = Math.min(indiceFin, todas.size());
+        for (int i = indiceInicio; i < indiceFin; i++) {
+            todasLasPaginas.add(todas.get(i));
         }
+        return todasLasPaginas;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -301,7 +250,6 @@ public class MisPagos extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "$2,500", "Enviado", "Esperando abono", null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null}

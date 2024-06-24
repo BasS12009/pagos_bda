@@ -63,15 +63,24 @@ public class TiposDTO {
     }
     
     public static TiposDTO convertir(Tipos tipos) {
+        if (tipos == null) {
+            return null;
+        }
+        
         TiposDTO tiposDTO = new TiposDTO();
         tiposDTO.setId(tipos.getId());
         tiposDTO.setNombre(tipos.getNombre());
         tiposDTO.setNumeroParcialidades(tipos.getNumeroParcialidades());
 
-        List<PagoDTO> pagosDTO = tipos.getPagos().stream()
-                .map(PagoDTO::convertir) 
-                .collect(Collectors.toList());
-        tiposDTO.setPagos(pagosDTO);
+        
+       if (tipos.getPagos() != null) {
+            List<PagoDTO> pagosDTO = new ArrayList<>();
+            for (Pago pago : tipos.getPagos()) {
+                PagoDTO pagoDTO = PagoDTO.convertir(pago);
+                pagosDTO.add(pagoDTO);
+            }
+            tiposDTO.setPagos(pagosDTO);
+        }
 
         return tiposDTO;
     }
@@ -86,12 +95,15 @@ public class TiposDTO {
         tipos.setNombre(tiposDTO.getNombre());
         tipos.setNumeroParcialidades(tiposDTO.getNumeroParcialidades());
 
-        // Convertir la lista de PagoDTO a lista de Pago
-        List<Pago> pagos = new ArrayList<>();
-        for (PagoDTO pagoDTO : tiposDTO.getPagos()) {
-            pagos.add(PagoDTO.convertir(pagoDTO));
+        
+         if (tiposDTO.getPagos() != null) {
+            List<Pago> pagos = new ArrayList<>();
+            for (PagoDTO pagoDTO : tiposDTO.getPagos()) {
+                Pago pago = PagoDTO.convertir(pagoDTO);
+                pagos.add(pago);
+            }
+            tipos.setPagos(pagos);
         }
-        tipos.setPagos(pagos);
 
         return tipos;
     }

@@ -6,6 +6,7 @@ package entidades;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -65,6 +66,7 @@ public class PagosEstatus implements Serializable {
      * Constructor vacío requerido por JPA.
      */
     public PagosEstatus() {
+        this.fechaHora = LocalDateTime.now(); 
     }
 
     /**

@@ -22,7 +22,7 @@ public interface IPagoDAO {
      * @param pago El objeto Pago que se desea guardar.
      * @throws excepcion.ExcepcionDAO
      */
-    void guardarPago(Pago pago)throws ExcepcionDAO;
+    public Pago guardarPago(Pago pago) throws ExcepcionDAO;
     
     /**
      * Actualiza la información de un pago existente en la base de datos.
@@ -74,5 +74,7 @@ public interface IPagoDAO {
      * @throws excepcion.ExcepcionDAO
     */
     public List<Pago> obtenerPagosPorClaveContrato(String claveContrato)throws ExcepcionDAO;
+    
+    public List<Pago> obtenerPagosEstatusPorEstatus(String nombre);
 }
 

@@ -9,8 +9,10 @@ import DTOs.CuentaBancariaDTO;
 import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
 import DTOs.PagosEstatusDTO;
+import DTOs.TiposDTO;
 import entidades.Beneficiario;
 import entidades.Pago;
+import excepcion.ExcepcionDAO;
 import excepcionBO.ExcepcionBO;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public interface IPagoNegocio {
      * @param pagoDTO El objeto Pago que se desea guardar.
      * @throws excepcionBO.ExcepcionBO
      */
-    public void guardarPago(PagoDTO pagoDTO) throws ExcepcionBO;
+    public void guardarPago(PagoDTO pagoDTO, EstatusDTO estatus) throws ExcepcionBO;
     
     /**
      * Actualiza la información de un pago existente en la base de datos.
@@ -61,7 +63,7 @@ public interface IPagoNegocio {
      * @param id El ID del pago que se desea buscar.
      * @return El objeto Pago encontrado, o null si no existe.
      */
-    PagoDTO buscarPagoPorId(Long id)throws ExcepcionBO;
+    PagoDTO buscarPagoPorId(Long id);
     
     /**
      * Retorna una lista con todos los pagos almacenados en la base de datos.
@@ -170,5 +172,13 @@ public interface IPagoNegocio {
     
     public List<PagosEstatusDTO> obtenerPagosEstatusParaPagos(List<PagoDTO> pagos);
     
-    public void guardarPagoConEstatus(PagoDTO pagoDTO, EstatusDTO estatusDTO);
+    public void guardarPagoConEstatus(PagoDTO pagoDTO, EstatusDTO estatusDTO) throws ExcepcionDAO;
+    
+    public List<TiposDTO> obtenerTodosLosTipos() throws ExcepcionBO;
+    
+    public List<EstatusDTO> obtenerEstatus(); 
+    public List<PagosEstatusDTO> obtenerPagosEstatusPorBeneficiario(long idBeneficiario);
+    
+    
+    
 }

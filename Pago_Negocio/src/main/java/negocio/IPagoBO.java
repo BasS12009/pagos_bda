@@ -9,6 +9,7 @@ import DTOs.CuentaBancariaDTO;
 import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
 import DTOs.PagosEstatusDTO;
+import DTOs.TiposDTO;
 import excepcionBO.ExcepcionBO;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public interface IPagoBO {
      *
      * @param pagoDTO
      */
-    void guardarPago(PagoDTO pagoDTO) throws ExcepcionBO;
+    public void guardarPago(PagoDTO pagoDTO, EstatusDTO estatus) throws ExcepcionBO;
 
     /**
      *
@@ -151,4 +152,9 @@ public interface IPagoBO {
     public List<PagosEstatusDTO> obtenerPagosEstatusParaPagos(List<PagoDTO> pagos);
     
     public void guardarPagoConEstatus(PagoDTO pagoDTO, EstatusDTO estatusDTO);
+    
+    public List<TiposDTO> obtenerTodosLosTipos() throws ExcepcionBO;
+    public List<EstatusDTO> obtenerEstatus();
+    
+    public List<PagosEstatusDTO> obtenerPagosEstatusPorBeneficiario(long id);
 }

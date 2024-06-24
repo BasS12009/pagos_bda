@@ -8,9 +8,11 @@ import conexion.ConexionBD;
 import entidades.Estatus;
 import entidades.Pago;
 import entidades.PagosEstatus;
+import excepcion.ExcepcionDAO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
 /**
@@ -79,17 +81,26 @@ public class PagosEstatusDAO implements IPagosEstatusDAO {
      * Guarda un nuevo PagosEstatus en la base de datos.
      * 
      * @param pagosEstatus El objeto PagosEstatus que se desea guardar.
+     * @throws excepcion.ExcepcionDAO
      */
-    public void guardarPagosEstatus(PagosEstatus pagosEstatus) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.persist(pagosEstatus);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            e.printStackTrace();
-        }
+    public void guardarPagosEstatus(PagosEstatus pagosEstatus) throws ExcepcionDAO {
+        EntityTransaction transaction = null;
+            try {
+                transaction = entityManager.getTransaction();
+                transaction.begin();
+
+                entityManager.persist(pagosEstatus);
+                entityManager.flush(); 
+
+                transaction.commit();
+            } catch (Exception e) {
+                if (transaction != null && transaction.isActive()) {
+                    transaction.rollback();
+                }
+                throw new ExcepcionDAO("Error al guardar el pago", e);
+            }
     }
+
 
     /**
      * Actualiza la información de un PagosEstatus existente en la base de datos.
@@ -156,6 +167,34 @@ public class PagosEstatusDAO implements IPagosEstatusDAO {
         query.setParameter("pago", pago);
         return query.getResultList();
     }
+    
+    /**
+    * Retorna una lista de PagosEstatus asociados a un Beneficiario específico.
+    *
+    * @param idBeneficiario El ID del Beneficiario del cual se desean obtener los PagosEstatus.
+    * @return Lista de PagosEstatus asociados al Beneficiario especificado.
+    */
+    @Override
+   public List<PagosEstatus> obtenerPagosEstatusPorBeneficiario(long idBeneficiario) {
+       TypedQuery<PagosEstatus> query = entityManager.createQuery(
+               "SELECT pe FROM PagosEstatus pe JOIN pe.pago p WHERE p.beneficiario.id = :idBeneficiario", PagosEstatus.class);
+       query.setParameter("idBeneficiario", idBeneficiario);
+       return query.getResultList();
+   }
+   
+   /**
+    * Retorna una lista de PagosEstatus asociados a un Pago específico.
+    *
+    * @param pago El Pago del cual se desean obtener los PagosEstatus.
+    * @return Lista de PagosEstatus asociados al Pago especificado.
+    */
+   @Override
+   public List<PagosEstatus> obtenerPagosEstatusPorPago(Pago pago) {
+       TypedQuery<PagosEstatus> query = entityManager.createQuery(
+               "SELECT pe FROM PagosEstatus pe WHERE pe.pago = :pago", PagosEstatus.class);
+       query.setParameter("pago", pago);
+       return query.getResultList();
+   }
     
     /**
      * Cierra la conexión del EntityManager y el EntityManagerFactory.

@@ -18,4 +18,6 @@ public interface IPagosEstatusDAO {
     Estatus obtenerEstatusParaPago(PagosEstatus pago);
     String obtenerMensajeParaPago(PagosEstatus pago);
     public List<PagosEstatus> obtenerEstatusPagosPorPago(Pago pago);
+    public List<PagosEstatus> obtenerPagosEstatusPorBeneficiario(long idBeneficiario);
+    public List<PagosEstatus> obtenerPagosEstatusPorPago(Pago pago);
 }

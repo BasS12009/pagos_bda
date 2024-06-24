@@ -9,8 +9,12 @@ import DTOs.CuentaBancariaDTO;
 import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
 import DTOs.PagosEstatusDTO;
+import DTOs.TiposDTO;
+import excepcion.ExcepcionDAO;
 import excepcionBO.ExcepcionBO;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Implementación de la interfaz IPagoBO que actúa como fachada para las operaciones de pago.
@@ -38,8 +42,8 @@ public class PagoBO implements IPagoBO{
      * @param pagoDTO Objeto PagoDTO que representa el pago a guardar.
      */
     @Override
-    public void guardarPago(PagoDTO pagoDTO) throws ExcepcionBO {
-        pagoNegocio.guardarPago(pagoDTO);
+    public void guardarPago(PagoDTO pagoDTO, EstatusDTO estatus) throws ExcepcionBO {
+        pagoNegocio.guardarPago(pagoDTO,estatus);
     }
 
     /**
@@ -233,6 +237,26 @@ public class PagoBO implements IPagoBO{
      * @param estatusDTO
      */
     public void guardarPagoConEstatus(PagoDTO pagoDTO, EstatusDTO estatusDTO){
-        pagoNegocio.guardarPagoConEstatus(pagoDTO, estatusDTO);
+        try {
+            pagoNegocio.guardarPagoConEstatus(pagoDTO, estatusDTO);
+        } catch (ExcepcionDAO ex) {
+            Logger.getLogger(PagoBO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    
+    @Override
+    public List<TiposDTO> obtenerTodosLosTipos() throws ExcepcionBO{
+        return pagoNegocio.obtenerTodosLosTipos();
+    }
+    
+    @Override
+    public List<EstatusDTO> obtenerEstatus(){
+        return pagoNegocio.obtenerEstatus();
+    }
+    
+    @Override
+    public List<PagosEstatusDTO> obtenerPagosEstatusPorBeneficiario(long id){
+        return pagoNegocio.obtenerPagosEstatusPorBeneficiario(id);
+    }
+    
 }

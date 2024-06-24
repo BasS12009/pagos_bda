@@ -9,6 +9,7 @@ import entidades.CuentaBancaria;
 import entidades.Estatus;
 import entidades.Pago;
 import entidades.PagosEstatus;
+import entidades.Tipos;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -125,23 +126,36 @@ public class PagoDTO {
      * @return El PagoDTO resultante.
      */
     public static PagoDTO convertir(Pago pago) {
+        
         PagoDTO pagoDTO = new PagoDTO();
         pagoDTO.setId(pago.getId());
         pagoDTO.setMonto(pago.getMonto());
         pagoDTO.setFechaHora(pago.getFechaHora());
         pagoDTO.setComprobante(pago.getComprobante());
-        pagoDTO.setTipo(TiposDTO.convertir(pago.getTipo()));
+        if (pago.getTipo() != null) {
+            TiposDTO tipo = new TiposDTO();
+            tipo.setId(pago.getTipo().getId());
+            tipo.setNombre(pago.getTipo().getNombre());
+            tipo.setNumeroParcialidades(pago.getTipo().getNumeroParcialidades());
+            pagoDTO.setTipo(tipo);
+        }
+        
         pagoDTO.setBeneficiario(BeneficiarioDTO.convertir(pago.getBeneficiario()));
-        pagoDTO.setAbonos(pago.getAbonos().stream()
-                .map(AbonoDTO::convertir)
-                .collect(Collectors.toList()));
-        pagoDTO.setEstatus(pago.getPagosEstatus().stream()
-                .map(PagosEstatus::getEstatus)
-                .map(EstatusDTO::convertir)
-                .collect(Collectors.toList()));
+        
+        if (pago.getAbonos() != null) {
+           pagoDTO.setAbonos(pago.getAbonos().stream()
+                   .map(abono -> AbonoDTO.convertir(abono))
+                   .collect(Collectors.toList()));
+       }
+        
+        if (pagoDTO.getEstatus() != null) {
+            List<PagosEstatus> pagosEstatus = pagoDTO.getEstatus().stream()
+                    .map(EstatusDTO::convertirToPagosEstatus) 
+                    .collect(Collectors.toList());
+            pago.setPagosEstatus(pagosEstatus);
+        }
 
         CuentaBancaria cuentaBancaria = pago.getCuentaBancaria();
-
         if (cuentaBancaria != null) {
             CuentaBancariaDTO cuentaBancariaDTO = CuentaBancariaDTO.convertir(cuentaBancaria);
             pagoDTO.setCuentas(Arrays.asList(cuentaBancariaDTO));
@@ -162,7 +176,15 @@ public class PagoDTO {
         pago.setMonto(pagoDTO.getMonto());
         pago.setFechaHora(pagoDTO.getFechaHora());
         pago.setComprobante(pagoDTO.getComprobante());
-        pago.setTipo(TiposDTO.convertir(pagoDTO.getTipo()));
+        
+        if (pagoDTO.getTipo() != null) {
+            Tipos tipo = new Tipos();
+            tipo.setId(pagoDTO.getTipo().getId());
+            tipo.setNombre(pagoDTO.getTipo().getNombre());
+            tipo.setNumeroParcialidades(pagoDTO.getTipo().getNumeroParcialidades());
+            pago.setTipo(tipo);
+        }
+        
         pago.setBeneficiario(BeneficiarioDTO.convertir(pagoDTO.getBeneficiario()));
 
         if (pagoDTO.getAbonos() != null) {
@@ -174,13 +196,7 @@ public class PagoDTO {
 
         if (pagoDTO.getEstatus() != null) {
             List<PagosEstatus> pagosEstatus = pagoDTO.getEstatus().stream()
-                    .map(EstatusDTO::convertir)
-                    .map(pe -> {
-                        PagosEstatus pagoEstatus = new PagosEstatus();
-                        pagoEstatus.setEstatus(pe);
-                        pagoEstatus.setPago(pago);
-                        return pagoEstatus;
-                    })
+                    .map(EstatusDTO::convertirToPagosEstatus)
                     .collect(Collectors.toList());
             pago.setPagosEstatus(pagosEstatus);
         }
