@@ -1,5 +1,6 @@
 package negocio;
 
+import DAOs.AbonoDAO;
 import DAOs.BeneficiarioDAO;
 import DAOs.CuentaBancariaDAO;
 import DAOs.EstatusDAO;
@@ -50,6 +51,7 @@ public class PagoNegocio implements IPagoNegocio {
     private PagosEstatusDAO pagoEstatusDAO;
     private TiposDAO tiposDAO;
     private EstatusDAO estatusDAO;
+    private AbonoDAO abonoDAO;
     long id;
     
 
@@ -60,13 +62,14 @@ public class PagoNegocio implements IPagoNegocio {
      * @param cuentaBancariaDAO   Objeto ICuentaBancariaDAO que se utilizará para acceder a la capa de datos de cuentas bancarias.
      * @param beneficiarioDAO     Objeto IBeneficiarioDAO que se utilizará para acceder a la capa de datos de beneficiarios.
      */
-    public PagoNegocio(PagoDAO pagoDAO, CuentaBancariaDAO cuentaBancariaDAO, BeneficiarioDAO beneficiarioDAO, PagosEstatusDAO pagoEstatusDAO, TiposDAO tiposDAO, EstatusDAO estatus) {
+    public PagoNegocio(PagoDAO pagoDAO, CuentaBancariaDAO cuentaBancariaDAO, BeneficiarioDAO beneficiarioDAO, PagosEstatusDAO pagoEstatusDAO, TiposDAO tiposDAO, EstatusDAO estatus,AbonoDAO abonoDAO) {
         this.pagoDAO = pagoDAO;
         this.cuentaBancariaDAO = cuentaBancariaDAO;
         this.beneficiarioDAO = beneficiarioDAO;
         this.pagoEstatusDAO=pagoEstatusDAO;
         this.tiposDAO=tiposDAO;
         this.estatusDAO=estatus;
+        this.abonoDAO=abonoDAO;
     }
 
     /**
@@ -791,5 +794,86 @@ public class PagoNegocio implements IPagoNegocio {
     
     public List<Pago> obtenerPagosEstatusPorEstatusDAO(String nombre){
         return pagoDAO.obtenerPagosEstatusPorEstatus(nombre);
+    }
+    
+    @Override
+    public void agregarAbono(AbonoDTO abonoDTO, PagoDTO pago){
+        Abono abono=new Abono();
+        abono.setMonto(abonoDTO.getMonto());
+        abono.setPago(pagoDAO.buscarPagoPorId(pago.getId()));
+        abonoDAO.guardarAbono(abono);
+    }
+    
+    public List<AbonoDTO> obtenerAbonosPorBeneficiario(long id){
+        List<Abono> abonos=abonoDAO.obtenerAbonosPorBeneficiario(id);
+        List<AbonoDTO> abonosDTO=convertirAbonosADTO(abonos);
+        return abonosDTO;
+    }
+    
+    public List<AbonoDTO> convertirAbonosADTO(List<Abono> abonos){
+         List<AbonoDTO> abonosDTO= new ArrayList<>();
+        for(Abono abono:abonos){
+            AbonoDTO abonoDTO=new AbonoDTO();
+            abonoDTO.setFechaHora(abono.getFechaHora());
+            abonoDTO.setId(abono.getId());
+            abonoDTO.setMonto(abono.getMonto());
+            abonoDTO.setPagoDTO(convertir(abono.getPago()));
+            abonosDTO.add(abonoDTO);
+        }
+        return abonosDTO;
+    }
+    
+    @Override
+    public void editarAbono(AbonoDTO abonoDTO,PagoDTO pago){
+        Abono abono= abonoDAO.buscarAbonoPorId(abonoDTO.getId());
+        abono.setMonto(abonoDTO.getMonto());
+        abono.setPago(pagoDAO.buscarPagoPorId(pago.getId()));
+        abono.setFechaHora(LocalDateTime.now());
+        abonoDAO.actualizarAbono(abono);
+        
+    }
+    
+    @Override
+    public void eliminarAbono(AbonoDTO abonoDTO){
+        Abono abono= abonoDAO.buscarAbonoPorId(abonoDTO.getId());
+        abonoDAO.eliminarAbono(abono);
+    }
+    
+    @Override
+    public AbonoDTO buscarAbonoPorID(long id){
+        Abono abono=abonoDAO.buscarAbonoPorId(id);
+        AbonoDTO abonoDTO = new AbonoDTO();
+        abonoDTO.setFechaHora(abono.getFechaHora());
+        abonoDTO.setId(abono.getId());
+        abonoDTO.setMonto(abono.getMonto());
+        abonoDTO.setPagoDTO(convertir(abono.getPago()));
+        return abonoDTO;
+    }
+    
+    @Override
+    public List<EstatusDTO> obtenerTodosLosEstatus(){
+        List<Estatus> estatus=estatusDAO.obtenerTodosLosEstatus();
+        List<EstatusDTO> estatusDTO=new ArrayList<>();
+        for(Estatus estatu:estatus){
+            EstatusDTO estatuDTO=new EstatusDTO();
+            estatuDTO.setId(estatu.getId());
+            estatuDTO.setNombre(estatu.getNombre());
+            estatusDTO.add(estatuDTO);
+        }
+        return estatusDTO;
+    }
+    
+    @Override
+    public EstatusDTO obtenerEstatuPorId(long id){
+        Estatus estatu=estatusDAO.buscarEstatusPorId(id);
+        EstatusDTO estatusDTO=new EstatusDTO();
+        estatusDTO.setId(estatu.getId());
+        estatusDTO.setNombre(estatusDTO.getNombre());
+        if(estatu.getPagosEstatus()!=null){
+        List<PagoDTO> pagos=new ArrayList<>();
+        pagos.add(convertir(estatu.getPagosEstatus().get(0).getPago()));
+        estatusDTO.setPagos(pagos);  
+        }
+        return estatusDTO;
     }
 }

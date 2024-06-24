@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import DAOs.AbonoDAO;
 import DAOs.BeneficiarioDAO;
 import DAOs.CuentaBancariaDAO;
 import DAOs.EstatusDAO;
@@ -38,7 +39,8 @@ public class Run {
         PagosEstatusDAO pagosEstatus=new PagosEstatusDAO();
         TiposDAO tipos=new TiposDAO();
         EstatusDAO estatus=new EstatusDAO();
-        PagoNegocio pagoN=new PagoNegocio(pagoD,cuenta,beneficiario,pagosEstatus,tipos,estatus);
+        AbonoDAO abono=new AbonoDAO();
+        PagoNegocio pagoN=new PagoNegocio(pagoD,cuenta,beneficiario,pagosEstatus,tipos,estatus,abono);
         PagoBO pago=new PagoBO(pagoN);
         
         logIn login = new logIn(pago);
