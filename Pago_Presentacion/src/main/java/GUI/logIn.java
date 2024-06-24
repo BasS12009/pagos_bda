@@ -40,7 +40,7 @@ public class logIn extends javax.swing.JFrame {
 
     public void inicioSesion(){
         
-        try {
+ 
             // TODO add your handling code here:
             
             //Se setea la clave de contrato y la contraseña que se recive en el text area
@@ -48,22 +48,27 @@ public class logIn extends javax.swing.JFrame {
             BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
             beneficiarioDTO.setClaveContrato(clave.getText());
             beneficiarioDTO.setContraseña(contrasena.getText());
-            BeneficiarioDTO beneficiarioAutenticado = negocio.login(beneficiarioDTO);
-            //se valida que si es diferente de null se muestre el menu del beneficiario
-            if (beneficiarioAutenticado != null) {
-                negocio.setId(beneficiarioAutenticado.getId());
-                MenuBeneficiario m=new MenuBeneficiario();
-                m.setVisible(true);
-                this.disable();
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
-            }
-        } catch (ExcepcionBO ex) {
-            JOptionPane.showMessageDialog(this, "No se pudo comprobar las credenciales");
-        }
+
+
+                try {
+                    //se valida que si es diferente de null se muestre el menu del beneficiario
+                    BeneficiarioDTO beneficiarioAutenticado = negocio.login(beneficiarioDTO);
+                    if (beneficiarioAutenticado != null) {
+                        negocio.setId(beneficiarioAutenticado.getId());
+                        MenuBeneficiario m=new MenuBeneficiario();
+                        m.setVisible(true);
+                        this.disable();
+                        this.dispose();
+                    } else {
+                        
+                    }   } catch (ExcepcionBO ex) {
+                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+                }
+
+
         
     }
+
     
     /**
      * This method is called from within the constructor to initialize the form.
