@@ -5,24 +5,32 @@
 package BeneficiarioPresentacion;
 
 import DTOs.CuentaBancariaDTO;
-import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
 import DTOs.PagosEstatusDTO;
 import GUI.logIn;
 import Utilerias.JButtonCellEditor;
 import Utilerias.JButtonRenderer;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
 import excepcion.ExcepcionPresentacion;
 import excepcionBO.ExcepcionBO;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import negocio.PagoBO;
@@ -155,6 +163,31 @@ public class MisPagos extends javax.swing.JFrame {
         color = new Color(255, 105, 97);
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar",color));
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
+        
+        ActionListener onReporteClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                
+                
+                try {
+                    try {
+                        generarReporte();
+                    } catch (MalformedURLException ex) {
+                        Logger.getLogger(MisPagos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } catch (ExcepcionPresentacion ex) {
+                    Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }               
+        };
+
+        int indiceColumnaReporte = 6;
+        color = new Color(97, 255, 255);
+        modeloColumnas.getColumn(indiceColumnaReporte).setCellRenderer(new JButtonRenderer("Generar",color));
+        modeloColumnas.getColumn(indiceColumnaReporte).setCellEditor(new JButtonCellEditor("Generar", onReporteClickListener));        
     }
     
     
@@ -165,13 +198,14 @@ public class MisPagos extends javax.swing.JFrame {
     modeloTabla.setRowCount(0);
     if (lista != null) {
         lista.forEach(row -> {
-            Object[] fila = new Object[6];
+            Object[] fila = new Object[7];
             fila[0] = row.getPago().getCuentas().get(0).getNumeroCuenta();;
             fila[1] = row.getPago().getMonto();
             fila[2] =row.getEstatus().getNombre();
             fila[3] = row.getMensaje();
             fila[4] = "Modificar";
             fila[5] = "Eliminar"; 
+            fila[6] = "Generar"; 
             modeloTabla.addRow(fila); 
         });
     }
@@ -196,6 +230,55 @@ public class MisPagos extends javax.swing.JFrame {
         return todasLasPaginas;
     }
 
+    private PagosEstatusDTO obtenerPagoSeleccionado() throws ExcepcionPresentacion{
+                
+        DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
+        JTable table = new JTable(modeloTabla);
+        int fila = table.getSelectedRow() + 1;
+        List<PagosEstatusDTO> todosLosPagos = pagoBO.obtenerPagosEstatusPorBeneficiario(pagoBO.getId());
+        
+        return todosLosPagos.get(fila);
+        
+
+    }
+    
+    private void generarReporte() throws ExcepcionPresentacion, MalformedURLException{
+
+        String dest = "reporteVenta.pdf";
+
+        try {
+
+            PdfWriter writer = new PdfWriter(dest);
+            PdfDocument pdfDoc = new PdfDocument(writer);
+            Document document = new Document(pdfDoc);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            PagosEstatusDTO pago = obtenerPagoSeleccionado();
+            
+            ImageData data = ImageDataFactory.create("src/main/resources/images/potroPagoChico.png");
+            Image image = new Image(data);
+
+            document.add(image);
+            
+            document.add(new Paragraph("Pago =" + pago.getEstatus().getNombre() + "!!!"));
+            document.add(new Paragraph(pago.getPago().getFechaHora().format(formatter)));
+            document.add(new Paragraph("$" + pago.getPago().getMonto()));
+            document.add(new Paragraph(pago.getPago().getBeneficiario().getNombre().getNombres() + 
+                    pago.getPago().getBeneficiario().getNombre().getApellidoPaterno() + 
+                    pago.getPago().getBeneficiario().getNombre().getApellidoMaterno()));
+            document.add(new Paragraph(pago.getMensaje()));
+
+            document.close();
+
+            System.out.println("¡Recibo generado con éxito!");
+            
+            JOptionPane.showMessageDialog(this, "Recibo generado con éxito!");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();    
+    
+    }    
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -207,13 +290,13 @@ public class MisPagos extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        btnCrearPago = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnAtras = new javax.swing.JButton();
         btnSiguiente = new javax.swing.JButton();
         NumeroDePagina = new javax.swing.JTextField();
         logo = new javax.swing.JLabel();
+        btnCrearPago1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         Inicio = new javax.swing.JMenu();
         btnInicio = new javax.swing.JRadioButtonMenuItem();
@@ -236,26 +319,15 @@ public class MisPagos extends javax.swing.JFrame {
         jLabel1.setText("Mis Pagos");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, -1, -1));
 
-        btnCrearPago.setBackground(new java.awt.Color(116, 114, 178));
-        btnCrearPago.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
-        btnCrearPago.setForeground(new java.awt.Color(255, 255, 255));
-        btnCrearPago.setText("+Crear Pago");
-        btnCrearPago.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCrearPagoActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnCrearPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, 30));
-
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Cuenta", "Monto", "Estatus", "Comentarios", "Modificar", "Eliminar"
+                "Cuenta", "Monto", "Estatus", "Comentarios", "Modificar", "Eliminar", "Generar Reporte"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -298,6 +370,17 @@ public class MisPagos extends javax.swing.JFrame {
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
         jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 10, 150, 80));
+
+        btnCrearPago1.setBackground(new java.awt.Color(116, 114, 178));
+        btnCrearPago1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnCrearPago1.setForeground(new java.awt.Color(255, 255, 255));
+        btnCrearPago1.setText("+Crear Pago");
+        btnCrearPago1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearPago1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnCrearPago1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, 30));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -421,12 +504,6 @@ public class MisPagos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCuentasBancariasActionPerformed
 
-    private void btnCrearPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPagoActionPerformed
-        CrearPago crearPago = new CrearPago(pagoBO);
-        crearPago.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnCrearPagoActionPerformed
-
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         // TODO add your handling code here:
         logIn lIn = new logIn(pagoBO);
@@ -503,6 +580,10 @@ public class MisPagos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_NumeroDePaginaActionPerformed
 
+    private void btnCrearPago1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPago1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCrearPago1ActionPerformed
+
     private void actualizarNumeroDePagina() {
     NumeroDePagina.setText(""+pagina);
     }
@@ -513,7 +594,7 @@ public class MisPagos extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem btnAbonos;
     private javax.swing.JButton btnAtras;
     private javax.swing.JRadioButtonMenuItem btnCerrarSesion;
-    private javax.swing.JButton btnCrearPago;
+    private javax.swing.JButton btnCrearPago1;
     private javax.swing.JRadioButtonMenuItem btnCuentasBancarias;
     private javax.swing.JRadioButtonMenuItem btnInicio;
     private javax.swing.JRadioButtonMenuItem btnPagos;
