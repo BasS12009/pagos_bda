@@ -28,8 +28,7 @@ public class Run {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        ConexionBD conexionBD = new ConexionBD();      
+        // TODO code application logic here    
         
         BeneficiarioDAO beneficiario = new BeneficiarioDAO();
         PagoDAO pago = new PagoDAO();

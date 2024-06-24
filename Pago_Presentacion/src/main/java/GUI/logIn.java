@@ -55,7 +55,7 @@ public class logIn extends javax.swing.JFrame {
                     BeneficiarioDTO beneficiarioAutenticado = negocio.login(beneficiarioDTO);
                     if (beneficiarioAutenticado != null) {
                         negocio.setId(beneficiarioAutenticado.getId());
-                        MenuBeneficiario m=new MenuBeneficiario();
+                        MenuBeneficiario m=new MenuBeneficiario(negocio);
                         m.setVisible(true);
                         this.disable();
                         this.dispose();

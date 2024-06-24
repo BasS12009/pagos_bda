@@ -25,10 +25,11 @@ public class MisAbonos extends javax.swing.JFrame {
     /**
      * Creates new form MisAbonos
      */
-    public MisAbonos() {
+    public MisAbonos(PagoBO negocio) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
+        this.pagoBO = negocio;
         cargarConfiguracionInicialTabla();
     }
 
@@ -255,7 +256,7 @@ public class MisAbonos extends javax.swing.JFrame {
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
         // TODO add your handling code here:
-         MenuBeneficiario menuBeneficiario = new MenuBeneficiario();
+         MenuBeneficiario menuBeneficiario = new MenuBeneficiario(pagoBO);
         menuBeneficiario.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnInicioActionPerformed
@@ -269,7 +270,7 @@ public class MisAbonos extends javax.swing.JFrame {
 
     private void btnAbonosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonosActionPerformed
         // TODO add your handling code here:
-        MisAbonos misAbonos = new MisAbonos();
+        MisAbonos misAbonos = new MisAbonos(pagoBO);
         misAbonos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAbonosActionPerformed
@@ -283,7 +284,7 @@ public class MisAbonos extends javax.swing.JFrame {
 
     private void btnAgregarAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAbonoActionPerformed
         // TODO add your handling code here:
-        AgregarAbono agregarAbono = new AgregarAbono();
+        AgregarAbono agregarAbono = new AgregarAbono(pagoBO);
         agregarAbono.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarAbonoActionPerformed
@@ -309,40 +310,7 @@ public class MisAbonos extends javax.swing.JFrame {
         
     }//GEN-LAST:event_NumeroDePaginaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MisAbonos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MisAbonos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MisAbonos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MisAbonos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MisAbonos().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField NumeroDePagina;

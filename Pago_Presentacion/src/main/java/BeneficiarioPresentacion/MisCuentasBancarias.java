@@ -409,7 +409,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
         // TODO add your handling code here:
-          MenuBeneficiario menuBeneficiario = new MenuBeneficiario();
+          MenuBeneficiario menuBeneficiario = new MenuBeneficiario(pagoBO);
         menuBeneficiario.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnInicioActionPerformed
@@ -423,7 +423,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
 
     private void btnAbonosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonosActionPerformed
         // TODO add your handling code here:
-        MisAbonos misAbonos = new MisAbonos();
+        MisAbonos misAbonos = new MisAbonos(pagoBO);
         misAbonos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAbonosActionPerformed
