@@ -48,16 +48,16 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
 
     private void modificar(){
     
-        ModificarBeneficiario modificarBeneficiario = new ModificarBeneficiario();
+        ModificarBeneficiario modificarBeneficiario = new ModificarBeneficiario(pagoBO);
         modificarBeneficiario.setVisible(true);
         this.dispose();        
         
     }
     private void cargarMetodosIniciales() throws ExcepcionPresentacion {
         this.cargarConfiguracionInicialTabla();
-//        this.cargarEnTabla();
+        this.cargarEnTabla();
     }
-//    private void cargarEnTabla() throws ExcepcionPresentacion {
+    private void cargarEnTabla() throws ExcepcionPresentacion {
 //        try {
 //                int indiceInicio = (pagina - 1) * LIMITE;
 //                List<BeneficiarioDTO> todas = pagoBO.obtenerTodosLosBeneficiarios(pagoBO.getId());
@@ -71,8 +71,8 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
 //            } catch (ExcepcionBO ex) {
 //                throw new ExcepcionPresentacion("Error al cargar beneficiarios.", ex);
 //            }
-//    }
-//    
+    }
+    
 //    private List<BeneficiarioDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
 //        try {
 //            List<BeneficiarioDTO> todas = pagoBO.obtenerTodosLosBeneficiarios(pagoBO.getId());
@@ -86,7 +86,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
 //        throw new ExcepcionPresentacion("Error al eliminar beneficiario.", ex);
 //        }
 //    }
-    
+//    
     
     
     
@@ -327,21 +327,21 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
         // TODO add your handling code here:
-        MenuAdministrador menuAdministrador = new MenuAdministrador();
+        MenuAdministrador menuAdministrador = new MenuAdministrador(pagoBO);
         menuAdministrador.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnInicioActionPerformed
 
     private void btnAprobacionRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobacionRechazarActionPerformed
         // TODO add your handling code here:
-        AprobacionRechazar aprobacionRechazar = new AprobacionRechazar();
+        AprobacionRechazar aprobacionRechazar = new AprobacionRechazar(pagoBO);
         aprobacionRechazar.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAprobacionRechazarActionPerformed
 
     private void btnReportePagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportePagoActionPerformed
         // TODO add your handling code here:
-         ReportePago reportePago = new ReportePago();
+         ReportePago reportePago = new ReportePago(pagoBO);
         reportePago.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnReportePagoActionPerformed
@@ -355,14 +355,14 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
 
     private void btnPagadoRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagadoRechazarActionPerformed
         // TODO add your handling code here:
-         PagadoRechazar pagadoRechazar = new PagadoRechazar();
+         PagadoRechazar pagadoRechazar = new PagadoRechazar(pagoBO);
         pagadoRechazar.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPagadoRechazarActionPerformed
 
     private void btnCrearBeneficiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearBeneficiarioActionPerformed
         // TODO add your handling code here:
-        CrearBeneficiario crearBeneficiario = new CrearBeneficiario();
+        CrearBeneficiario crearBeneficiario = new CrearBeneficiario(pagoBO);
         crearBeneficiario.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCrearBeneficiarioActionPerformed

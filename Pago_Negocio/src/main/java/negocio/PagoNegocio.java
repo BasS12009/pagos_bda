@@ -63,12 +63,14 @@ public class PagoNegocio implements IPagoNegocio {
      * @param beneficiarioDAO     Objeto IBeneficiarioDAO que se utilizará para acceder a la capa de datos de beneficiarios.
      */
     public PagoNegocio(PagoDAO pagoDAO, CuentaBancariaDAO cuentaBancariaDAO, BeneficiarioDAO beneficiarioDAO, PagosEstatusDAO pagoEstatusDAO, TiposDAO tiposDAO, EstatusDAO estatus,AbonoDAO abonoDAO) {
+
         this.pagoDAO = pagoDAO;
         this.cuentaBancariaDAO = cuentaBancariaDAO;
         this.beneficiarioDAO = beneficiarioDAO;
         this.pagoEstatusDAO=pagoEstatusDAO;
         this.tiposDAO=tiposDAO;
         this.estatusDAO=estatus;
+
         this.abonoDAO=abonoDAO;
     }
 

@@ -124,6 +124,7 @@ public class CrearPago extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         btnRegresar3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -136,6 +137,8 @@ public class CrearPago extends javax.swing.JFrame {
         textoMonto = new javax.swing.JTextField();
         jComboCuenta = new javax.swing.JComboBox<>();
         logo = new javax.swing.JLabel();
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(175, 176, 212));
@@ -313,6 +316,7 @@ public class CrearPago extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Crear;
     private javax.swing.JButton btnRegresar3;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboCuenta;
     private javax.swing.JComboBox<String> jComboTipo;
     private javax.swing.JLabel jLabel1;
