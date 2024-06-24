@@ -44,7 +44,9 @@ public interface IAbonoDAO {
      * @param id El identificador único del abono que se desea buscar.
      * @return El objeto Abono encontrado, o null si no existe.
      */
-    Abono buscarAbonoPorId(Long id);
+    public List<Abono> obtenerAbonosPorBeneficiario(Long beneficiarioId);
+    
+    public Abono buscarAbonoPorId(Long id);
     
     /**
      * Retorna una lista con todos los abonos almacenados en la base de datos.
@@ -53,12 +55,5 @@ public interface IAbonoDAO {
      */
     List<Abono> obtenerTodosLosAbonos();
     
-    /**
-     * Retorna una lista con todos los abonos asociados a un beneficiario específico.
-     * 
-     * @param claveContrato La clave de contrato del beneficiario.
-     * @return Lista de abonos asociados al beneficiario.
-     */
-    List<Abono> obtenerAbonosPorBeneficiario(String claveContrato);
-    
+
 }

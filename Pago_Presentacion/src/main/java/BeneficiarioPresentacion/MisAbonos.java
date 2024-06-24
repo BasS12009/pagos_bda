@@ -4,12 +4,23 @@
  */
 package BeneficiarioPresentacion;
 
+import DTOs.AbonoDTO;
+import DTOs.PagoDTO;
+import DTOs.PagosEstatusDTO;
 import GUI.logIn;
 import Utilerias.JButtonCellEditor;
 import Utilerias.JButtonRenderer;
+import excepcion.ExcepcionPresentacion;
+import excepcionBO.ExcepcionBO;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import negocio.PagoBO;
 
@@ -33,26 +44,118 @@ public class MisAbonos extends javax.swing.JFrame {
         cargarConfiguracionInicialTabla();
     }
 
+    
+    private void eliminar() throws ExcepcionPresentacion {
+        long id = this.getIdSeleccionadoTabla();
+        AbonoDTO abonoDTO = pagoBO.buscarAbonoPorID(id);
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Está seguro que desea eliminar al cliente?\n" +
+                        "ID: " + abonoDTO.getId()+ "\n" +
+                                "El monto: " + abonoDTO.getMonto()+ "\n" +
+                                        "Beneficiario: " + abonoDTO.getPagoDTO().getBeneficiario(),
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION);
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            pagoBO.eliminarAbono(pagoBO.buscarAbonoPorID(id));
+            JOptionPane.showMessageDialog(this, "Abono eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            cargarEnTabla();
+        }
+    }
+    
+    private long getIdSeleccionadoTabla() {
+        int indiceFilaSeleccionada = this.jTable1.getSelectedRow();
+        if (indiceFilaSeleccionada != -1) {
+            DefaultTableModel modelo = (DefaultTableModel) this.jTable1.getModel();
+            int indiceColumnaId = 0;
+            Object valor = modelo.getValueAt(indiceFilaSeleccionada, indiceColumnaId);
+            if (valor instanceof Long) {
+                return (long) valor;
+            } else if (valor instanceof Integer) {
+                return (long) (int) valor;
+            } else if (valor instanceof String) {
+                try {
+                    return Long.parseLong((String) valor);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    return 0; 
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+    
+    private void cargarMetodosIniciales() throws ExcepcionPresentacion {
+        this.cargarConfiguracionInicialTabla();
+        this.cargarEnTabla();
+    }
+    
     private void cargarConfiguracionInicialTabla() { 
         
+        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
+
         ActionListener onEliminarClickListener = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-               
+                try {
+                    eliminar();
+                } catch (ExcepcionPresentacion ex) {
+                    Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             }               
         };
-          
-        
-        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
-        int indiceColumnaEliminar = 5;
+
+        int indiceColumnaEliminar = 4;
         Color color = new Color(255, 105, 97);
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar",color));
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
-              
-    }       
+    }
+    
+    
+    private void llenarTabla(List<AbonoDTO> lista) {
+         DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
+
+    // Clear existing rows
+    modeloTabla.setRowCount(0);
+    if (lista != null) {
+       
+        lista.forEach(row -> {
+            Object[] fila = new Object[5];
+             List<PagoDTO> pago = new ArrayList<>();
+             pago.add(row.getPagoDTO());
+            fila[0] = row.getPagoDTO().getCuentas().get(0).getNumeroCuenta();;
+            fila[1] = row.getMonto();
+            fila[2] =row.getPagoDTO().getEstatus();
+            fila[3] = pagoBO.obtenerPagosEstatusParaPagos(pago).get(0).getMensaje();
+            fila[4] = "Eliminar"; 
+            modeloTabla.addRow(fila); 
+        });
+    }
+    }
+    
+    private void cargarEnTabla() throws ExcepcionPresentacion {
+        int indiceInicio = (pagina - 1) * LIMITE;
+        List<AbonoDTO> todas = pagoBO.obtenerAbonosPorBeneficiario(pagoBO.getId());
+        int indiceFin = Math.min(indiceInicio + LIMITE, todas.size());
+        List<AbonoDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
+        llenarTabla(enPagina);
+        actualizarNumeroDePagina();
+    }
+    
+    private List<AbonoDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
+        List<AbonoDTO> todas = pagoBO.obtenerAbonosPorBeneficiario(pagoBO.getId());
+        List<AbonoDTO> todasLasPaginas = new ArrayList<>();
+        indiceFin = Math.min(indiceFin, todas.size());
+        for (int i = indiceInicio; i < indiceFin; i++) {
+            todasLasPaginas.add(todas.get(i));
+        }
+        return todasLasPaginas;
+    }      
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,10 +213,7 @@ public class MisAbonos extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "$2,500", "Enviado", "1er abono enviado", null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Cuenta", "Monto", "Estatus", "Comentarios", "Eliminar Abono"
@@ -283,7 +383,20 @@ public class MisAbonos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCuentasBancariasActionPerformed
 
     private void btnAgregarAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAbonoActionPerformed
-        // TODO add your handling code here:
+        // Obtener todos los pagos por beneficiario
+        List<PagosEstatusDTO> pagosBeneficiario = pagoBO.obtenerPagosEstatusPorBeneficiario(pagoBO.getId());
+        // Filtrar los pagos aprobados
+        List<PagoDTO> pagosAprobados = new ArrayList<>();
+        for (PagosEstatusDTO pago : pagosBeneficiario) {
+            // Verificar si el estatus no es nulo y es "Aprobado"
+            if (pago.getEstatus() != null && "Aprobado".equals(pago.getEstatus().getNombre())) {
+                pagosAprobados.add(pago.getPago());
+            }
+        }
+        if (pagosAprobados.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No tiene pagos aprobados para agregar abonos.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            return; // Detener la ejecución si no hay pagos aprobados
+        }
         AgregarAbono agregarAbono = new AgregarAbono(pagoBO);
         agregarAbono.setVisible(true);
         this.dispose();
@@ -310,7 +423,9 @@ public class MisAbonos extends javax.swing.JFrame {
         
     }//GEN-LAST:event_NumeroDePaginaActionPerformed
 
-
+    private void actualizarNumeroDePagina() {
+        NumeroDePagina.setText(""+pagina);
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField NumeroDePagina;

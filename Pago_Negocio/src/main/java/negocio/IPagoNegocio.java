@@ -4,6 +4,7 @@
  */
 package negocio;
 
+import DTOs.AbonoDTO;
 import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
 import DTOs.EstatusDTO;
@@ -179,6 +180,13 @@ public interface IPagoNegocio {
     public List<EstatusDTO> obtenerEstatus(); 
     public List<PagosEstatusDTO> obtenerPagosEstatusPorBeneficiario(long idBeneficiario);
     
-    
-    
+
+    public void agregarAbono(AbonoDTO abonoDTO, PagoDTO pago);
+    public List<AbonoDTO> obtenerAbonosPorBeneficiario(long id);
+    public void editarAbono(AbonoDTO abonoDTO,PagoDTO pago);
+    public AbonoDTO buscarAbonoPorID(long id);
+    public void eliminarAbono(AbonoDTO abonoDTO);
+    public List<EstatusDTO> obtenerTodosLosEstatus();
+public EstatusDTO obtenerEstatuPorId(long id);
+
 }
