@@ -4,26 +4,46 @@
  */
 package AdministradorPresentacion;
 
+import DTOs.BeneficiarioDTO;
+import DTOs.CuentaBancariaDTO;
 import Utilerias.JButtonCellEditor;
 import Utilerias.JButtonRenderer;
+import excepcion.ExcepcionPresentacion;
+import excepcionBO.ExcepcionBO;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.TableColumnModel;
+import negocio.PagoBO;
 /**
  *
  * @author diana
  */
 public class AdministracionBeneficiarios extends javax.swing.JFrame {
 
+    private PagoBO pagoBO;
+    private int pagina=1;
+    private int LIMITE=3;
+    boolean conFiltro;
     /**
      * Creates new form AdministracionBeneficiarios
      */
-    public AdministracionBeneficiarios() {
+    public AdministracionBeneficiarios(PagoBO pagoBO) {
+        try {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
         cargarConfiguracionInicialTabla();
+         this.pagoBO=pagoBO;
+            cargarMetodosIniciales();
+            System.out.println(pagoBO.getId());
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void modificar(){
@@ -33,6 +53,43 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         this.dispose();        
         
     }
+    private void cargarMetodosIniciales() throws ExcepcionPresentacion {
+        this.cargarConfiguracionInicialTabla();
+//        this.cargarEnTabla();
+    }
+//    private void cargarEnTabla() throws ExcepcionPresentacion {
+//        try {
+//                int indiceInicio = (pagina - 1) * LIMITE;
+//                List<BeneficiarioDTO> todas = pagoBO.obtenerTodosLosBeneficiarios(pagoBO.getId());
+//                int indiceFin = Math.min(indiceInicio + LIMITE, todas.size());
+//
+//                List<BeneficiarioDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
+//
+//                llenarTabla(enPagina);
+//
+//                actualizarNumeroDePagina();
+//            } catch (ExcepcionBO ex) {
+//                throw new ExcepcionPresentacion("Error al cargar beneficiarios.", ex);
+//            }
+//    }
+//    
+//    private List<BeneficiarioDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
+//        try {
+//            List<BeneficiarioDTO> todas = pagoBO.obtenerTodosLosBeneficiarios(pagoBO.getId());
+//            List<BeneficiarioDTO> todasLasPaginas = new ArrayList<>();
+//            indiceFin = Math.min(indiceFin, todas.size());
+//            for (int i = indiceInicio; i < indiceFin; i++) {
+//                todasLasPaginas.add(todas.get(i));
+//            }
+//            return todasLasPaginas;
+//        } catch (ExcepcionBO ex) {
+//        throw new ExcepcionPresentacion("Error al eliminar beneficiario.", ex);
+//        }
+//    }
+    
+    
+    
+    
     
     private void cargarConfiguracionInicialTabla() { 
         
@@ -46,6 +103,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
             }               
         };
             
+        
         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
         int indiceColumnaEditar = 6;
         Color color = new Color(178, 218, 250);
@@ -67,6 +125,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         modeloColumnas.getColumn(7).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));     
     }        
     
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -82,6 +141,9 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         logo = new javax.swing.JLabel();
+        btnAtras = new javax.swing.JButton();
+        btnSiguiente = new javax.swing.JButton();
+        NumeroDePagina = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         Inicio = new javax.swing.JMenu();
         btnInicio = new javax.swing.JRadioButtonMenuItem();
@@ -133,6 +195,40 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
         jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 10, 150, 80));
+
+        btnAtras.setBackground(new java.awt.Color(12, 33, 63));
+        btnAtras.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
+        btnAtras.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtras.setText("←");
+        btnAtras.setContentAreaFilled(false);
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, -1, -1));
+
+        btnSiguiente.setBackground(new java.awt.Color(12, 33, 63));
+        btnSiguiente.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
+        btnSiguiente.setForeground(new java.awt.Color(255, 255, 255));
+        btnSiguiente.setText("→");
+        btnSiguiente.setContentAreaFilled(false);
+        btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSiguienteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 480, -1, -1));
+
+        NumeroDePagina.setBackground(new java.awt.Color(204, 169, 221));
+        NumeroDePagina.setForeground(new java.awt.Color(255, 255, 255));
+        NumeroDePagina.setText("1");
+        NumeroDePagina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NumeroDePaginaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(NumeroDePagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 500, 20, -1));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -252,7 +348,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
 
     private void btnAdministracionBeneficiariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministracionBeneficiariosActionPerformed
         // TODO add your handling code here:
-        AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios();
+        AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios(pagoBO);
         administracionBeneficiarios.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAdministracionBeneficiariosActionPerformed
@@ -270,6 +366,19 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         crearBeneficiario.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCrearBeneficiarioActionPerformed
+
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAtrasActionPerformed
+
+    private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
+
+    }//GEN-LAST:event_btnSiguienteActionPerformed
+
+    private void NumeroDePaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumeroDePaginaActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_NumeroDePaginaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -301,19 +410,22 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdministracionBeneficiarios().setVisible(true);
+//                new AdministracionBeneficiarios().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Inicio;
+    private javax.swing.JTextField NumeroDePagina;
     private javax.swing.JRadioButtonMenuItem btnAdministracionBeneficiarios;
     private javax.swing.JRadioButtonMenuItem btnAprobacionRechazar;
+    private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnCrearBeneficiario;
     private javax.swing.JRadioButtonMenuItem btnInicio;
     private javax.swing.JRadioButtonMenuItem btnPagadoRechazar;
     private javax.swing.JRadioButtonMenuItem btnReportePago;
+    private javax.swing.JButton btnSiguiente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

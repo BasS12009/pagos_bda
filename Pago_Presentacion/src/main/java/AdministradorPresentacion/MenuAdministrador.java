@@ -183,7 +183,7 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
     private void btnAdministracionBeneficiariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministracionBeneficiariosActionPerformed
         // TODO add your handling code here:
-        AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios();
+        AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios(pagoBO);
         administracionBeneficiarios.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAdministracionBeneficiariosActionPerformed

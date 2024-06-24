@@ -192,7 +192,7 @@ public class ModificarBeneficiario extends javax.swing.JFrame {
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
-        AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios();
+        AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios(pagoBO);
         administracionBeneficiarios.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
