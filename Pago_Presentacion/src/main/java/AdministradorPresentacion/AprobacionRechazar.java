@@ -24,11 +24,12 @@ public class AprobacionRechazar extends javax.swing.JFrame {
     /**
      * Creates new form AprobacionRechazar
      */
-    public AprobacionRechazar() {
+    public AprobacionRechazar(PagoBO pagoBO) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(960,610);
         cargarConfiguracionInicialTabla();
+        this.pagoBO = pagoBO;
     }
     
     private void cargarConfiguracionInicialTabla() { 
@@ -233,21 +234,21 @@ public class AprobacionRechazar extends javax.swing.JFrame {
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
         // TODO add your handling code here:
-        MenuAdministrador menuAdministrador = new MenuAdministrador();
+        MenuAdministrador menuAdministrador = new MenuAdministrador(pagoBO);
         menuAdministrador.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnInicioActionPerformed
 
     private void btnAprobacionRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobacionRechazarActionPerformed
         // TODO add your handling code here:
-         AprobacionRechazar aprobacionRechazar = new AprobacionRechazar();
+         AprobacionRechazar aprobacionRechazar = new AprobacionRechazar(pagoBO);
         aprobacionRechazar.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAprobacionRechazarActionPerformed
 
     private void btnReportePagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportePagoActionPerformed
         // TODO add your handling code here:
-         ReportePago reportePago = new ReportePago();
+         ReportePago reportePago = new ReportePago(pagoBO);
         reportePago.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnReportePagoActionPerformed
@@ -261,7 +262,7 @@ public class AprobacionRechazar extends javax.swing.JFrame {
 
     private void btnPagadoRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagadoRechazarActionPerformed
         // TODO add your handling code here:
-        PagadoRechazar pagadoRechazar = new PagadoRechazar();
+        PagadoRechazar pagadoRechazar = new PagadoRechazar(pagoBO);
         pagadoRechazar.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPagadoRechazarActionPerformed
@@ -272,41 +273,6 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         lIn.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jRadioButtonMenuItem1ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AprobacionRechazar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AprobacionRechazar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AprobacionRechazar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AprobacionRechazar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AprobacionRechazar().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButtonMenuItem btnAdministracionBeneficiarios;
