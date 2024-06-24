@@ -11,10 +11,17 @@
     <class>entidades.Estatus</class>
     <class>entidades.PagosEstatus</class>
     <properties>
+<<<<<<< Updated upstream
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/pagos?serverTimezone=UTC"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.password" value="1994"/>
+=======
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/JPA?serverTimezone= UTC"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="120504Bas"/>
+>>>>>>> Stashed changes
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>
