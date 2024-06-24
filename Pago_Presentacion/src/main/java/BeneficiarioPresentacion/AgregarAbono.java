@@ -48,7 +48,7 @@ public class AgregarAbono extends javax.swing.JFrame {
             DefaultComboBoxModel<String> modelPagos = new DefaultComboBoxModel<>();
             for (PagosEstatusDTO pago : pagos) {
                 //50
-                if (pago.getEstatus().getNombre().equals("Aprobado")) {
+                if (pago.getEstatus().getNombre().equals("Pagado")) {
                     ids.add(pago.getId());
                     String displayText = pago.getPago().getTipo().getNombre() + " " +
                             (pago.getPago().getTipo().getNumeroParcialidades() - pago.getPago().getAbonos().size());
@@ -192,7 +192,7 @@ public class AgregarAbono extends javax.swing.JFrame {
                 List<EstatusDTO> estatus= pagoBO.obtenerEstatus();
                 EstatusDTO estatuSeleccionado;
                 for(EstatusDTO estatu:estatus){
-                    if(estatu.getNombre().equals("Pagado")){
+                    if(estatu.getNombre().equals("Completado")){
                         estatuSeleccionado=pagoBO.obtenerEstatuPorId(estatu.getId());
                         estatus.clear();
                         estatus.add(estatuSeleccionado);

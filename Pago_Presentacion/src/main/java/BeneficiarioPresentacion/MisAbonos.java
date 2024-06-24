@@ -389,7 +389,7 @@ public class MisAbonos extends javax.swing.JFrame {
         List<PagoDTO> pagosAprobados = new ArrayList<>();
         for (PagosEstatusDTO pago : pagosBeneficiario) {
             // Verificar si el estatus no es nulo y es "Aprobado"
-            if (pago.getEstatus() != null && "Aprobado".equals(pago.getEstatus().getNombre())) {
+            if (pago.getEstatus() != null && "Pagado".equals(pago.getEstatus().getNombre())) {
                 pagosAprobados.add(pago.getPago());
             }
         }
