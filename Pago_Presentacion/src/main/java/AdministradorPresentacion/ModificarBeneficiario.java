@@ -25,7 +25,7 @@ public class ModificarBeneficiario extends javax.swing.JFrame {
     /**
      * Creates new form ModificarBeneficiario
      */
-    public ModificarBeneficiario(PagoBO pagoBO) {
+    public ModificarBeneficiario(PagoBO pagoBO, long id) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);

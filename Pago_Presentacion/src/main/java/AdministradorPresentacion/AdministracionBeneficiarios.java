@@ -8,6 +8,7 @@ import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
 import Utilerias.JButtonCellEditor;
 import Utilerias.JButtonRenderer;
+import static entidades.Abono_.id;
 import excepcion.ExcepcionPresentacion;
 import excepcionBO.ExcepcionBO;
 import java.awt.Color;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import negocio.PagoBO;
 /**
@@ -38,58 +41,80 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
         cargarConfiguracionInicialTabla();
-         this.pagoBO=pagoBO;
-            cargarMetodosIniciales();
-            System.out.println(pagoBO.getId());
+        this.pagoBO=pagoBO;
+        cargarMetodosIniciales();
         } catch (ExcepcionPresentacion ex) {
             Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    private void modificar(){
     
-        ModificarBeneficiario modificarBeneficiario = new ModificarBeneficiario(pagoBO);
-        modificarBeneficiario.setVisible(true);
-        this.dispose();        
+    private void modificarCuenta() {
+        try {
+            long id = this.getIdSeleccionadoTabla();
+            ModificarBeneficiario modificarCuenta = new ModificarBeneficiario(pagoBO,id);
+            modificarCuenta.setVisible(true);
+            this.setVisible(false);
+            cargarEnTabla();
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
+    
+    private void eliminar() throws ExcepcionPresentacion {
+        try {
+            if(pagoBO.obtenerAbonosPorBeneficiario( this.getIdSeleccionadoTabla())!=null){
+                throw new ExcepcionPresentacion("No puedes eliminar un beneficiario con abonos.");
+            }
+        long id = this.getIdSeleccionadoTabla();
+        BeneficiarioDTO beneficiario = pagoBO.buscarBeneficiarioPorId(id);
+        int confirmacion = JOptionPane.showConfirmDialog(this, 
+                            "¿Está seguro que desea eliminar al cliente?\n" +
+                            "ID: " + beneficiario.getId()+ "\n" +
+                            "Usuario: " + beneficiario.getUsuario()+ "\n" +
+                            "Nombre: " + beneficiario.getNombre(),
+                            "Confirmar eliminación",
+                            JOptionPane.YES_NO_OPTION);
+        
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            pagoBO.eliminarBeneficiario(id);
+            JOptionPane.showMessageDialog(this, "Beneficiario eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            cargarEnTabla();
+        }
+        } catch (ExcepcionBO ex) {
+        throw new ExcepcionPresentacion("Error al eliminar beneficiario .", ex);
+        }
+    }
+    
+    private long getIdSeleccionadoTabla() {
+        int indiceFilaSeleccionada = this.jTable1.getSelectedRow();
+        if (indiceFilaSeleccionada != -1) {
+            DefaultTableModel modelo = (DefaultTableModel) this.jTable1.getModel();
+            int indiceColumnaId = 0; 
+            Object valor = modelo.getValueAt(indiceFilaSeleccionada, indiceColumnaId);
+            if (valor instanceof Long) {
+                return (long) valor;
+            } else if (valor instanceof Integer) {
+                return (long) (int) valor;
+            } else if (valor instanceof String) {
+                try {
+                    return Long.parseLong((String) valor);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    return 0; 
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+    
     private void cargarMetodosIniciales() throws ExcepcionPresentacion {
         this.cargarConfiguracionInicialTabla();
         this.cargarEnTabla();
     }
-    private void cargarEnTabla() throws ExcepcionPresentacion {
-//        try {
-//                int indiceInicio = (pagina - 1) * LIMITE;
-//                List<BeneficiarioDTO> todas = pagoBO.obtenerTodosLosBeneficiarios(pagoBO.getId());
-//                int indiceFin = Math.min(indiceInicio + LIMITE, todas.size());
-//
-//                List<BeneficiarioDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
-//
-//                llenarTabla(enPagina);
-//
-//                actualizarNumeroDePagina();
-//            } catch (ExcepcionBO ex) {
-//                throw new ExcepcionPresentacion("Error al cargar beneficiarios.", ex);
-//            }
-    }
-    
-//    private List<BeneficiarioDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
-//        try {
-//            List<BeneficiarioDTO> todas = pagoBO.obtenerTodosLosBeneficiarios(pagoBO.getId());
-//            List<BeneficiarioDTO> todasLasPaginas = new ArrayList<>();
-//            indiceFin = Math.min(indiceFin, todas.size());
-//            for (int i = indiceInicio; i < indiceFin; i++) {
-//                todasLasPaginas.add(todas.get(i));
-//            }
-//            return todasLasPaginas;
-//        } catch (ExcepcionBO ex) {
-//        throw new ExcepcionPresentacion("Error al eliminar beneficiario.", ex);
-//        }
-//    }
-//    
-    
-    
-    
     
     private void cargarConfiguracionInicialTabla() { 
         
@@ -98,32 +123,96 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-               modificar();
+                modificarCuenta();
                 
             }               
         };
-            
-        
-        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
         int indiceColumnaEditar = 6;
-        Color color = new Color(178, 218, 250);
+        TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
+        Color color = new Color(253, 253, 150);
         modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Modificar",color));
         modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Modificar", onModificarClickListener));
+      
         
         ActionListener onEliminarClickListener = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-               
+                try {
+                    eliminar();
+                } catch (ExcepcionPresentacion ex) {
+                    Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             }               
         };
 
+        int indiceColumnaEliminar = 7;
         color = new Color(255, 105, 97);
-        modeloColumnas.getColumn(7).setCellRenderer(new JButtonRenderer("Eliminar",color));
-        modeloColumnas.getColumn(7).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));     
-    }        
+        modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar",color));
+        modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
+    }
+    
+    
+    private void llenarTabla(List<BeneficiarioDTO> lista) {
+         DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
+
+    // Clear existing rows
+    modeloTabla.setRowCount(0);
+    if (lista != null) {
+        
+        lista.forEach(row -> {
+            try {
+                int numeroPagos=pagoBO.obtenerPagosPorBeneficiario(row.getId()).size();
+                Object[] fila = new Object[8];
+                fila[0] = row.getId();
+                fila[1] = row.getNombre().getNombres();
+                fila[2] = row.getUsuario();
+                fila[3] = row.getContraseña();
+                fila[4] = row.getSaldo();
+                fila[5] = numeroPagos;
+                fila[6] = "Eliminar";
+                fila[7] = "Editar"; 
+                modeloTabla.addRow(fila);
+            } catch (ExcepcionBO ex) {
+                Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+    }
+    
+    private void cargarEnTabla() throws ExcepcionPresentacion {
+        try {
+                int indiceInicio = (pagina - 1) * LIMITE;
+                List<BeneficiarioDTO> todas = pagoBO.obtenerTodosLosBeneficiarios();
+                int indiceFin = Math.min(indiceInicio + LIMITE, todas.size());
+
+                List<BeneficiarioDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
+
+                llenarTabla(enPagina);
+
+                actualizarNumeroDePagina();
+            } catch (ExcepcionBO ex) {
+                throw new ExcepcionPresentacion("Error al cargar las cuentas bancarias del beneficiario.", ex);
+            }
+    }
+    
+    private List<BeneficiarioDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
+        try {
+            List<BeneficiarioDTO> todas = pagoBO.obtenerTodosLosBeneficiarios();
+            List<BeneficiarioDTO> todasLasPaginas = new ArrayList<>();
+            indiceFin = Math.min(indiceFin, todas.size());
+            for (int i = indiceInicio; i < indiceFin; i++) {
+                todasLasPaginas.add(todas.get(i));
+            }
+            return todasLasPaginas;
+        } catch (ExcepcionBO ex) {
+        throw new ExcepcionPresentacion("Error al eliminar el beneficiario.", ex);
+        }
+    }
+    
+    
     
     
     /**
@@ -186,7 +275,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Folio", "Nombre Beneficiario", "Fecha", "Hora", "Estatus", "Monto", "Modificar", "Eliminar"
+                "Folio", "Nombre Beneficiario", "Usuario", "Contraseña", "Saldo", "Numero de Pagos", "Modificar", "Eliminar"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -380,40 +469,10 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
 
     }//GEN-LAST:event_NumeroDePaginaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-//                new AdministracionBeneficiarios().setVisible(true);
-            }
-        });
+    private void actualizarNumeroDePagina() {
+    NumeroDePagina.setText(""+pagina);
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Inicio;
