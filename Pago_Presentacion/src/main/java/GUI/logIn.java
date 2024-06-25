@@ -199,7 +199,7 @@ public class logIn extends javax.swing.JFrame {
     }//GEN-LAST:event_iniciarSesionBeneficiarioActionPerformed
 
     private void iniciarSesionAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionAdminActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:      
         MenuAdministrador menu = new MenuAdministrador(negocio);
         menu.setVisible(true);
         this.dispose();
