@@ -8,7 +8,6 @@ import DTOs.BeneficiarioDTO;
 import DTOs.CuentaBancariaDTO;
 import Utilerias.JButtonCellEditor;
 import Utilerias.JButtonRenderer;
-import static entidades.Abono_.id;
 import excepcion.ExcepcionPresentacion;
 import excepcionBO.ExcepcionBO;
 import java.awt.Color;
@@ -28,6 +27,13 @@ import negocio.PagoBO;
  */
 public class AdministracionBeneficiarios extends javax.swing.JFrame {
 
+    /**
+     * 
+     * cracrión de variables
+     * pagoBo de tipo PagoBO
+     * int pagina con la pagina actual 
+     * 
+     */
     private PagoBO pagoBO;
     private int pagina=1;
     private int LIMITE=3;
@@ -49,6 +55,12 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
     }
     
     
+    /**
+     * 
+     * Método para llamar el frame de modificarCuenta
+     * lanza una excepcion de tipo ExcepcionPresentacion
+     * 
+     */
     private void modificarCuenta() {
         try {
             long id = this.getIdSeleccionadoTabla();
@@ -62,6 +74,14 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         
     }
     
+    
+    /**
+     * 
+     * método que elimina un beneficiario por medio de su id
+     * valida si el beneficiario tiene abonos,
+     * en caso de que sea verdadero no se podrña eliminar al beneficiario
+     * @throws ExcepcionPresentacion 
+     */
     private void eliminar() throws ExcepcionPresentacion {
         try {
             if(pagoBO.obtenerAbonosPorBeneficiario( this.getIdSeleccionadoTabla())!=null){
@@ -87,6 +107,12 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * 
+     * Obtiene un id seleccionado de la tabla
+     * 
+     * @return 
+     */
     private long getIdSeleccionadoTabla() {
         int indiceFilaSeleccionada = this.jTable1.getSelectedRow();
         if (indiceFilaSeleccionada != -1) {
@@ -112,11 +138,21 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Método para cargar los método iniciales
+     * los cuales son la configuracion de tabla y cargar la tabla
+     * @throws ExcepcionPresentacion 
+     */
     private void cargarMetodosIniciales() throws ExcepcionPresentacion {
         this.cargarConfiguracionInicialTabla();
         this.cargarEnTabla();
     }
     
+    /**
+     * 
+     * carga toda la configuración inicial de la tabla
+     * 
+     */
     private void cargarConfiguracionInicialTabla() { 
         
         ActionListener onModificarClickListener = new ActionListener() {
@@ -168,7 +204,12 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         modeloColumnas.getColumn(indiceColumnaInformacion).setCellEditor(new JButtonCellEditor("Informacion", onInformacionClickListener));
     }
     
-    
+    /**
+     * 
+     * Obtiene la información del beneficiario
+     * y lo muestra
+     * 
+     */
     public void informacion(){
         long id= this.getIdSeleccionadoTabla();
         infoBeneficiario info=new infoBeneficiario(pagoBO,id);
@@ -176,6 +217,11 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         this.dispose();
     }
     
+    /**
+     * Método para llenar una tabla por medio de una lista tipo BeneficiarioDTO
+     * 
+     * @param lista 
+     */
     private void llenarTabla(List<BeneficiarioDTO> lista) {
          DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
 
@@ -204,6 +250,12 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
     }
     }
     
+    
+    /**
+     * Carga las cuentas de un beneficiario
+     * @throws ExcepcionPresentacion 
+     * en caso de error muestra un mensaje 
+     */
     private void cargarEnTabla() throws ExcepcionPresentacion {
         try {
                 int indiceInicio = (pagina - 1) * LIMITE;
@@ -220,6 +272,13 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
             }
     }
     
+    /**
+     * Método para obtener la página 
+     * @param indiceInicio 
+     * @param indiceFin
+     * @return
+     * @throws ExcepcionPresentacion 
+     */
     private List<BeneficiarioDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
         try {
             List<BeneficiarioDTO> todas = pagoBO.obtenerTodosLosBeneficiarios();

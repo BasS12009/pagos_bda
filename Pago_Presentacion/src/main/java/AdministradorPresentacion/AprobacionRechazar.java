@@ -33,6 +33,13 @@ import negocio.PagoBO;
  */
 public class AprobacionRechazar extends javax.swing.JFrame {
 
+    /**
+     * 
+     * Creación de variables
+     * pagoBo de tipo PagoBO
+     * página actual
+     * 
+     */
     private PagoBO pagoBO;
     private int pagina=1;
     private int LIMITE=3;
@@ -53,11 +60,22 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Carga los métodos iniciales com
+     * configuración inicial en la table
+     * 
+     * @throws ExcepcionPresentacion 
+     */
     private void cargarMetodosIniciales() throws ExcepcionPresentacion {
         this.cargarConfiguracionInicialTabla();
         this.cargarEnTabla();
     }
     
+    /**
+     * Llenar table obtiene los datos del pago
+     * 
+     * @param lista recibe una lista de tipo PagoDTO
+     */
     private void llenarTabla(List<PagoDTO> lista) {
          DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
 
@@ -76,6 +94,13 @@ public class AprobacionRechazar extends javax.swing.JFrame {
     }
     }
     
+    /**
+     * 
+     * Obtiene los pagos por medio de la lista 
+     * y los muestra en la tabla
+     * 
+     * @throws ExcepcionPresentacion 
+     */
     private void cargarEnTabla() throws ExcepcionPresentacion {
         try {
             int indiceInicio = (pagina - 1) * LIMITE;
@@ -89,6 +114,14 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * obtiene la página actual
+     * @param indiceInicio 
+     * @param indiceFin
+     * @return regresa todas las págionas
+     * @throws ExcepcionBO 
+     * 
+     */
     private List<PagoDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionBO {
         List<PagoDTO> todas = pagoBO.obtenerTodosLosPagos();
         List<PagoDTO> todasLasPaginas = new ArrayList<>();
@@ -99,10 +132,21 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         return todasLasPaginas;
     }
 
+    /**
+     * 
+     * Método que actualiza el número de página
+     * 
+     */
     private void actualizarNumeroDePagina() {
     NumeroDePagina.setText(""+pagina);
     }
         
+    /**
+     * 
+     * Método para aprobar un pago
+     * Actualiza su estatus a aprobado
+     * 
+     */
     public void aprobar() {
     
         try {
@@ -121,6 +165,11 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         
     }
     
+    /**
+     * 
+     * Método para rechazar un pago
+     * Actualiza su estado a Rechazado
+     */
     public void rechazar() {
     
         try {
@@ -139,6 +188,12 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         
     }    
     
+    /**
+     * 
+     * Obtiene el id seleccionado de la tabla 
+     * 
+     * @return 
+     */
     private long getIdSeleccionadoTabla() {
         int indiceFilaSeleccionada = this.jTable1.getSelectedRow();
         if (indiceFilaSeleccionada != -1) {
@@ -164,6 +219,12 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         }
     }    
         
+    
+    /**
+     * 
+     * Carga toda la informacion y botones iniciales de la tabla
+     * 
+     */
     private void cargarConfiguracionInicialTabla() { 
            
         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();

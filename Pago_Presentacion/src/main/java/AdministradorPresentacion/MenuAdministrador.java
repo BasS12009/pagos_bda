@@ -184,7 +184,11 @@ public class MenuAdministrador extends javax.swing.JFrame {
     private void btnVerInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerInicioActionPerformed
         // TODO add your handling code here:
         
-        
+        /**
+         * Crea un objeto de tipo MenuAdministrador 
+         * lo configura visible
+         * cierra la pagina actual
+         */
         MenuAdministrador menuAdministrador = new MenuAdministrador(pagoBO);
         menuAdministrador.setVisible(true);
         this.dispose();
@@ -192,6 +196,13 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
     private void btnAdministracionBeneficiariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministracionBeneficiariosActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo AdministracionBeneficiarios 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
         AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios(pagoBO);
         administracionBeneficiarios.setVisible(true);
         this.dispose();
@@ -199,6 +210,13 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
     private void btnAprobacionRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobacionRechazarActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo AprobacionRechazar 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
         AprobacionRechazar aprobacionRechazar = new AprobacionRechazar(pagoBO);
         aprobacionRechazar.setVisible(true);
         this.dispose();
@@ -206,6 +224,12 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
     private void btnPagadoRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagadoRechazarActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo PagadoRechazar 
+         * lo configura visible
+         * cierra la pagina actual
+         */
         PagadoRechazar pagadoRechazar = new PagadoRechazar(pagoBO);
         pagadoRechazar.setVisible(true);
         this.dispose();
@@ -213,6 +237,13 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
     private void btnReportePagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportePagoActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo ReportePago 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
         ReportePago reportePago = new ReportePago(pagoBO);
         reportePago.setVisible(true);
         this.dispose();
@@ -220,6 +251,13 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo logIn 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
         logIn lIn = new logIn(pagoBO);
         lIn.setVisible(true);
         this.dispose();
