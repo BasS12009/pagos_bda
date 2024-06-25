@@ -114,6 +114,7 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             aprobado.setNombre("Aprobado");
             
             pagoBO.actualizarPago(pagoBO.buscarPagoPorId(idaux), aprobado);
+                        JOptionPane.showMessageDialog(this, "Pago aprobado!");
         } catch (ExcepcionBO ex) {
             Logger.getLogger(AprobacionRechazar.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -130,6 +131,7 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             aprobado.setId(id);
             aprobado.setNombre("Rechazado");
             
+                        JOptionPane.showMessageDialog(this, "Pago Rechazado!");
             pagoBO.actualizarPago(pagoBO.buscarPagoPorId(idaux), aprobado);
         } catch (ExcepcionBO ex) {
             Logger.getLogger(AprobacionRechazar.class.getName()).log(Level.SEVERE, null, ex);
