@@ -128,7 +128,7 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             
             long id = 2;
             aprobado.setId(id);
-            aprobado.setNombre("Rechazadp");
+            aprobado.setNombre("Rechazado");
             
             pagoBO.actualizarPago(pagoBO.buscarPagoPorId(idaux), aprobado);
         } catch (ExcepcionBO ex) {
