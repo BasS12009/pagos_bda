@@ -67,7 +67,7 @@ public class Pago_Persistencia {
             Tipos reembolso = new Tipos("Reembolso", 1);
             em.persist(reembolso);
 
-            Tipos proveedor = new Tipos("Proveedor", 1);
+            Tipos proveedor = new Tipos("Proveedor", 5);
             em.persist(proveedor);
 
             // Confirma la transacción para tipos
