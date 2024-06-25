@@ -1,0 +1,15 @@
+DTOs\TiposDTO.class
+negocio\PagoBO.class
+DTOs\BeneficiarioDTO.class
+DTOs\AbonoDTO.class
+DTOs\PagoDTO.class
+DTOs\PagosEstatusDTO.class
+negocio\PagoNegocio.class
+com\mycompany\pago_negocio\Pago_Negocio.class
+DTOs\CuentaDTO.class
+DTOs\CuentaBancariaDTO.class
+DTOs\EstatusDTO.class
+excepcionBO\ExcepcionBO.class
+negocio\IPagoBO.class
+DTOs\NombreDTO.class
+negocio\IPagoNegocio.class
