@@ -39,7 +39,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         try {
         initComponents();
         this.setLocationRelativeTo(this);
-        this.setSize(965, 610);
+        this.setSize(1000, 610);
         cargarConfiguracionInicialTabla();
         this.pagoBO=pagoBO;
         cargarMetodosIniciales();
@@ -152,8 +152,28 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         color = new Color(255, 105, 97);
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar",color));
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
+        
+        ActionListener onInformacionClickListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                informacion(); 
+            }               
+        };
+
+        int indiceColumnaInformacion = 8;
+        color = new Color(174, 198, 207);
+        modeloColumnas.getColumn(indiceColumnaInformacion).setCellRenderer(new JButtonRenderer("Informacion",color));
+        modeloColumnas.getColumn(indiceColumnaInformacion).setCellEditor(new JButtonCellEditor("Informacion", onInformacionClickListener));
     }
     
+    
+    public void informacion(){
+        long id= this.getIdSeleccionadoTabla();
+        infoBeneficiario info=new infoBeneficiario(pagoBO,id);
+        info.show();
+        this.dispose();
+    }
     
     private void llenarTabla(List<BeneficiarioDTO> lista) {
          DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
@@ -165,7 +185,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         lista.forEach(row -> {
             try {
                 int numeroPagos=pagoBO.obtenerPagosPorBeneficiario(row.getId()).size();
-                Object[] fila = new Object[8];
+                Object[] fila = new Object[9];
                 fila[0] = row.getId();
                 fila[1] = row.getNombre().getNombres();
                 fila[2] = row.getUsuario();
@@ -174,6 +194,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
                 fila[5] = numeroPagos;
                 fila[6] = "Eliminar";
                 fila[7] = "Editar"; 
+                fila[8] = "Informacion";
                 modeloTabla.addRow(fila);
             } catch (ExcepcionBO ex) {
                 Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(Level.SEVERE, null, ex);
@@ -224,6 +245,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        checkbox1 = new java.awt.Checkbox();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnCrearBeneficiario = new javax.swing.JButton();
@@ -245,6 +267,8 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         btnPagadoRechazar = new javax.swing.JRadioButtonMenuItem();
 
+        checkbox1.setLabel("checkbox1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(175, 176, 212));
@@ -264,23 +288,23 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
                 btnCrearBeneficiarioActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCrearBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
+        jPanel1.add(btnCrearBeneficiario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "Romina", "2024-06-21", "14:00", "Esperando", "$5,000", null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {"1", "Romina", "2024-06-21", "14:00", "Esperando", "$5,000", null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Folio", "Nombre Beneficiario", "Usuario", "Contraseña", "Saldo", "Numero de Pagos", "Modificar", "Eliminar"
+                "Folio", "Nombre Beneficiario", "Usuario", "Contraseña", "Saldo", "Numero de Pagos", "Modificar", "Eliminar", "Informacion"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 870, 270));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 930, 270));
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potroPagoChico.png"))); // NOI18N
         jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 10, 150, 80));
@@ -295,7 +319,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
                 btnAtrasActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, -1, -1));
+        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, -1, -1));
 
         btnSiguiente.setBackground(new java.awt.Color(12, 33, 63));
         btnSiguiente.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
@@ -307,7 +331,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
                 btnSiguienteActionPerformed(evt);
             }
         });
-        jPanel1.add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 480, -1, -1));
+        jPanel1.add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 480, -1, -1));
 
         NumeroDePagina.setBackground(new java.awt.Color(204, 169, 221));
         NumeroDePagina.setForeground(new java.awt.Color(255, 255, 255));
@@ -485,6 +509,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem btnPagadoRechazar;
     private javax.swing.JRadioButtonMenuItem btnReportePago;
     private javax.swing.JButton btnSiguiente;
+    private java.awt.Checkbox checkbox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

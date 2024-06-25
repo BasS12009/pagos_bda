@@ -25,7 +25,7 @@ public class infoBeneficiario extends javax.swing.JFrame {
     /**
      * Creates new form infoBeneficiario
      */
-    public infoBeneficiario(PagoBO negocio) {
+    public infoBeneficiario(PagoBO negocio, long id) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.setSize(965, 610);
@@ -75,7 +75,6 @@ public class infoBeneficiario extends javax.swing.JFrame {
         txtClave = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
-        btnCancelar = new javax.swing.JButton();
         btnAceptar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
@@ -141,12 +140,6 @@ public class infoBeneficiario extends javax.swing.JFrame {
         txtUsuario.setBackground(new java.awt.Color(228, 222, 235));
         jPanel1.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 320, 180, 30));
 
-        btnCancelar.setBackground(new java.awt.Color(116, 114, 178));
-        btnCancelar.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
-        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancelar.setText("Cancelar");
-        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 510, 110, -1));
-
         btnAceptar.setBackground(new java.awt.Color(116, 114, 178));
         btnAceptar.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
         btnAceptar.setForeground(new java.awt.Color(255, 255, 255));
@@ -156,7 +149,7 @@ public class infoBeneficiario extends javax.swing.JFrame {
                 btnAceptarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 510, 120, -1));
+        jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 480, 120, -1));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Symbol", 0, 10)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -200,7 +193,6 @@ public class infoBeneficiario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
-    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
