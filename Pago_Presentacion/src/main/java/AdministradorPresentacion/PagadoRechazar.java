@@ -41,13 +41,28 @@ import negocio.PagoBO;
  * @author diana
  */
 public class PagadoRechazar extends javax.swing.JFrame {
-
+    
+    
+    /**
+     * 
+     * Creación de variables
+     * pagoBO de tipo PagoBO
+     * 
+     * int pagina es la pagina actual
+     * 
+     */
     PagoBO pagoBO;
     private int pagina=1;
     private int LIMITE=3;    
     
     /**
+     * 
      * Creates new form PagadoRechazar
+     * Recibe un parámetro de tipo PagoBO
+     * carga los métodos iniciales
+     * configura la posición del frame
+     * configura el tamaño del frame
+     * 
      */
     public PagadoRechazar(PagoBO pagoBO) {
         try {
@@ -63,11 +78,30 @@ public class PagadoRechazar extends javax.swing.JFrame {
     }
     
     
+    /**
+     * 
+     * Carga todos los método iniciales
+     * Carga la configuración inicial de la tabla
+     * Carga en la tabla la información requerida
+     * 
+     * @throws ExcepcionPresentacion 
+     * 
+     */
     private void cargarMetodosIniciales() throws ExcepcionPresentacion {
         this.cargarConfiguracionInicialTabla();
         this.cargarEnTabla();
     }
     
+    
+    /**
+     * 
+     * Llena la tabla de la informaciób del pago
+     * 
+     * Recibe como parámetro una lista tipo PagoDTO
+     * @param lista 
+     * 
+     * 
+     */
     private void llenarTabla(List<PagoDTO> lista) {
          DefaultTableModel modeloTabla = (DefaultTableModel) this.tblPagadoRechazado.getModel();
 
@@ -85,6 +119,13 @@ public class PagadoRechazar extends javax.swing.JFrame {
     }
     }
     
+    /**
+     * 
+     * Método que carga la información de todos los pagos 
+     * 
+     * @throws ExcepcionPresentacion 
+     * 
+     */
     private void cargarEnTabla() throws ExcepcionPresentacion {
         try {
             int indiceInicio = (pagina - 1) * LIMITE;
@@ -108,10 +149,19 @@ public class PagadoRechazar extends javax.swing.JFrame {
         return todasLasPaginas;
     }
 
+    /**
+     * 
+     * Método que actualiza en número de página 
+     */
     private void actualizarNumeroDePagina() {
     NumeroDePagina.setText(""+pagina);
     }
         
+    /**
+     * 
+     * Método que actualiza el pago a estatus aprobado
+     * 
+     */
     public void pagar() {
     
         try {
@@ -129,6 +179,11 @@ public class PagadoRechazar extends javax.swing.JFrame {
         
     }
     
+    /**
+     * 
+     * Método que actualiza el estado del pago a rechazado
+     * 
+     */
     public void rechazar() {
     
         try {
@@ -147,6 +202,12 @@ public class PagadoRechazar extends javax.swing.JFrame {
         
     }    
     
+    
+    /**
+     * 
+     * Obtiene el id seleccionado de la tabla
+     * @return 
+     */
     private long getIdSeleccionadoTabla() {
         int indiceFilaSeleccionada = this.tblPagadoRechazado.getSelectedRow();
         if (indiceFilaSeleccionada != -1) {
@@ -216,6 +277,11 @@ public class PagadoRechazar extends javax.swing.JFrame {
         }    
     }
     
+    /**
+     * 
+     * Carga toda la informacion y botones iniciales de la tabla
+     * 
+     */
     private void cargarConfiguracionInicialTabla() { 
         
         ActionListener onPagadoClickListener = new ActionListener() {
@@ -435,6 +501,13 @@ public class PagadoRechazar extends javax.swing.JFrame {
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo MenuAdministrador 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
          MenuAdministrador menuAdministrador = new MenuAdministrador(pagoBO);
         menuAdministrador.setVisible(true);
         this.dispose();
@@ -442,37 +515,86 @@ public class PagadoRechazar extends javax.swing.JFrame {
 
     private void btnAprobacionRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobacionRechazarActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo AprobacionRechazar 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
         AprobacionRechazar aprobacionRechazar = new AprobacionRechazar(pagoBO);
         aprobacionRechazar.setVisible(true);
         this.dispose();
+        
+        
+        
     }//GEN-LAST:event_btnAprobacionRechazarActionPerformed
 
     private void btnReportePagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportePagoActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo ReportePago 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
         ReportePago reportePago = new ReportePago(pagoBO);
         reportePago.setVisible(true);
         this.dispose();
+        
+        
     }//GEN-LAST:event_btnReportePagoActionPerformed
 
     private void btnAdministracionBeneficiariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministracionBeneficiariosActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo AdministracionBeneficiarios 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
          AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios(pagoBO);
         administracionBeneficiarios.setVisible(true);
         this.dispose();
+        
+        
+        
     }//GEN-LAST:event_btnAdministracionBeneficiariosActionPerformed
 
     private void btnPagadoRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagadoRechazarActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo PagadoRechazar 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
          PagadoRechazar pagadoRechazar = new PagadoRechazar(pagoBO);
         pagadoRechazar.setVisible(true);
         this.dispose();
+        
+        
+        
     }//GEN-LAST:event_btnPagadoRechazarActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo login 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
         logIn lIn = new logIn(pagoBO);
         lIn.setVisible(true);
         this.dispose();
+        
+        
+        
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void NumeroDePaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumeroDePaginaActionPerformed
