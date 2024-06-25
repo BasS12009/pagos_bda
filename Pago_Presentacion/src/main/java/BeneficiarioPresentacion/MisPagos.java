@@ -70,9 +70,12 @@ public class MisPagos extends javax.swing.JFrame {
     private void eliminar() throws ExcepcionPresentacion {
         try {
         long id = this.getIdSeleccionadoTabla();
-        PagoDTO pagoDTO = pagoBO.buscarPagoPorId(id);
+        if(pagoBO.buscarPagoPorId(id).getEstatus().get(0).getNombre().equals("Pagado")||pagoBO.buscarPagoPorId(id).getEstatus().get(0).getNombre().equals("Completado")){
+            throw new ExcepcionPresentacion("Error al eliminar, no se pueden eliminar pagos Pagados, ni Completados");
+        }else{
+            PagoDTO pagoDTO = pagoBO.buscarPagoPorId(id);
         int confirmacion = JOptionPane.showConfirmDialog(this, 
-                            "¿Está seguro que desea eliminar al cliente?\n" +
+                            "¿Está seguro que desea eliminar al pago?\n" +
                             "ID: " + pagoDTO.getId()+ "\n" +
                             "Beneficiario: " + pagoDTO.getBeneficiario().getNombre()+ "\n" +
                             "Fecha: " + pagoDTO.getFechaHora(),
@@ -80,9 +83,10 @@ public class MisPagos extends javax.swing.JFrame {
                             JOptionPane.YES_NO_OPTION);
         
         if (confirmacion == JOptionPane.YES_OPTION) {
-            pagoBO.eliminarCuentaBancaria(id);
+            pagoBO.eliminarPago(id);
             JOptionPane.showMessageDialog(this, "Pago eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             cargarEnTabla();
+        }
         }
         } catch (ExcepcionBO ex) {
         throw new ExcepcionPresentacion("Error al eliminar,", ex);

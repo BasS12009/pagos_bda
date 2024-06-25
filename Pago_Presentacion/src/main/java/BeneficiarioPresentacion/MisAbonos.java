@@ -5,6 +5,7 @@
 package BeneficiarioPresentacion;
 
 import DTOs.AbonoDTO;
+import DTOs.BeneficiarioDTO;
 import DTOs.PagoDTO;
 import DTOs.PagosEstatusDTO;
 import GUI.logIn;
@@ -46,19 +47,32 @@ public class MisAbonos extends javax.swing.JFrame {
 
     
     private void eliminar() throws ExcepcionPresentacion {
-        long id = this.getIdSeleccionadoTabla();
-        AbonoDTO abonoDTO = pagoBO.buscarAbonoPorID(id);
-        int confirmacion = JOptionPane.showConfirmDialog(this,
-                "¿Está seguro que desea eliminar al cliente?\n" +
-                        "ID: " + abonoDTO.getId()+ "\n" +
-                                "El monto: " + abonoDTO.getMonto()+ "\n" +
-                                        "Beneficiario: " + abonoDTO.getPagoDTO().getBeneficiario(),
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION);
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            pagoBO.eliminarAbono(pagoBO.buscarAbonoPorID(id));
-            JOptionPane.showMessageDialog(this, "Abono eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            cargarEnTabla();
+        try {
+            long id = this.getIdSeleccionadoTabla();
+            AbonoDTO abonoDTO = pagoBO.buscarAbonoPorID(id);
+            if(pagoBO.buscarPagoPorId(abonoDTO.getPagoDTO().getId()).getEstatus().get(0).getNombre().equals("Completados")){
+                throw new ExcepcionPresentacion("No se pueden eliminar abonos de pagos completados");
+            
+            }else{
+                int confirmacion = JOptionPane.showConfirmDialog(this,
+                    "¿Está seguro que desea eliminar al cliente?\n" +
+                            "ID: " + abonoDTO.getId()+ "\n" +
+                                    "El monto: " + abonoDTO.getMonto()+ "\n" +
+                                            "Beneficiario: " + abonoDTO.getPagoDTO().getBeneficiario(),
+                    "Confirmar eliminación",
+                    JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                BeneficiarioDTO beneficiario=pagoBO.buscarBeneficiarioPorId(pagoBO.getId());
+                double sumar=beneficiario.getSaldo()+abonoDTO.getMonto();
+                pagoBO.actualizarBeneficiario(beneficiario);
+                pagoBO.eliminarAbono(pagoBO.buscarAbonoPorID(id));
+                
+                JOptionPane.showMessageDialog(this, "Abono eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarEnTabla();
+            }
+            }
+        } catch (ExcepcionBO ex) {
+            Logger.getLogger(MisAbonos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
