@@ -293,7 +293,6 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "Romina", "2024-06-21", "14:00", "Esperando", "$5,000", null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null}

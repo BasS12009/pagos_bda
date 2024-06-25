@@ -9,16 +9,9 @@ import DAOs.AbonoDAO;
 import DAOs.BeneficiarioDAO;
 import DAOs.CuentaBancariaDAO;
 import DAOs.EstatusDAO;
-import DAOs.IBeneficiarioDAO;
-import DAOs.ICuentaBancariaDAO;
-import DAOs.IPagoDAO;
-import DAOs.IPagosEstatusDAO;
 import DAOs.PagoDAO;
 import DAOs.PagosEstatusDAO;
 import DAOs.TiposDAO;
-import conexion.ConexionBD;
-import negocio.IPagoBO;
-import negocio.IPagoNegocio;
 import negocio.PagoBO;
 import negocio.PagoNegocio;
 
