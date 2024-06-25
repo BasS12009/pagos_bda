@@ -115,10 +115,10 @@ public class PagadoRechazar extends javax.swing.JFrame {
     public void pagar() {
     
         try {
-            long idaux = getIdSeleccionadoTabla();
+            long idaux = 1;
             EstatusDTO aprobado = new EstatusDTO();
             
-            long id = 3;
+            long id = 2;
             aprobado.setId(id);
             aprobado.setNombre("Pagado");
             
@@ -132,10 +132,10 @@ public class PagadoRechazar extends javax.swing.JFrame {
     public void rechazar() {
     
         try {
-            long idaux = getIdSeleccionadoTabla();
+            long idaux = 1;
             EstatusDTO aprobado = new EstatusDTO();
             
-            long id = 2;
+            long id = 5;
             aprobado.setId(id);
             aprobado.setNombre("Rechazado");
             
@@ -185,7 +185,7 @@ public class PagadoRechazar extends javax.swing.JFrame {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             
-            long idaux = getIdSeleccionadoTabla();          
+            long idaux = 1;          
             
             PagoDTO pago = pagoBO.buscarPagoPorId(idaux);
             

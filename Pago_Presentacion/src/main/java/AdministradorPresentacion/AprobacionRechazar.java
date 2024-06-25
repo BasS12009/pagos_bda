@@ -109,7 +109,7 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             long idaux = getIdSeleccionadoTabla();
             EstatusDTO aprobado = new EstatusDTO();
             
-            long id = 1;
+            long id = 4;
             aprobado.setId(id);
             aprobado.setNombre("Aprobado");
             
@@ -127,7 +127,7 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             long idaux = getIdSeleccionadoTabla();
             EstatusDTO aprobado = new EstatusDTO();
             
-            long id = 2;
+            long id = 5;
             aprobado.setId(id);
             aprobado.setNombre("Rechazado");
             
