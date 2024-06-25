@@ -166,6 +166,7 @@ public class PagoNegocio implements IPagoNegocio {
             Pago pago = pagoDAO.buscarPagoPorId(id);
             if (pago != null) {
                 pagoDAO.eliminarPago(pago);
+                
             } else {
                 throw new RuntimeException("El pago con ID " + id + " no existe.");
             }

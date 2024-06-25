@@ -83,10 +83,18 @@ public class Pago implements Serializable {
     @OneToMany(mappedBy = "pago", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PagosEstatus> pagosEstatus;
 
+    /**
+     *
+     * @return
+     */
     public List<PagosEstatus> getPagosEstatus() {
         return pagosEstatus;
     }
 
+    /**
+     *
+     * @param pagosEstatus
+     */
     public void setPagosEstatus(List<PagosEstatus> pagosEstatus) {
         this.pagosEstatus = pagosEstatus;
     }
