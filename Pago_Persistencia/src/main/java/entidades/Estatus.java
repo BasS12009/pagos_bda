@@ -46,6 +46,13 @@ public class Estatus implements Serializable {
      */
     public Estatus() {
     }
+    
+    /**
+     * Constructor con nombre.
+     */
+    public Estatus(String nombre) {
+        this.nombre=nombre;
+    }
 
     /**
      * Calcula el código hash del objeto basado en su identificador.
