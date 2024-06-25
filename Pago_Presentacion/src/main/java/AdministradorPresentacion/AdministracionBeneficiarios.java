@@ -48,6 +48,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
         }
     }
     
+    
     private void modificarCuenta() {
         try {
             long id = this.getIdSeleccionadoTabla();

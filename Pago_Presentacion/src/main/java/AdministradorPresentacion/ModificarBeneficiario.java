@@ -19,11 +19,23 @@ import negocio.PagoBO;
  */
 public class ModificarBeneficiario extends javax.swing.JFrame {
 
+    /**
+     * 
+     * creación de las vai¡riables
+     * pagoBo de la clase PagoBO
+     * id de tipo long
+     * 
+     */
     PagoBO pagoBO;
     long id;
 
     /**
+     * 
      * Creates new form ModificarBeneficiario
+     * Recibe un objeto de pagoBo
+     * Recibe como parámetro un id de tipo long
+     * inicializa los componentesy carga los textos
+     * 
      */
     public ModificarBeneficiario(PagoBO pagoBO, long id) {
         initComponents();
@@ -35,6 +47,12 @@ public class ModificarBeneficiario extends javax.swing.JFrame {
         cargarTextos();
     }
 
+    /**
+     * 
+     * método para cargar los textos en pantalla
+     * Lanza un excepción de tipo ExcepcionBO
+     * 
+     */
     public void cargarTextos() {
         try {
             BeneficiarioDTO beneficiario = pagoBO.buscarBeneficiarioPorId(id);
@@ -192,6 +210,12 @@ public class ModificarBeneficiario extends javax.swing.JFrame {
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
+        /**
+         * 
+         * llama ala clase administrarBeneficiarios 
+         * Setea visicble el frame
+         * 
+         */
         AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios(pagoBO);
         administracionBeneficiarios.setVisible(true);
         this.dispose();
@@ -200,6 +224,18 @@ public class ModificarBeneficiario extends javax.swing.JFrame {
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         
+        /**
+         * 
+         * creación de variables 
+         * nombre recibe el texto del textArea
+         * apellidoP recibe el texto ingresado en el textArea
+         * apellidoM recibe el texto ingresado en el textArea
+         * claveC recibe el texto ingresado en el textArea
+         * usuario recibe el texto ingresado en el textArea
+         * contrasena1 recibe el texto ingresado en el textArea
+         * 
+         */
+   
         String nombre = txtNombre.getText();
         String apellidoP = txtApellidoPaterno.getText();
         String apellidoM = txtApellidoMaterno.getText();
@@ -208,10 +244,27 @@ public class ModificarBeneficiario extends javax.swing.JFrame {
         String contrasena1 = new String(txtContrasena.getPassword());
         
 
+        /**
+         * 
+         * valida si alguno de los campos es empty
+         * en caso de serlo lanza un JOptionPane
+         * diciendo que todos los campos son obligatorios
+         * 
+         */
         if (nombre.isEmpty() || apellidoP.isEmpty() || apellidoM.isEmpty() || usuario.isEmpty() || contrasena1.isEmpty() || claveC.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        /**
+         * 
+         * Busca el beneficiario por ID
+         * Si el beneficiario es diferente a null
+         * le da valor por medio de los metodos set al objeto DTO
+         * tira una excepción tipo excepionBO en caso de
+         * no encontrarlo por id
+         * 
+         */
         
         try {
             BeneficiarioDTO beneficiario = pagoBO.buscarBeneficiarioPorId(id);
