@@ -14,6 +14,12 @@ import negocio.PagoBO;
 public class MenuAdministrador extends javax.swing.JFrame {
 
     
+    /**
+     * 
+     * Creación de variables
+     * pagoBO de tipo PagoBO para crear los frames
+     * 
+     */
     PagoBO pagoBO;
     /**
      * Creates new form MenuAdministrador
@@ -177,6 +183,8 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
     private void btnVerInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerInicioActionPerformed
         // TODO add your handling code here:
+        
+        
         MenuAdministrador menuAdministrador = new MenuAdministrador(pagoBO);
         menuAdministrador.setVisible(true);
         this.dispose();

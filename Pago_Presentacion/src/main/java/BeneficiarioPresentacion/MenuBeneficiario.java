@@ -12,6 +12,14 @@ import negocio.PagoBO;
  * @author diana
  */
 public class MenuBeneficiario extends javax.swing.JFrame {
+    
+    /**
+     * 
+     * Creación de variables
+     * pagoBO de tipo PagoBO para enviar de parámetro
+     * y crear los frames 
+     * 
+     */
     PagoBO pagoBO;
     
     /**
@@ -157,6 +165,12 @@ public class MenuBeneficiario extends javax.swing.JFrame {
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * Crea un objeto de tipo MenuBeneficiario 
+         * lo configura visible
+         * cierra la pagina actual
+         */
         MenuBeneficiario menuBeneficiario = new MenuBeneficiario(pagoBO);
         menuBeneficiario.setVisible(true);
         this.dispose();
@@ -164,6 +178,13 @@ public class MenuBeneficiario extends javax.swing.JFrame {
 
     private void btnPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagosActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * 
+         * Crea un objeto de tipo MisPagos 
+         * lo configura visible
+         * cierra la pagina actual
+         */
         MisPagos misPagos = new MisPagos(pagoBO);
         misPagos.setVisible(true);
         this.dispose();
@@ -171,6 +192,13 @@ public class MenuBeneficiario extends javax.swing.JFrame {
 
     private void btnAbonosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonosActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * 
+         * Crea un objeto de tipo MisAbonos 
+         * lo configura visible
+         * cierra la pagina actual
+         */
         MisAbonos misAbonos = new MisAbonos(pagoBO);
         misAbonos.setVisible(true);
         this.dispose();
@@ -178,6 +206,14 @@ public class MenuBeneficiario extends javax.swing.JFrame {
 
     private void btnCuentasBancariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuentasBancariasActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * 
+         * Crea un objeto de tipo MisCuentasBancarias 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
         MisCuentasBancarias misCuentasBancarias = new MisCuentasBancarias(pagoBO);
         misCuentasBancarias.setVisible(true);
         this.dispose();
@@ -185,6 +221,13 @@ public class MenuBeneficiario extends javax.swing.JFrame {
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * 
+         * Crea un objeto de tipo logIn 
+         * lo configura visible
+         * cierra la pagina actual
+         */
         logIn lIn = new logIn(pagoBO);
         lIn.setVisible(true);
         this.dispose(); 

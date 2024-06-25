@@ -15,9 +15,15 @@ public class ReportePago extends javax.swing.JFrame {
 
     
     
+    /**
+     * Creación de variables
+     * 
+     */
     PagoBO pagoBO;
     /**
      * Creates new form ReportePago
+     * inicializa los componentes
+     * 
      */
     public ReportePago(PagoBO pagoBO) {
         initComponents();

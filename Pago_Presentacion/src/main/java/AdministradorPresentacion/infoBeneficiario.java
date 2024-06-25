@@ -18,12 +18,28 @@ import negocio.PagoBO;
  */
 public class infoBeneficiario extends javax.swing.JFrame {
 
+    
+    /**
+     * 
+     * creación de variables
+     * pagoBO de tipo PagoBO
+     * id de tipo long
+     */
     PagoBO pagoBO;
     long id;
 
     
     /**
+     * 
      * Creates new form infoBeneficiario
+     * inicializa los componentes
+     * recibe parámetros
+     * negocio de tipo PagoBO para poder crear los frames de administración
+     * long id para poder buscar
+     * el beneficiario por id
+     * cargarTextos en la pantalla ala hora de aceder 
+     * estén visibles
+     * 
      */
     public infoBeneficiario(PagoBO negocio, long id) {
         initComponents();
@@ -35,6 +51,17 @@ public class infoBeneficiario extends javax.swing.JFrame {
         cargarTextos();
     }
 
+    /**
+     * 
+     * cargarTextos para que los campos sean visisbles con la información 
+     * pertinente
+     * obtiene los atributos y los muestra
+     * en las areas de texto
+     * 
+     * lanza una excepción de tipo ExcepcionBO
+     * 
+     * 
+     */
     public void cargarTextos() {
         try {
             BeneficiarioDTO beneficiario = pagoBO.buscarBeneficiarioPorId(id);
@@ -175,6 +202,14 @@ public class infoBeneficiario extends javax.swing.JFrame {
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * 
+         * Crea un objeto de tipo AdministracionBeneficiarios 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
         AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios(pagoBO);
         administracionBeneficiarios.setVisible(true);
         this.dispose();
@@ -182,6 +217,14 @@ public class infoBeneficiario extends javax.swing.JFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
+        
+        /**
+         * 
+         * Crea un objeto de tipo AdministracionBeneficiarios 
+         * lo configura visible
+         * cierra la pagina actual
+         * 
+         */
         AdministracionBeneficiarios administracionBeneficiarios = new AdministracionBeneficiarios(pagoBO);
         administracionBeneficiarios.setVisible(true);
         this.dispose();

@@ -214,8 +214,7 @@ public class CrearBeneficiario extends javax.swing.JFrame {
         String usuario = txtUsuario.getText();
         String contrasena1 = new String(txtContrasena.getPassword());
 
-        
-        
+   
         /**
          * 
          * valida si alguno de los campos es empty
@@ -258,16 +257,17 @@ public class CrearBeneficiario extends javax.swing.JFrame {
          * lo configura visible
          * 
          */
-        
-        
+      
         try {
             negocio.guardarBeneficiario(beneficiarioDTO);
             logIn inicioSesion = new logIn(negocio);
             inicioSesion.setVisible(true);
             dispose();
+            
 //        } else {
 //            JOptionPane.showMessageDialog(null, "No se pudo registrar el usuario");
 //        }
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
 
