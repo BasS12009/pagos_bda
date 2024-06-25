@@ -15,12 +15,30 @@ import negocio.PagoBO;
  * @author diana
  */
 public class CrearBeneficiario extends javax.swing.JFrame {
+    
+    
+    
+    /**
+     * 
+     * creación de variables
+     * pagoBO de tipo PagoBO
+     * 
+     */
+    
      private PagoBO pagoBO;
     PagoBO negocio;
 
+    
     /**
+     * 
      * Creates new form CrearBeneficiario
+     * inicializa los componentes
+     * configura el tamaño del frame
+     * configra la posición del frame en la pantalla
+     * 
+     * 
      */
+    
     public CrearBeneficiario(PagoBO negocio) {
         initComponents();
         this.setLocationRelativeTo(this);
@@ -175,6 +193,20 @@ public class CrearBeneficiario extends javax.swing.JFrame {
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
 
+        
+        /**
+         * 
+         * creación de variables 
+         * nombre recibe el texto del textArea
+         * apellidoP recibe el texto ingresado en el textArea
+         * apellidoM recibe el texto ingresado en el textArea
+         * claveC recibe el texto ingresado en el textArea
+         * usuario recibe el texto ingresado en el textArea
+         * contrasena1 recibe el texto ingresado en el textArea
+         * 
+         */
+   
+        
         String nombre = txtNombre.getText();
         String apellidoP = txtApellidoPaterno.getText();
         String apellidoM = txtApellidoMaterno.getText();
@@ -182,6 +214,16 @@ public class CrearBeneficiario extends javax.swing.JFrame {
         String usuario = txtUsuario.getText();
         String contrasena1 = new String(txtContrasena.getPassword());
 
+        
+        
+        /**
+         * 
+         * valida si alguno de los campos es empty
+         * en caso de serlo lanza un JOptionPane
+         * diciendo que todos los campos son obligatorios
+         * 
+         */
+        
         if (nombre.isEmpty() || apellidoP.isEmpty() || apellidoM.isEmpty() || usuario.isEmpty() || contrasena1.isEmpty() || claveC.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -190,6 +232,15 @@ public class CrearBeneficiario extends javax.swing.JFrame {
         NombreDTO nombreDTO = new NombreDTO();
         BeneficiarioDTO beneficiarioDTO = new BeneficiarioDTO();
 
+        
+        /**
+         * 
+         * obtiene los valores de las areas de texto
+         * y configura los valores por medio
+         * de los métodos set de cada clase
+         * 
+         * 
+         */
         nombreDTO.setNombres(txtNombre.getText());
         nombreDTO.setApellidoPaterno(txtApellidoPaterno.getText());
         nombreDTO.setApellidoMaterno(txtApellidoMaterno.getText());
@@ -197,6 +248,18 @@ public class CrearBeneficiario extends javax.swing.JFrame {
         beneficiarioDTO.setUsuario(txtUsuario.getText());
         beneficiarioDTO.setContraseña(new String(txtContrasena.getPassword()));
 
+        
+        
+        /**
+         * 
+         * crea el beneficiario y le manda
+         * como parámetro un objeto de BenficiarioDTO
+         * crea un objeto inicioSesion de tipo login
+         * lo configura visible
+         * 
+         */
+        
+        
         try {
             negocio.guardarBeneficiario(beneficiarioDTO);
             logIn inicioSesion = new logIn(negocio);
@@ -209,6 +272,8 @@ public class CrearBeneficiario extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex.getMessage());
 
         }
+        
+        
     }//GEN-LAST:event_btnAceptarActionPerformed
 
 
