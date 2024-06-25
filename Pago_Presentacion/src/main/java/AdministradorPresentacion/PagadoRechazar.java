@@ -8,14 +8,25 @@ import BeneficiarioPresentacion.MisCuentasBancarias;
 import DTOs.CuentaBancariaDTO;
 import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
+import DTOs.PagosEstatusDTO;
 import GUI.logIn;
 import Utilerias.JButtonCellEditor;
 import Utilerias.JButtonRenderer;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
 import excepcion.ExcepcionPresentacion;
 import excepcionBO.ExcepcionBO;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -101,15 +112,15 @@ public class PagadoRechazar extends javax.swing.JFrame {
     NumeroDePagina.setText(""+pagina);
     }
         
-    public void aprobar() {
+    public void pagar() {
     
         try {
             long idaux = getIdSeleccionadoTabla();
             EstatusDTO aprobado = new EstatusDTO();
             
-            long id = 1;
+            long id = 3;
             aprobado.setId(id);
-            aprobado.setNombre("Aprobado");
+            aprobado.setNombre("Pagado");
             
             pagoBO.actualizarPago(pagoBO.buscarPagoPorId(idaux), aprobado);
         } catch (ExcepcionBO ex) {
@@ -161,6 +172,49 @@ public class PagadoRechazar extends javax.swing.JFrame {
     }    
             
 
+    private void generarRecibo() throws ExcepcionPresentacion, MalformedURLException{
+
+        String dest = "reciboPago.pdf";
+
+        try {
+
+            PdfWriter writer = new PdfWriter(dest);
+            PdfDocument pdfDoc = new PdfDocument(writer);
+            Document document = new Document(pdfDoc);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            
+            long idaux = getIdSeleccionadoTabla();          
+            
+            PagoDTO pago = pagoBO.buscarPagoPorId(idaux);
+            
+            ImageData data = ImageDataFactory.create("src/main/resources/images/potroPagoChico.png");
+            Image image = new Image(data);
+
+            document.add(image);
+            
+            document.add(new Paragraph("Pago =" + pago.getEstatus().get(0).getNombre()+ "!!!"));
+            document.add(new Paragraph(pago.getFechaHora().format(formatter)));
+            document.add(new Paragraph("$" + pago.getMonto()));
+            document.add(new Paragraph(pago.getBeneficiario().getNombre().getNombres() + 
+                    pago.getBeneficiario().getNombre().getApellidoPaterno() + 
+                    pago.getBeneficiario().getNombre().getApellidoMaterno()));
+            document.add(new Paragraph("Recibo Terminado"));
+
+            document.close();
+
+            System.out.println("¡Recibo generado con éxito!");
+            
+            JOptionPane.showMessageDialog(this, "Recibo generado con éxito!");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();    
+    
+    }   catch (ExcepcionBO ex) {    
+            Logger.getLogger(PagadoRechazar.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+    }
+    
     private void cargarConfiguracionInicialTabla() { 
         
         ActionListener onPagadoClickListener = new ActionListener() {
@@ -168,7 +222,14 @@ public class PagadoRechazar extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-               
+                try {
+                    pagar();
+                    generarRecibo();
+                } catch (ExcepcionPresentacion ex) {
+                    Logger.getLogger(PagadoRechazar.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(PagadoRechazar.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             }               
         };
@@ -184,7 +245,7 @@ public class PagadoRechazar extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-               
+               rechazar();
                 
             }               
         };
