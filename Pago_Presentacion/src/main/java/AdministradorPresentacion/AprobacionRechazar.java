@@ -91,24 +91,34 @@ public class AprobacionRechazar extends javax.swing.JFrame {
     }
     
     public List<PagosEstatusDTO> obtenerPagosEstatusCorrecto(){
-        List<PagosEstatusDTO> todas= pagoBO.obtenerTodosLosPagosEstatus();
-        List<PagosEstatusDTO> pagoE=new ArrayList<>();
+        List<PagosEstatusDTO> todas = pagoBO.obtenerTodosLosPagosEstatus();
+        List<PagosEstatusDTO> pagoE = new ArrayList<>();
         EstatusDTO estatusCreado = null;
-         EstatusDTO estatusModificado = null;        
-            List<EstatusDTO> estatus = pagoBO.obtenerTodosLosEstatus();
-            for (EstatusDTO estatu : estatus) {
-                if ("Creado".equals(estatu.getNombre())) {
-                    estatusCreado = estatu;
-                    break;
-                }
-                if ("Modificado".equals(estatu.getNombre())) {
-                    estatusModificado = estatu;
-                    break;
-                }
-                
+        EstatusDTO estatusModificado = null;
+        List<EstatusDTO> estatus = pagoBO.obtenerTodosLosEstatus();
+
+        for (EstatusDTO estatu : estatus) {
+            if ("Creado".equals(estatu.getNombre())) {
+                estatusCreado = estatu;
+            } else if ("Modificado".equals(estatu.getNombre())) {
+                estatusModificado = estatu;
             }
-        for(PagosEstatusDTO pagoEstatu:todas){
-            if(estatusCreado.getId()==pagoEstatu.getEstatus().getId()||estatusModificado.getId()==pagoEstatu.getEstatus().getId()){
+            if (estatusCreado != null && estatusModificado != null) {
+                break;
+            }
+        }
+
+        // Verificar si se encontraron los estatus "Creado" y "Modificado"
+        if (estatusCreado == null) {
+            throw new IllegalStateException("Estatus 'Creado' no encontrado.");
+        }
+        if (estatusModificado == null) {
+            throw new IllegalStateException("Estatus 'Modificado' no encontrado.");
+        }
+
+        for (PagosEstatusDTO pagoEstatu : todas) {
+            if (estatusCreado.getId().equals(pagoEstatu.getEstatus().getId()) ||
+                estatusModificado.getId().equals(pagoEstatu.getEstatus().getId())) {
                 pagoE.add(pagoEstatu);
             }
         }
