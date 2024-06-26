@@ -197,18 +197,18 @@ public class CrearBeneficiario extends javax.swing.JFrame {
         beneficiarioDTO.setUsuario(txtUsuario.getText());
         beneficiarioDTO.setContraseña(new String(txtContrasena.getPassword()));
         beneficiarioDTO.setSaldo(1000000.0);
+        beneficiarioDTO.setNombre(nombreDTO);
+        
 
         try {
+            System.out.println("Intentando guardar el beneficiario: " + beneficiarioDTO.getClaveContrato());
             negocio.guardarBeneficiario(beneficiarioDTO);
             logIn inicioSesion = new logIn(negocio);
             inicioSesion.setVisible(true);
             dispose();
-//        } else {
-//            JOptionPane.showMessageDialog(null, "No se pudo registrar el usuario");
-//        }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+            System.out.println("Error al guardar el beneficiario: " + ex.getMessage());
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 

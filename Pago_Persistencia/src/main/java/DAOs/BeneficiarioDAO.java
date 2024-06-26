@@ -9,8 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import entidades.Beneficiario;
 import conexion.ConexionBD;
+import static conexion.ConexionBD.getEntityManager;
 import excepcion.ExcepcionDAO;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 
 /**
  * Implementación concreta de DAO para la entidad Beneficiario.
@@ -42,23 +44,27 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
     @Override
     public void guardarBeneficiario(Beneficiario beneficiario) throws ExcepcionDAO {
         EntityTransaction transaction = null;
-        
+    
         try {
             transaction = entityManager.getTransaction();
             transaction.begin();
-            
+
+            System.out.println("Buscando beneficiario por clave de contrato: " + beneficiario.getClaveContrato());
             Beneficiario existingBeneficiario = buscarBeneficiarioPorClaveContrato(beneficiario.getClaveContrato());
+
             if (existingBeneficiario == null) {
                 entityManager.persist(beneficiario);
+                System.out.println("Beneficiario guardado exitosamente: " + beneficiario.getClaveContrato());
             } else {
                 System.out.println("Ya existe un beneficiario con la misma clave de contrato: " + beneficiario.getClaveContrato());
             }
-            
+
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
+            System.out.println("Error al guardar el beneficiario: " + e.getMessage());
             throw new ExcepcionDAO("Error al guardar el beneficiario", e);
         }
     }
@@ -75,13 +81,21 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
      */
     @Override
     public void actualizarBeneficiario(Beneficiario beneficiario) throws ExcepcionDAO {
+        EntityManager em = getEntityManager();
+        EntityTransaction tx = em.getTransaction();
         try {
-            entityManager.getTransaction().begin();
-            entityManager.merge(beneficiario);
-            entityManager.getTransaction().commit();
+            if (!tx.isActive()) {
+                tx.begin();
+            }
+            em.merge(beneficiario);
+            tx.commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            if (tx.isActive()) {
+                tx.rollback();
+            }
             throw new ExcepcionDAO("Error al actualizar el beneficiario", e);
+        } finally {
+            em.close();
         }
     }
 
@@ -124,12 +138,13 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
     @Override
     public Beneficiario buscarBeneficiarioPorClaveContrato(String claveContrato) throws ExcepcionDAO {
         try {
-            TypedQuery<Beneficiario> query = entityManager.createQuery(
-                "SELECT b FROM Beneficiario b WHERE b.claveContrato = :clave", Beneficiario.class);
-            query.setParameter("clave", claveContrato);
-            return query.getSingleResult();
+            return entityManager.createQuery("SELECT b FROM Beneficiario b WHERE b.claveContrato = :claveContrato", Beneficiario.class)
+                                .setParameter("claveContrato", claveContrato)
+                                .getSingleResult();
+        } catch (NoResultException e) {
+            return null; 
         } catch (Exception e) {
-            throw new ExcepcionDAO("Error al buscar el beneficiario por clave de contrato", e);
+            throw new ExcepcionDAO("Error al buscar el beneficiario por clave de contrato: " + claveContrato, e);
         }
     }
     

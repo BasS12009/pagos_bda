@@ -59,7 +59,7 @@ public class MisAbonos extends javax.swing.JFrame {
             
             }else{
                 int confirmacion = JOptionPane.showConfirmDialog(this,
-                    "¿Está seguro que desea eliminar al cliente?\n" +
+                    "¿Está seguro que desea eliminar el abono?\n" +
                             "ID: " + abonoDTO.getId()+ "\n" +
                                     "El monto: " + abonoDTO.getMonto()+ "\n" +
                                             "Beneficiario: " + abonoDTO.getPagoDTO().getBeneficiario().getNombre().getNombres(),
