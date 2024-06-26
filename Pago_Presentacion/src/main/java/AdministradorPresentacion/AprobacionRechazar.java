@@ -94,16 +94,21 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         List<PagosEstatusDTO> todas= pagoBO.obtenerTodosLosPagosEstatus();
         List<PagosEstatusDTO> pagoE=new ArrayList<>();
         EstatusDTO estatusCreado = null;
-            
+         EstatusDTO estatusModificado = null;        
             List<EstatusDTO> estatus = pagoBO.obtenerTodosLosEstatus();
             for (EstatusDTO estatu : estatus) {
                 if ("Creado".equals(estatu.getNombre())) {
                     estatusCreado = estatu;
                     break;
                 }
+                if ("Modificado".equals(estatu.getNombre())) {
+                    estatusModificado = estatu;
+                    break;
+                }
+                
             }
         for(PagosEstatusDTO pagoEstatu:todas){
-            if(estatusCreado.getId()==pagoEstatu.getEstatus().getId()){
+            if(estatusCreado.getId()==pagoEstatu.getEstatus().getId()||estatusModificado.getId()==pagoEstatu.getEstatus().getId()){
                 pagoE.add(pagoEstatu);
             }
         }

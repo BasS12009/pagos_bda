@@ -10,10 +10,7 @@ import javax.persistence.TypedQuery;
 import entidades.Beneficiario;
 import conexion.ConexionBD;
 import excepcion.ExcepcionDAO;
-import java.util.ArrayList;
 import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 
 /**
  * Implementación concreta de DAO para la entidad Beneficiario.
@@ -78,17 +75,12 @@ public class BeneficiarioDAO implements IBeneficiarioDAO{
      */
     @Override
     public void actualizarBeneficiario(Beneficiario beneficiario) throws ExcepcionDAO {
-        EntityTransaction transaction = null;
-        
         try {
-            transaction = entityManager.getTransaction();
-            transaction.begin();
+            entityManager.getTransaction().begin();
             entityManager.merge(beneficiario);
-            transaction.commit();
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
+            entityManager.getTransaction().rollback();
             throw new ExcepcionDAO("Error al actualizar el beneficiario", e);
         }
     }

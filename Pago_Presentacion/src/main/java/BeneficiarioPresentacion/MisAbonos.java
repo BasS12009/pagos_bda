@@ -38,11 +38,15 @@ public class MisAbonos extends javax.swing.JFrame {
      * Creates new form MisAbonos
      */
     public MisAbonos(PagoBO negocio) {
-        initComponents();
-        this.setLocationRelativeTo(this);
-        this.setSize(965, 610);
-        this.pagoBO = negocio;
-        cargarConfiguracionInicialTabla();
+        try {
+            initComponents();
+            this.setLocationRelativeTo(this);
+            this.setSize(970, 610);
+            this.pagoBO = negocio;
+            cargarMetodosIniciales();
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(MisAbonos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     
@@ -58,12 +62,13 @@ public class MisAbonos extends javax.swing.JFrame {
                     "¿Está seguro que desea eliminar al cliente?\n" +
                             "ID: " + abonoDTO.getId()+ "\n" +
                                     "El monto: " + abonoDTO.getMonto()+ "\n" +
-                                            "Beneficiario: " + abonoDTO.getPagoDTO().getBeneficiario(),
+                                            "Beneficiario: " + abonoDTO.getPagoDTO().getBeneficiario().getNombre().getNombres(),
                     "Confirmar eliminación",
                     JOptionPane.YES_NO_OPTION);
             if (confirmacion == JOptionPane.YES_OPTION) {
                 BeneficiarioDTO beneficiario=pagoBO.buscarBeneficiarioPorId(pagoBO.getId());
-                double sumar=beneficiario.getSaldo()+abonoDTO.getMonto();
+                double sumar=(beneficiario.getSaldo()+abonoDTO.getMonto());
+                beneficiario.setSaldo(sumar);
                 pagoBO.actualizarBeneficiario(beneficiario);
                 pagoBO.eliminarAbono(pagoBO.buscarAbonoPorID(id));
                 
@@ -124,7 +129,7 @@ public class MisAbonos extends javax.swing.JFrame {
             }               
         };
 
-        int indiceColumnaEliminar = 4;
+        int indiceColumnaEliminar = 5;
         Color color = new Color(255, 105, 97);
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar",color));
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
@@ -134,19 +139,27 @@ public class MisAbonos extends javax.swing.JFrame {
     private void llenarTabla(List<AbonoDTO> lista) {
          DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
 
-    // Clear existing rows
     modeloTabla.setRowCount(0);
     if (lista != null) {
        
         lista.forEach(row -> {
-            Object[] fila = new Object[5];
+            List<PagosEstatusDTO> pagos=pagoBO.obtenerTodosLosPagosEstatus();
+            PagosEstatusDTO pagoE=new PagosEstatusDTO();
+            for(PagosEstatusDTO pago:pagos){
+                if(pago.getPago().getId()==row.getPagoDTO().getId()){
+                    pagoE=pago;
+                    break;
+                }
+            }
+            Object[] fila = new Object[6];
              List<PagoDTO> pago = new ArrayList<>();
              pago.add(row.getPagoDTO());
-            fila[0] = row.getPagoDTO().getCuentas().get(0).getNumeroCuenta();;
-            fila[1] = row.getMonto();
-            fila[2] =row.getPagoDTO().getEstatus();
-            fila[3] = pagoBO.obtenerPagosEstatusParaPagos(pago).get(0).getMensaje();
-            fila[4] = "Eliminar"; 
+            fila[0] = row.getId();
+            fila[1] = row.getPagoDTO().getCuentas().get(0).getNumeroCuenta();;
+            fila[2] = row.getMonto();
+            fila[3] =row.getPagoDTO().getEstatus().get(0).getNombre();
+            fila[4] = pagoE.getMensaje();
+            fila[5] = "Eliminar"; 
             modeloTabla.addRow(fila); 
         });
     }
@@ -155,6 +168,7 @@ public class MisAbonos extends javax.swing.JFrame {
     private void cargarEnTabla() throws ExcepcionPresentacion {
         int indiceInicio = (pagina - 1) * LIMITE;
         List<AbonoDTO> todas = pagoBO.obtenerAbonosPorBeneficiario(pagoBO.getId());
+        System.out.println(todas.size());
         int indiceFin = Math.min(indiceInicio + LIMITE, todas.size());
         List<AbonoDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
         llenarTabla(enPagina);
@@ -163,6 +177,7 @@ public class MisAbonos extends javax.swing.JFrame {
     
     private List<AbonoDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
         List<AbonoDTO> todas = pagoBO.obtenerAbonosPorBeneficiario(pagoBO.getId());
+        System.out.println(todas.size());
         List<AbonoDTO> todasLasPaginas = new ArrayList<>();
         indiceFin = Math.min(indiceFin, todas.size());
         for (int i = indiceInicio; i < indiceFin; i++) {
@@ -230,7 +245,7 @@ public class MisAbonos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Cuenta", "Monto", "Estatus", "Comentarios", "Eliminar Abono"
+                "Id", "Cuenta", "Monto", "Estatus", "Comentarios", "Eliminar Abono"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -390,26 +405,23 @@ public class MisAbonos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAbonosActionPerformed
 
     private void btnCuentasBancariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuentasBancariasActionPerformed
-        // TODO add your handling code here:
         MisCuentasBancarias misCuentasBancarias = new MisCuentasBancarias(pagoBO);
         misCuentasBancarias.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCuentasBancariasActionPerformed
 
     private void btnAgregarAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAbonoActionPerformed
-        // Obtener todos los pagos por beneficiario
+
         List<PagosEstatusDTO> pagosBeneficiario = pagoBO.obtenerPagosEstatusPorBeneficiario(pagoBO.getId());
-        // Filtrar los pagos aprobados
         List<PagoDTO> pagosAprobados = new ArrayList<>();
         for (PagosEstatusDTO pago : pagosBeneficiario) {
-            // Verificar si el estatus no es nulo y es "Aprobado"
             if (pago.getEstatus() != null && "Pagado".equals(pago.getEstatus().getNombre())) {
                 pagosAprobados.add(pago.getPago());
             }
         }
         if (pagosAprobados.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No tiene pagos aprobados para agregar abonos.", "Información", JOptionPane.INFORMATION_MESSAGE);
-            return; // Detener la ejecución si no hay pagos aprobados
+            return; 
         }
         AgregarAbono agregarAbono = new AgregarAbono(pagoBO);
         agregarAbono.setVisible(true);
@@ -431,7 +443,7 @@ public class MisAbonos extends javax.swing.JFrame {
                 cargarEnTabla();
                 actualizarNumeroDePagina();
             } catch (ExcepcionPresentacion ex) {
-                Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MisAbonos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnAtrasActionPerformed
@@ -451,13 +463,32 @@ public class MisAbonos extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "No hay más páginas disponibles", "Información", JOptionPane.INFORMATION_MESSAGE);
             }
            } catch (ExcepcionPresentacion ex) {
-            Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MisAbonos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSiguienteActionPerformed
 
     private void NumeroDePaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumeroDePaginaActionPerformed
-        // TODO add your handling code here:
-        
+            try {
+            List<AbonoDTO> todas= pagoBO.obtenerAbonosPorBeneficiario(pagoBO.getId());
+
+            int totalPaginas = (int) Math.ceil((double) todas.size() / LIMITE);
+
+            int nuevaPagina = Integer.parseInt(NumeroDePagina.getText());
+
+            if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+                pagina = nuevaPagina;
+
+                cargarEnTabla();
+
+                actualizarNumeroDePagina();
+            } else {
+                JOptionPane.showMessageDialog(this, "Número de página inválido", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Ingrese un número válido para la página", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(MisAbonos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_NumeroDePaginaActionPerformed
 
     private void actualizarNumeroDePagina() {

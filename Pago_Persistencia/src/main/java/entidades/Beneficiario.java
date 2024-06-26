@@ -42,7 +42,6 @@ public class Beneficiario implements Serializable {
     private Double saldo;
     
     @Embedded
-    @Column(name="nombre")
     private Nombre nombre;
     
     @Column(name="usuario",nullable = false, length=10)
@@ -54,7 +53,7 @@ public class Beneficiario implements Serializable {
     @OneToMany(mappedBy = "beneficiario")
     private List<Pago> pagos;
     
-    @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<CuentaBancaria> cuentasBancarias;
     
     

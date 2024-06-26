@@ -196,6 +196,7 @@ public class CrearBeneficiario extends javax.swing.JFrame {
         beneficiarioDTO.setClaveContrato(txtClave.getText());
         beneficiarioDTO.setUsuario(txtUsuario.getText());
         beneficiarioDTO.setContraseña(new String(txtContrasena.getPassword()));
+        beneficiarioDTO.setSaldo(1000000.0);
 
         try {
             negocio.guardarBeneficiario(beneficiarioDTO);

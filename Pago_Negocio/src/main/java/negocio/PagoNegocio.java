@@ -802,6 +802,7 @@ public class PagoNegocio implements IPagoNegocio {
     @Override
     public void agregarAbono(AbonoDTO abonoDTO, PagoDTO pago){
         Abono abono=new Abono();
+        abono.setFechaHora(LocalDateTime.now());
         abono.setMonto(abonoDTO.getMonto());
         abono.setPago(pagoDAO.buscarPagoPorId(pago.getId()));
         abonoDAO.guardarAbono(abono);

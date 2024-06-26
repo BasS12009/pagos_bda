@@ -133,15 +133,18 @@ public class AbonoDAO implements IAbonoDAO{
     /**
      *  Retorna una lista con todos los abonos asociados a un beneficiario específico.
      * 
+     * @param beneficiarioId
      * @param claveContrato
      * @return
      */
     @Override
     public List<Abono> obtenerAbonosPorBeneficiario(Long beneficiarioId) {
         TypedQuery<Abono> query = entityManager.createQuery(
-                "SELECT a FROM Abono a WHERE a.beneficiario.id = :beneficiarioId", Abono.class);
+                "SELECT a FROM Abono a JOIN a.pago p JOIN p.beneficiario b WHERE b.id = :beneficiarioId", Abono.class);
         query.setParameter("beneficiarioId", beneficiarioId);
-        return query.getResultList();
+        List<Abono> abono = query.getResultList();
+
+        return abono;
     }
     
     /**

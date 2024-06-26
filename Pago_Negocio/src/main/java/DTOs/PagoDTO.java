@@ -4,6 +4,7 @@
  */
 package DTOs;
 
+import DAOs.PagoDAO;
 import entidades.Abono;
 import entidades.CuentaBancaria;
 import entidades.Estatus;
@@ -12,6 +13,7 @@ import entidades.PagosEstatus;
 import entidades.Tipos;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -141,11 +143,20 @@ public class PagoDTO {
         }
         
         pagoDTO.setBeneficiario(BeneficiarioDTO.convertir(pago.getBeneficiario()));
-        
+        List<AbonoDTO> abono=new ArrayList<>();
+        AbonoDTO abonoDTO=new AbonoDTO();
         if (pago.getAbonos() != null) {
-           pagoDTO.setAbonos(pago.getAbonos().stream()
-                   .map(abono -> AbonoDTO.convertir(abono))
-                   .collect(Collectors.toList()));
+            for(Abono abonoDAO:pago.getAbonos()){
+                abonoDTO.setFechaHora(abonoDAO.getFechaHora());
+                abonoDTO.setId(abonoDAO.getId());
+                abonoDTO.setMonto(abonoDAO.getMonto());
+                PagoDTO pagos=new PagoDTO();
+                abono.add(abonoDTO);
+            }
+            
+            
+           pagoDTO.setAbonos(abono);
+           
        }
         
         if (pagoDTO.getEstatus() != null) {
@@ -187,12 +198,19 @@ public class PagoDTO {
         
         pago.setBeneficiario(BeneficiarioDTO.convertir(pagoDTO.getBeneficiario()));
 
-        if (pagoDTO.getAbonos() != null) {
-            List<Abono> abonos = pagoDTO.getAbonos().stream()
-                    .map(AbonoDTO::convertir)
-                    .collect(Collectors.toList());
-            pago.setAbonos(abonos);
-        }
+        List<Abono> abono=new ArrayList<>();
+        Abono abonoDAO=new Abono();
+        if (pago.getAbonos() != null) {
+            for(AbonoDTO abonoDTO:pagoDTO.getAbonos()){
+                abonoDAO.setFechaHora(abonoDTO.getFechaHora());
+                abonoDAO.setId(abonoDTO.getId());
+                PagoDAO p=new PagoDAO();
+                abonoDAO.setPago(p.buscarPagoPorId(abonoDTO.getPagoDTO().getId()));
+                abono.add(abonoDAO);
+            }
+
+           pago.setAbonos(abono);
+       }
 
         if (pagoDTO.getEstatus() != null) {
             List<PagosEstatus> pagosEstatus = pagoDTO.getEstatus().stream()
@@ -202,7 +220,7 @@ public class PagoDTO {
         }
 
         if (pagoDTO.getCuentas() != null && !pagoDTO.getCuentas().isEmpty()) {
-            CuentaBancaria cuentaBancaria = CuentaBancariaDTO.convertir(pagoDTO.getCuentas().get(0)); // Suponiendo que solo hay una cuenta bancaria
+            CuentaBancaria cuentaBancaria = CuentaBancariaDTO.convertir(pagoDTO.getCuentas().get(0));
             pago.setCuentaBancaria(cuentaBancaria);
         }
 

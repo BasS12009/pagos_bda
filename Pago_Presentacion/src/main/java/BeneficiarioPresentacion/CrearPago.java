@@ -43,7 +43,7 @@ public class CrearPago extends javax.swing.JFrame {
     public CrearPago(PagoBO pagoBO) {
         initComponents();
         this.setLocationRelativeTo(this);
-        this.setSize(965, 610);
+        this.setSize(925, 610);
         this.pagoBO=pagoBO;
         
         llenarComboBoxTipos();

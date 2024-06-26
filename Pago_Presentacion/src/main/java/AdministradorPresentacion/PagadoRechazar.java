@@ -249,7 +249,8 @@ public class PagadoRechazar extends javax.swing.JFrame {
             document.close();
 
             System.out.println("¡Recibo generado con éxito!");
-            
+            pago.setComprobante("src/main/resources/images/potroPagoChico"+idaux+".png");
+            pagoBO.actualizarPago(pago, pago.getEstatus().get(0));
             JOptionPane.showMessageDialog(this, "Recibo generado con éxito!");
 
         } catch (FileNotFoundException e) {
