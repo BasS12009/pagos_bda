@@ -879,4 +879,14 @@ public class PagoNegocio implements IPagoNegocio {
         }
         return estatusDTO;
     }
+    
+    /**
+     *
+     * @return
+     */
+    @Override
+    public List<PagosEstatusDTO> obtenerTodosLosPagosEstatus(){
+        List<PagosEstatus> pagosE=pagoEstatusDAO.obtenerTodosLosPagosEstatus();
+        return convertirPE(pagosE);
+    }
 }

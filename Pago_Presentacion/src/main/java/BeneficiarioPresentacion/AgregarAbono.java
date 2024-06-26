@@ -39,7 +39,7 @@ public class AgregarAbono extends javax.swing.JFrame {
             this.setLocationRelativeTo(this);
             this.setSize(965, 610);
             this.pagoBO = negocio;
-            ids = new ArrayList<>(); // Inicialización de la lista de IDs
+            ids = new ArrayList<>();
             pagos=new ArrayList<>();
             llenarComboPagos();
         }
@@ -168,13 +168,11 @@ public class AgregarAbono extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "El monto ingresado no es válido", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            // Obtener el pago seleccionado del combo box
             pagoSeleccionado = pagos.get(jComboBoxPagos.getSelectedIndex()).getPago();
             if (pagoSeleccionado == null) {
                 JOptionPane.showMessageDialog(this, "Debe seleccionar un pago válido", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            // Validar que el monto del abono no exceda lo que falta pagar según las parcialidades
             double montoRestante = Double.valueOf(pagoSeleccionado.getMonto().doubleValue());
             if (monto > montoRestante) {
                 JOptionPane.showMessageDialog(this, "El monto del abono no puede ser mayor al monto restante por pagar", "Error", JOptionPane.ERROR_MESSAGE);

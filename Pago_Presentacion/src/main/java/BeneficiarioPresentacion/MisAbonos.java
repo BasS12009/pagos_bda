@@ -247,7 +247,7 @@ public class MisAbonos extends javax.swing.JFrame {
                 btnAtrasActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 480, -1, -1));
+        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, -1, -1));
 
         btnSiguiente.setBackground(new java.awt.Color(12, 33, 63));
         btnSiguiente.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
@@ -259,7 +259,7 @@ public class MisAbonos extends javax.swing.JFrame {
                 btnSiguienteActionPerformed(evt);
             }
         });
-        jPanel1.add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 480, -1, -1));
+        jPanel1.add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 470, -1, -1));
 
         NumeroDePagina.setBackground(new java.awt.Color(204, 169, 221));
         NumeroDePagina.setForeground(new java.awt.Color(255, 255, 255));
@@ -425,11 +425,34 @@ public class MisAbonos extends javax.swing.JFrame {
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         // TODO add your handling code here:
-
+        if (pagina > 1) {
+            try {
+                pagina--;
+                cargarEnTabla();
+                actualizarNumeroDePagina();
+            } catch (ExcepcionPresentacion ex) {
+                Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
-     
+        try {
+            List<AbonoDTO> todas = pagoBO.obtenerAbonosPorBeneficiario(pagoBO.getId());
+
+            int totalPaginas = (int) Math.ceil((double) todas.size() / LIMITE);
+
+            if (pagina < totalPaginas) {
+                pagina++;
+                cargarEnTabla();
+                actualizarNumeroDePagina();
+            } else {
+
+                JOptionPane.showMessageDialog(this, "No hay más páginas disponibles", "Información", JOptionPane.INFORMATION_MESSAGE);
+            }
+           } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnSiguienteActionPerformed
 
     private void NumeroDePaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumeroDePaginaActionPerformed

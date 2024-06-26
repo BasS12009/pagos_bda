@@ -294,5 +294,8 @@ public class PagoBO implements IPagoBO{
         return pagoNegocio.obtenerEstatuPorId(id);
     }
 
-    
+    @Override
+    public List<PagosEstatusDTO> obtenerTodosLosPagosEstatus(){
+        return pagoNegocio.obtenerTodosLosPagosEstatus();
+    }
 }

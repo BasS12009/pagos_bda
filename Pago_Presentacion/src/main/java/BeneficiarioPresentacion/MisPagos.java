@@ -4,8 +4,6 @@
  */
 package BeneficiarioPresentacion;
 
-import DTOs.CuentaBancariaDTO;
-import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
 import DTOs.PagosEstatusDTO;
 import GUI.logIn;
@@ -16,10 +14,8 @@ import excepcionBO.ExcepcionBO;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -59,7 +55,7 @@ public class MisPagos extends javax.swing.JFrame {
             long id = this.getIdSeleccionadoTabla();
             ModificarPago modificarPago = new ModificarPago(pagoBO,id);
             modificarPago.setVisible(true);
-            this.setVisible(false);   
+            this.dispose();   
             cargarEnTabla();
         } catch (ExcepcionPresentacion ex) {
             Logger.getLogger(MisPagos.class.getName()).log(Level.SEVERE, null, ex);
@@ -276,7 +272,7 @@ public class MisPagos extends javax.swing.JFrame {
                 btnAtrasActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 480, -1, -1));
+        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, -1, -1));
 
         btnSiguiente.setBackground(new java.awt.Color(12, 33, 63));
         btnSiguiente.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
@@ -429,6 +425,7 @@ public class MisPagos extends javax.swing.JFrame {
         CrearPago crearPago = new CrearPago(pagoBO);
         crearPago.setVisible(true);
         this.dispose();
+        
     }//GEN-LAST:event_btnCrearPagoActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
@@ -446,14 +443,14 @@ public class MisPagos extends javax.swing.JFrame {
                 cargarEnTabla();
                 actualizarNumeroDePagina();
             } catch (ExcepcionPresentacion ex) {
-                Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MisPagos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
         try {
-            List<CuentaBancariaDTO> todas = pagoBO.obtenerTodasLasCuentasBancarias();
+            List<PagosEstatusDTO> todas = pagoBO.obtenerPagosEstatusPorBeneficiario(pagoBO.getId());
 
             int totalPaginas = (int) Math.ceil((double) todas.size() / LIMITE);
 
@@ -465,21 +462,15 @@ public class MisPagos extends javax.swing.JFrame {
 
                 JOptionPane.showMessageDialog(this, "No hay más páginas disponibles", "Información", JOptionPane.INFORMATION_MESSAGE);
             }
-        } catch (ExcepcionBO ex) {
-            try {
-                throw new ExcepcionPresentacion("Error al eliminar la cuenta bancaria.", ex);
-            } catch (ExcepcionPresentacion ex1) {
-                Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex1);
-            }
         } catch (ExcepcionPresentacion ex) {
-            Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MisPagos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSiguienteActionPerformed
 
     private void NumeroDePaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumeroDePaginaActionPerformed
         // TODO add your handling code here:
         try {
-            List<CuentaBancariaDTO> todas= pagoBO.obtenerTodasLasCuentasBancarias();
+            List<PagosEstatusDTO> todas= pagoBO.obtenerPagosEstatusPorBeneficiario(pagoBO.getId());
 
             int totalPaginas = (int) Math.ceil((double) todas.size() / LIMITE);
 
@@ -496,14 +487,8 @@ public class MisPagos extends javax.swing.JFrame {
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Ingrese un número válido para la página", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (ExcepcionBO ex) {
-            try {
-                throw new ExcepcionPresentacion("Error al eliminar la cuenta bancaria.", ex);
-            } catch (ExcepcionPresentacion ex1) {
-                Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex1);
-            }
         } catch (ExcepcionPresentacion ex) {
-            Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MisPagos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_NumeroDePaginaActionPerformed
 

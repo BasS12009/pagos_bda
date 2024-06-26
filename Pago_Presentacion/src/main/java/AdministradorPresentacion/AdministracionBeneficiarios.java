@@ -5,10 +5,8 @@
 package AdministradorPresentacion;
 
 import DTOs.BeneficiarioDTO;
-import DTOs.CuentaBancariaDTO;
 import Utilerias.JButtonCellEditor;
 import Utilerias.JButtonRenderer;
-import static entidades.Abono_.id;
 import excepcion.ExcepcionPresentacion;
 import excepcionBO.ExcepcionBO;
 import java.awt.Color;
@@ -318,7 +316,7 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
                 btnAtrasActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, -1, -1));
+        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, -1, -1));
 
         btnSiguiente.setBackground(new java.awt.Color(12, 33, 63));
         btnSiguiente.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
@@ -481,15 +479,63 @@ public class AdministracionBeneficiarios extends javax.swing.JFrame {
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         // TODO add your handling code here:
+        if (pagina > 1) {
+            try {
+                pagina--;
+                cargarEnTabla();
+                actualizarNumeroDePagina();
+            } catch (ExcepcionPresentacion ex) {
+                Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
+        try {
+            List<BeneficiarioDTO> todas= pagoBO.obtenerTodosLosBeneficiarios();
 
+            int totalPaginas = (int) Math.ceil((double) todas.size() / LIMITE);
+
+            if (pagina < totalPaginas) {
+                pagina++;
+                cargarEnTabla();
+                actualizarNumeroDePagina();
+            } else {
+
+                JOptionPane.showMessageDialog(this, "No hay más páginas disponibles", "Información", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExcepcionBO ex) {
+            Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnSiguienteActionPerformed
 
     private void NumeroDePaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumeroDePaginaActionPerformed
         // TODO add your handling code here:
+        try {
+            List<BeneficiarioDTO> todas= pagoBO.obtenerTodosLosBeneficiarios();
 
+            int totalPaginas = (int) Math.ceil((double) todas.size() / LIMITE);
+
+            int nuevaPagina = Integer.parseInt(NumeroDePagina.getText());
+
+            if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+                pagina = nuevaPagina;
+
+                cargarEnTabla();
+
+                actualizarNumeroDePagina();
+            } else {
+                JOptionPane.showMessageDialog(this, "Número de página inválido", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Ingrese un número válido para la página", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExcepcionBO ex) {
+            Logger.getLogger(AdministracionBeneficiarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_NumeroDePaginaActionPerformed
 
     private void actualizarNumeroDePagina() {

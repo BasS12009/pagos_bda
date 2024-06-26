@@ -302,6 +302,9 @@ public class CrearPago extends javax.swing.JFrame {
             
                 pagoBO.guardarPago(pago, estatusCreado);
             JOptionPane.showMessageDialog(this, "Pago creado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            MisPagos pagos=new MisPagos(pagoBO);
+            pagos.show();
+            this.dispose();
         } catch (ExcepcionBO ex) {
             Logger.getLogger(CrearPago.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NumberFormatException ex) {

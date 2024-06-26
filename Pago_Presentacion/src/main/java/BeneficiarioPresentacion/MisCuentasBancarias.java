@@ -286,7 +286,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
                 btnAtrasActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 490, -1, -1));
+        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 460, -1, -1));
 
         btnSiguiente.setBackground(new java.awt.Color(12, 33, 63));
         btnSiguiente.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
@@ -298,7 +298,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
                 btnSiguienteActionPerformed(evt);
             }
         });
-        jPanel1.add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 490, -1, -1));
+        jPanel1.add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 470, -1, -1));
 
         NumeroDePagina.setBackground(new java.awt.Color(204, 169, 221));
         NumeroDePagina.setForeground(new java.awt.Color(255, 255, 255));
@@ -470,7 +470,7 @@ public class MisCuentasBancarias extends javax.swing.JFrame {
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
         try {
-            List<CuentaBancariaDTO> todas = pagoBO.obtenerTodasLasCuentasBancarias();
+            List<CuentaBancariaDTO> todas = pagoBO.obtenerTodasLasCuentasBancariasPorBeneficiario(pagoBO.getId());
 
             int totalPaginas = (int) Math.ceil((double) todas.size() / LIMITE);
 

@@ -187,6 +187,8 @@ public interface IPagoNegocio {
     public AbonoDTO buscarAbonoPorID(long id);
     public void eliminarAbono(AbonoDTO abonoDTO);
     public List<EstatusDTO> obtenerTodosLosEstatus();
-public EstatusDTO obtenerEstatuPorId(long id);
+    public EstatusDTO obtenerEstatuPorId(long id);
+
+    public List<PagosEstatusDTO> obtenerTodosLosPagosEstatus();
 
 }

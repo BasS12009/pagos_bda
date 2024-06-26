@@ -315,7 +315,7 @@ public class ModificarPago extends javax.swing.JFrame {
             }
             pago.setCuentas(Arrays.asList(cuentaSeleccionada)); 
             } else {
-                System.out.println("La cuenta bancaria no se encontró para el ID proporcionado: " + id);
+                System.out.println("La cuenta no se encontró para el ID proporcionado: " + id);
             }
             
             
@@ -345,7 +345,7 @@ public class ModificarPago extends javax.swing.JFrame {
             try {
                 throw new ExcepcionPresentacion(ex.getMessage());
             } catch (ExcepcionPresentacion ex1) {
-                Logger.getLogger(ModificarCuenta.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(ModificarPago.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
         

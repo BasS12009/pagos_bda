@@ -170,4 +170,5 @@ public interface IPagoBO {
     public List<EstatusDTO> obtenerTodosLosEstatus();
     public EstatusDTO obtenerEstatuPorId(long id);
 
+    public List<PagosEstatusDTO> obtenerTodosLosPagosEstatus();
 }

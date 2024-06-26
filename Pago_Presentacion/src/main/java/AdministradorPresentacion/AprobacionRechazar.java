@@ -5,10 +5,12 @@
 package AdministradorPresentacion;
 
 import BeneficiarioPresentacion.MisCuentasBancarias;
+import BeneficiarioPresentacion.ModificarCuenta;
 import DTOs.CuentaBancariaDTO;
 import DTOs.EstatusDTO;
 import DTOs.PagoDTO;
 import DTOs.PagosEstatusDTO;
+import DTOs.TiposDTO;
 import GUI.logIn;
 import Utilerias.JButtonCellEditor;
 import Utilerias.JButtonRenderer;
@@ -45,7 +47,8 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             initComponents();
             this.setLocationRelativeTo(this);
             this.setSize(960,610);
-                        this.pagoBO = pagoBO;
+            this.pagoBO = pagoBO;
+            
             cargarMetodosIniciales();
 
         } catch (ExcepcionPresentacion ex) {
@@ -58,40 +61,58 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         this.cargarEnTabla();
     }
     
-    private void llenarTabla(List<PagoDTO> lista) {
+    private void llenarTabla(List<PagosEstatusDTO> lista) {
          DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
 
-    // Clear existing rows
-    modeloTabla.setRowCount(0);
-    if (lista != null) {
-        lista.forEach(row -> {
-            Object[] fila = new Object[5];
-            fila[0] = row.getBeneficiario().getCuentasBancarias().get(0).getNumeroCuenta();;
-            fila[1] = row.getMonto();
-            fila[2] = row.getEstatus();
-            fila[3] = "Aprobar";
-            fila[4] = "Rechazar"; 
-            modeloTabla.addRow(fila); 
-        });
-    }
-    }
-    
-    private void cargarEnTabla() throws ExcepcionPresentacion {
-        try {
-            int indiceInicio = (pagina - 1) * LIMITE;
-            List<PagoDTO> todas = this.pagoBO.obtenerTodosLosPagos();
-            int indiceFin = Math.min(indiceInicio + LIMITE, todas.size());
-            List<PagoDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
-            llenarTabla(enPagina);
-            actualizarNumeroDePagina();
-        } catch (ExcepcionBO ex) {
-            Logger.getLogger(AprobacionRechazar.class.getName()).log(Level.SEVERE, null, ex);
+        modeloTabla.setRowCount(0);
+        if (lista != null) {
+            lista.forEach(row -> {
+                Object[] fila = new Object[6];
+                fila[0] =row.getPago().getId();
+                fila[1] = row.getPago().getCuentas().get(0).getNumeroCuenta();;
+                fila[2] = row.getPago().getMonto();
+                fila[3] =row.getEstatus().getNombre();
+                fila[4] = "Modificar";
+                fila[5] = "Eliminar"; 
+                modeloTabla.addRow(fila); 
+            });
         }
     }
     
-    private List<PagoDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionBO {
-        List<PagoDTO> todas = pagoBO.obtenerTodosLosPagos();
-        List<PagoDTO> todasLasPaginas = new ArrayList<>();
+    private void cargarEnTabla() throws ExcepcionPresentacion {
+        int indiceInicio = (pagina - 1) * LIMITE;
+        List<PagosEstatusDTO> todas= obtenerPagosEstatusCorrecto();
+        List<PagosEstatusDTO> pagoE=new ArrayList<>();
+        
+        int indiceFin = Math.min(indiceInicio + LIMITE, todas.size());
+        List<PagosEstatusDTO> enPagina = obtenerPagina(indiceInicio, indiceFin);
+        llenarTabla(enPagina);
+        actualizarNumeroDePagina();
+    }
+    
+    public List<PagosEstatusDTO> obtenerPagosEstatusCorrecto(){
+        List<PagosEstatusDTO> todas= pagoBO.obtenerTodosLosPagosEstatus();
+        List<PagosEstatusDTO> pagoE=new ArrayList<>();
+        EstatusDTO estatusCreado = null;
+            
+            List<EstatusDTO> estatus = pagoBO.obtenerTodosLosEstatus();
+            for (EstatusDTO estatu : estatus) {
+                if ("Creado".equals(estatu.getNombre())) {
+                    estatusCreado = estatu;
+                    break;
+                }
+            }
+        for(PagosEstatusDTO pagoEstatu:todas){
+            if(estatusCreado.getId()==pagoEstatu.getEstatus().getId()){
+                pagoE.add(pagoEstatu);
+            }
+        }
+        return pagoE;
+    }
+    
+    private List<PagosEstatusDTO> obtenerPagina(int indiceInicio, int indiceFin) throws ExcepcionPresentacion {
+        List<PagosEstatusDTO> todas= obtenerPagosEstatusCorrecto();
+        List<PagosEstatusDTO> todasLasPaginas = new ArrayList<>();
         indiceFin = Math.min(indiceFin, todas.size());
         for (int i = indiceInicio; i < indiceFin; i++) {
             todasLasPaginas.add(todas.get(i));
@@ -103,22 +124,41 @@ public class AprobacionRechazar extends javax.swing.JFrame {
     NumeroDePagina.setText(""+pagina);
     }
         
-    public void aprobar() {
-    
-        try {
-            long idaux = getIdSeleccionadoTabla();
-            EstatusDTO aprobado = new EstatusDTO();
+    public void aprobar() throws ExcepcionPresentacion {
+         try {
+            long id=getIdSeleccionadoTabla();
+             System.out.println(id);
+            PagoDTO pago = pagoBO.buscarPagoPorId(id);
+            System.out.println(pago.getId());
+            List<EstatusDTO> listaEstatus = new ArrayList<>();
+            EstatusDTO estatusCreado = null;
             
-            long id = 4;
-            aprobado.setId(id);
-            aprobado.setNombre("Aprobado");
+            List<EstatusDTO> estatus = pagoBO.obtenerTodosLosEstatus();
+            for (EstatusDTO estatu : estatus) {
+                if ("Aprobado".equals(estatu.getNombre())) {
+                    estatusCreado = estatu;
+                    break;
+                }
+            }
+
+            if (estatusCreado == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró el estatus 'Aprobado' en la lista", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            listaEstatus.add(estatusCreado);
+            pago.setEstatus(listaEstatus);
             
-            pagoBO.actualizarPago(pagoBO.buscarPagoPorId(idaux), aprobado);
-                        JOptionPane.showMessageDialog(this, "Pago aprobado!");
-        } catch (ExcepcionBO ex) {
-            Logger.getLogger(AprobacionRechazar.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+            pagoBO.actualizarPago(pago,estatusCreado);
+            JOptionPane.showMessageDialog(this, "Pago aprobado!");
+            cargarEnTabla();
+         } catch (ExcepcionBO ex) {
+            try {
+                throw new ExcepcionPresentacion(ex.getMessage());
+            } catch (ExcepcionPresentacion ex1) {
+                Logger.getLogger(AprobacionRechazar.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }     
     }
     
     public void rechazar() {
@@ -133,7 +173,10 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             
                         JOptionPane.showMessageDialog(this, "Pago Rechazado!");
             pagoBO.actualizarPago(pagoBO.buscarPagoPorId(idaux), aprobado);
+            cargarEnTabla();
         } catch (ExcepcionBO ex) {
+            Logger.getLogger(AprobacionRechazar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExcepcionPresentacion ex) {
             Logger.getLogger(AprobacionRechazar.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -162,7 +205,7 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         } else {
             return 0;
         }
-    }    
+    }   
         
     private void cargarConfiguracionInicialTabla() { 
            
@@ -174,11 +217,15 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-               aprobar(); 
+                try { 
+                    aprobar();
+                } catch (ExcepcionPresentacion ex) {
+                    Logger.getLogger(AprobacionRechazar.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             }               
         };
-        int indiceColumnaEditar = 3;
+        int indiceColumnaEditar = 4;
         Color color = new Color(178, 218, 250);
         modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Aprobar",color));
         modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Aprobar", onAprobarClickListener));
@@ -193,8 +240,8 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         };
 
         color = new Color(255, 105, 97);
-        modeloColumnas.getColumn(4).setCellRenderer(new JButtonRenderer("Rechazar",color));
-        modeloColumnas.getColumn(4).setCellEditor(new JButtonCellEditor("Rechazar", onRechazarClickListener));            
+        modeloColumnas.getColumn(5).setCellRenderer(new JButtonRenderer("Rechazar",color));
+        modeloColumnas.getColumn(5).setCellEditor(new JButtonCellEditor("Rechazar", onRechazarClickListener));            
     }       
 
     /**
@@ -212,6 +259,8 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         NumeroDePagina = new javax.swing.JTextField();
+        btnAtras = new javax.swing.JButton();
+        btnSiguiente = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnInicio = new javax.swing.JRadioButtonMenuItem();
@@ -239,12 +288,13 @@ public class AprobacionRechazar extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, "", null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Cuenta", "Monto", "Estado", "Aprobar", "Rechazar"
+                "Id", "Cuenta", "Monto", "Estado", "Aprobar", "Rechazar"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -263,6 +313,30 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             }
         });
         jPanel1.add(NumeroDePagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 480, 20, -1));
+
+        btnAtras.setBackground(new java.awt.Color(12, 33, 63));
+        btnAtras.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
+        btnAtras.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtras.setText("←");
+        btnAtras.setContentAreaFilled(false);
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, -1, -1));
+
+        btnSiguiente.setBackground(new java.awt.Color(12, 33, 63));
+        btnSiguiente.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
+        btnSiguiente.setForeground(new java.awt.Color(255, 255, 255));
+        btnSiguiente.setText("→");
+        btnSiguiente.setContentAreaFilled(false);
+        btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSiguienteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 470, -1, -1));
 
         jMenuBar1.setBackground(new java.awt.Color(228, 222, 235));
         jMenuBar1.setForeground(new java.awt.Color(116, 114, 178));
@@ -419,7 +493,7 @@ public class AprobacionRechazar extends javax.swing.JFrame {
     private void NumeroDePaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumeroDePaginaActionPerformed
         // TODO add your handling code here:
         try {
-            List<CuentaBancariaDTO> todas= pagoBO.obtenerTodasLasCuentasBancarias();
+            List<PagosEstatusDTO> todas= obtenerPagosEstatusCorrecto();
 
             int totalPaginas = (int) Math.ceil((double) todas.size() / LIMITE);
 
@@ -436,24 +510,52 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Ingrese un número válido para la página", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (ExcepcionBO ex) {
-            try {
-                throw new ExcepcionPresentacion("Error al eliminar la cuenta bancaria.", ex);
-            } catch (ExcepcionPresentacion ex1) {
-                Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex1);
-            }
         } catch (ExcepcionPresentacion ex) {
-            Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AprobacionRechazar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_NumeroDePaginaActionPerformed
+
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
+        // TODO add your handling code here:
+        if (pagina > 1) {
+            try {
+                pagina--;
+                cargarEnTabla();
+                actualizarNumeroDePagina();
+            } catch (ExcepcionPresentacion ex) {
+                Logger.getLogger(AprobacionRechazar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnAtrasActionPerformed
+
+    private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
+        try {
+            List<PagosEstatusDTO> todas= obtenerPagosEstatusCorrecto();
+
+            int totalPaginas = (int) Math.ceil((double) todas.size() / LIMITE);
+
+            if (pagina < totalPaginas) {
+                pagina++;
+                cargarEnTabla();
+                actualizarNumeroDePagina();
+            } else {
+
+                JOptionPane.showMessageDialog(this, "No hay más páginas disponibles", "Información", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (ExcepcionPresentacion ex) {
+            Logger.getLogger(AprobacionRechazar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSiguienteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField NumeroDePagina;
     private javax.swing.JRadioButtonMenuItem btnAdministracionBeneficiarios;
     private javax.swing.JRadioButtonMenuItem btnAprobacionRechazar;
+    private javax.swing.JButton btnAtras;
     private javax.swing.JRadioButtonMenuItem btnInicio;
     private javax.swing.JRadioButtonMenuItem btnPagadoRechazar;
     private javax.swing.JRadioButtonMenuItem btnReportePago;
+    private javax.swing.JButton btnSiguiente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
