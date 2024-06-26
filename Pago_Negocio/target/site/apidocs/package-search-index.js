@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.mycompany.pago_negocio"},{"l":"DTOs"},{"l":"excepcionBO"},{"l":"negocio"}];updateSearchResults();
