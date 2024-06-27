@@ -12,13 +12,18 @@ import Utilerias.JButtonRenderer;
 import excepcion.ExcepcionPresentacion;
 import excepcionBO.ExcepcionBO;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import negocio.PagoBO;
@@ -130,7 +135,7 @@ public class MisPagos extends javax.swing.JFrame {
                 
             }               
         };
-        int indiceColumnaEditar = 4;
+        int indiceColumnaEditar = 5;
         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
         Color color = new Color(253, 253, 150);
         modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Modificar",color));
@@ -151,28 +156,77 @@ public class MisPagos extends javax.swing.JFrame {
             }               
         };
 
-        int indiceColumnaEliminar = 5;
+        int indiceColumnaEliminar = 6;
         color = new Color(255, 105, 97);
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar",color));
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
+        
+        
+         ActionListener onVerComprobanteClickListener = new ActionListener() {
+         
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                ver();
+                
+            }               
+        };
+
+    int indiceColumnaVer = 7;
+        color = new Color(178, 218, 250);
+
+        modeloColumnas.getColumn(indiceColumnaVer).setCellRenderer(new JButtonRenderer("Ver comprobante",color));
+        modeloColumnas.getColumn(indiceColumnaVer).setCellEditor(new JButtonCellEditor("Ver comprobante", onVerComprobanteClickListener));
+        }
+    
+    
+    public void ver(){
+        try {
+            PagosEstatusDTO pago = new PagosEstatusDTO();
+                    pago.setPago(pagoBO.buscarPagoPorId(getIdSeleccionadoTabla()));;
+            if(pago.getPago().getComprobante()==null){
+                JOptionPane.showMessageDialog(this, "Aun no ha sido pagado", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else{
+                abrirComprobante(pago.getPago().getComprobante());
+            }
+        }catch (ExcepcionBO ex) {
+            Logger.getLogger(MisPagos.class.getName()).log(Level.SEVERE, "Error al buscar el pago por ID", ex);
+            JOptionPane.showMessageDialog(this, "Error al buscar el pago por ID", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void abrirComprobante(String urlComprobante) {
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().browse(new URI(urlComprobante));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MisCuentasBancarias.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     
     private void llenarTabla(List<PagosEstatusDTO> lista) {
          DefaultTableModel modeloTabla = (DefaultTableModel) this.jTable1.getModel();
-
-    // Clear existing rows
     modeloTabla.setRowCount(0);
     if (lista != null) {
         lista.forEach(row -> {
-            Object[] fila = new Object[6];
-            fila[0] = row.getPago().getCuentas().get(0).getNumeroCuenta();;
-            fila[1] = row.getPago().getMonto();
-            fila[2] =row.getEstatus().getNombre();
-            fila[3] = row.getMensaje();
-            fila[4] = "Modificar";
-            fila[5] = "Eliminar"; 
-            modeloTabla.addRow(fila); 
+            Object[] fila = new Object[8];
+            fila[0] = row.getPago().getId();
+            fila[1] = row.getPago().getCuentas().get(0).getNumeroCuenta();;
+            fila[2] = row.getPago().getMonto();
+            fila[3] =row.getEstatus().getNombre();
+            fila[4] = row.getMensaje();
+            fila[5] = "Modificar";
+            fila[6] = "Eliminar"; 
+            if ("Pagado".equals(row.getEstatus().getNombre()) || "Completado".equals(row.getEstatus().getNombre())) {
+                fila[7] = "Ver comprobante";
+            } else {
+                fila[7] = ""; 
+            }
+
+            modeloTabla.addRow(fila);
         });
     }
     }
@@ -250,12 +304,12 @@ public class MisPagos extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(228, 222, 235));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Cuenta", "Monto", "Estatus", "Comentarios", "Modificar", "Eliminar"
+                "Id", "Cuenta", "Monto", "Estatus", "Comentarios", "Modificar", "Eliminar", "Ver comprobante"
             }
         ));
         jScrollPane1.setViewportView(jTable1);

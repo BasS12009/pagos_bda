@@ -125,7 +125,6 @@ public class PagoNegocio implements IPagoNegocio {
             Pago pago = convertir(pagoDTO);
             pago.setFechaHora(pagoDTO.getFechaHora());
             pago.setMonto(pagoDTO.getMonto());
-            pago.setComprobante("esperando Pago");
             pago = pagoDAO.guardarPago(pago);
             PagoDTO pagod = new PagoDTO();
             pagod.setId(pago.getId());
@@ -144,11 +143,20 @@ public class PagoNegocio implements IPagoNegocio {
     public void actualizarPago(PagoDTO pagoDTO, EstatusDTO estatus) throws ExcepcionBO{
         try {
             Pago pago = pagoDAO.buscarPagoPorId(pagoDTO.getId());
+            pago.setComprobante(pagoDTO.getComprobante());
+            pago.setMonto(pagoDTO.getMonto());
+            pago.setCuentaBancaria(CuentaBancariaDTO.convertir(pagoDTO.getCuentas().get(0)));
+            pago.setTipo(TiposDTO.convertir(pagoDTO.getTipo()));
+            
+            
             PagosEstatus pe=(PagosEstatus) pagoEstatusDAO.obtenerEstatusPagosPorPago(pago).get(0);
             pagoDAO.actualizarPago(pago);
             pe.setPago(pago);
+            
+            
             pe.setEstatus(estatusDAO.buscarEstatusPorId(estatus.getId()));
             pe.setMensaje("El pago ha sido modificado");
+            
             pagoEstatusDAO.actualizarPagosEstatus(pe);
         } catch (ExcepcionDAO ex) {
             throw new ExcepcionBO("Error al actualizar el pago", ex);

@@ -163,8 +163,8 @@ public class AprobacionRechazar extends javax.swing.JFrame {
 
             listaEstatus.add(estatusCreado);
             pago.setEstatus(listaEstatus);
-            
             pagoBO.actualizarPago(pago,estatusCreado);
+            
             JOptionPane.showMessageDialog(this, "Pago aprobado!");
             cargarEnTabla();
          } catch (ExcepcionBO ex) {
@@ -241,7 +241,7 @@ public class AprobacionRechazar extends javax.swing.JFrame {
             }               
         };
         int indiceColumnaEditar = 4;
-        Color color = new Color(178, 218, 250);
+        Color color = new Color(189, 236, 182);
         modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Aprobar",color));
         modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Aprobar", onAprobarClickListener));
         ActionListener onRechazarClickListener = new ActionListener() {

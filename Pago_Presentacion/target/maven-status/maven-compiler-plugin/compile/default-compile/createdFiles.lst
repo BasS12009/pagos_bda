@@ -20,6 +20,7 @@ BeneficiarioPresentacion\CrearPago.class
 AdministradorPresentacion\MenuAdministrador$2.class
 AdministradorPresentacion\ReportePago$5.class
 BeneficiarioPresentacion\MisCuentasBancarias$11.class
+BeneficiarioPresentacion\MisPagos$12.class
 BeneficiarioPresentacion\ModificarPago$5.class
 AdministradorPresentacion\AprobacionRechazar$4.class
 GUI\logIn$4.class

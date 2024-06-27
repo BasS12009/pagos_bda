@@ -219,7 +219,7 @@ public class PagadoRechazar extends javax.swing.JFrame {
 
     private void generarRecibo() throws ExcepcionPresentacion, MalformedURLException{
 
-        String dest = "reciboPago.pdf";
+        String dest = "reciboPago"+getIdSeleccionadoTabla()+".pdf";
 
         try {
 
@@ -233,7 +233,7 @@ public class PagadoRechazar extends javax.swing.JFrame {
             
             PagoDTO pago = pagoBO.buscarPagoPorId(idaux);
             
-            ImageData data = ImageDataFactory.create("src/main/resources/images/potroPagoChico"+idaux+".png");
+            ImageData data = ImageDataFactory.create("src/main/resources/images/potroPagoChico.png");
             Image image = new Image(data);
 
             document.add(image);
@@ -245,11 +245,11 @@ public class PagadoRechazar extends javax.swing.JFrame {
                     pago.getBeneficiario().getNombre().getApellidoPaterno() + 
                     pago.getBeneficiario().getNombre().getApellidoMaterno()));
             document.add(new Paragraph("Recibo Terminado"));
-
+            
             document.close();
 
             System.out.println("¡Recibo generado con éxito!");
-            pago.setComprobante("src/main/resources/images/potroPagoChico"+idaux+".png");
+            pago.setComprobante(dest);
             pagoBO.actualizarPago(pago, pago.getEstatus().get(0));
             JOptionPane.showMessageDialog(this, "Recibo generado con éxito!");
 
@@ -275,7 +275,7 @@ public class PagadoRechazar extends javax.swing.JFrame {
             
         int indiceColumnaEditar = 3;
         TableColumnModel modeloColumnas = this.jTable1.getColumnModel();
-        Color color = new Color(178, 218, 250);
+        Color color = new Color(189, 236, 182);
         modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Pagado",color));
         modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Pagado", onPagadoClickListener));
         
